@@ -71,3 +71,4 @@ spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
               files=[next_data_file],
               text='MISSION: 0day AMP-1- I have completed the first mission!')
     print(message)
+	
