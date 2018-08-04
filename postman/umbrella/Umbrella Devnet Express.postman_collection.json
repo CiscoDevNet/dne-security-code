@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "ddbb6b1b-be9c-4fef-9983-d4efa89ae43c",
+		"name": "Umbrella Devnet Express",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "3d1bc292-0a62-4b4b-922b-df481d71ba71",
+			"name": "Post Request Enforcement",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\n          \"alertTime\": \"2018-07-17T16:27:12.152962Z\",\n          \"deviceId\": \"ba6a59f4-e692-4724-ba36-c28132c761de\",\n          \"deviceVersion\": \"13.7a\",\n          \"dstDomain\": \"internetbadguys.com\",\n          \"dstUrl\": \"http://internetbadguys.com/a-bad-url\",\n          \"eventTime\": \"2018-07-17T16:27:12.152962Z\",\n          \"protocolVersion\": \"1.0a\",\n          \"providerName\": \"Security Platform\"\n      },{\n          \"alertTime\": \"2018-07-17T16:27:12.152962Z\",\n          \"deviceId\": \"ba6a59f4-e692-4724-ba36-c28132c761de\",\n          \"deviceVersion\": \"13.7a\",\n          \"dstDomain\": \"moarinternetbadguys.com\",\n          \"dstUrl\": \"http://moarinternetbadguys.com/a-bad-url-again\",\n          \"eventTime\": \"2018-07-17T16:27:12.152962Z\",\n          \"protocolVersion\": \"1.0a\",\n          \"providerName\": \"Security Platform\"\n      }]"
+				},
+				"url": {
+					"raw": "https://s-platform.api.opendns.com/1.0/events?customerKey=<insert-your-key-here>",
+					"protocol": "https",
+					"host": [
+						"s-platform",
+						"api",
+						"opendns",
+						"com"
+					],
+					"path": [
+						"1.0",
+						"events"
+					],
+					"query": [
+						{
+							"key": "customerKey",
+							"value": "<insert-your-key-here>"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "44157e4f-748d-409a-a885-e414a56af80a",
+			"name": "Get Request Enforcement",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": ""
+					},
+					{
+						"key": "",
+						"value": ""
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://s-platform.api.opendns.com/1.0/domains?customerKey=<insert-your-key-here>",
+					"protocol": "https",
+					"host": [
+						"s-platform",
+						"api",
+						"opendns",
+						"com"
+					],
+					"path": [
+						"1.0",
+						"domains"
+					],
+					"query": [
+						{
+							"key": "customerKey",
+							"value": "<insert-your-key-here>"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "3b44b19d-b061-4425-bc86-f8225b9743be",
+			"name": "Get Request Investigate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "<insert-your-key-here>",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://investigate.api.umbrella.com/domains/categorization/internetbadguys.com?showLabels",
+					"protocol": "https",
+					"host": [
+						"investigate",
+						"api",
+						"umbrella",
+						"com"
+					],
+					"path": [
+						"domains",
+						"categorization",
+						"internetbadguys.com"
+					],
+					"query": [
+						{
+							"key": "showLabels",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "14840329-6f38-47ed-8813-36f8174e0f9d",
+			"name": "Post Request Investigate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "<insert-your-key-here>",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\"internetbadguys.com\", \"cnn.com\", \"cisco.com\"]"
+				},
+				"url": {
+					"raw": "https://investigate.api.umbrella.com/domains/categorization/",
+					"protocol": "https",
+					"host": [
+						"investigate",
+						"api",
+						"umbrella",
+						"com"
+					],
+					"path": [
+						"domains",
+						"categorization",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
