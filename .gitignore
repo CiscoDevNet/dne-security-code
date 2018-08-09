@@ -3,7 +3,7 @@
 
 # User Environment
 env_user.py
-
+.vscode
 
 # Virtual Environments
 .venv
