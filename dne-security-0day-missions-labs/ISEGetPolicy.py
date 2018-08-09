@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 """0day Workflow Mission - edit this file
 This is your starting point for the 0day workflow  Mission.
@@ -41,45 +40,29 @@ except:
 #SPARK_ROOM_ID=""
 
 #spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
-# import necessary libraries / modules
-import requests
-from datetime import datetime
-import json
+# Mission TO DO2: Get the ISE URL setup
 
-# copy paste API key from previous section within the quotes
-custkey = ""
+ISE_ERSUSER="ersadmin"
+ISE_ERSPASSWORD="C1sco12345"
+ISE_HOSTNAME="198.18.133.27:9060"
 
-# URL needed to do POST requests
-eventurl = "https://s-platform.api.opendns.com/1.0/events"
-# time for AlertTime and EventTime when domains are added to Umbrella
+url = "https://" + ISE_ERSUSER + ":" + ISE_ERSPASSWORD + "@" + ISE_HOSTNAME + "/ers/config/ancpolicy"
 
-time = datetime.now().isoformat() 
+#print(url)
+#:C1sco12345@198.18.133.27:9060/ers/config/ancpolicy"
 
-# domain that will be uploaded
-domain = "hjhqmbxyinislkkt.1j9r76.top"
+headers = {
+    'content-type': "application/json",
+    'accept': "application/json"
+    }
 
-# URL needed for POST request
-UrlPost = eventurl+'?customerKey='+custkey
-
-# NOTE: Although this information MUST be provided when using the API, not all of it is utilized in the destination lists within Umbrella
-data = {
-      "alertTime": time + "Z",
-      "deviceId": "ba6a59f4-e692-4724-ba36-c28132c761de",
-      "deviceVersion": "13.7a",
-      "dstDomain": domain,
-      "dstUrl": "http://" + domain + "/",
-      "eventTime": time + "Z",
-      "protocolVersion": "1.0a",
-      "providerName": "Security Platform"
-}
-
-# POST REQUEST: post request ensembly
-req = requests.post(UrlPost, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'})
-# error handling if true then the request was HTTP 202, so successful 
-if(req.status_code == 202):
-    print("SUCCESS: domain (%(domain)s) was accepted, HTTP response: 202, timestamp: %(time)s" % {'domain': domain, 'time': time})
-#    message = spark.messages.create(SPARK_ROOM_ID,
-#		  files=[next_data_file], 
-#		  text='MISSION: 0day Umbrella-Investigate - I have completed the first mission!')
+response = requests.request("GET", url, verify=False, headers=headers)
+if(response.status_code == 200):
+     #message = spark.messages.create(SPARK_ROOM_ID,
+	#	  files=[next_data_file], 
+	#	  text='MISSION: 0day ISE - I have completed the first mission!')
+    #Mission TODO3: Print the response
+    print(response.text)
 else:
-    print("An error has ocurred with the following code %(error)s, please consult the following link: https://enforcement-api.readme.io/" % {'error': req.status_code})
+        print("An error has ocurred with the following code %(error)s" % {'error': response.status_code})
+
