@@ -74,9 +74,9 @@ for events1 in events1["data"]:
 
 ## Mission TODO: Print the List of infected computer hosts and associated SHA values 
 if sha_list == {}:
-	pprint("Mission--- not Complete... !!!!)
+	pprint("Mission--- not Complete... !!!!")
 else:
 	pprint(sha_list)
-	message = spark.messages.create(SPARK_ROOM_ID, files=[next_data_file], 
-	text='MISSION: 0day Umbrella-Investigate - I have completed the first mission!')
+	message = spark.messages.create(SPARK_ROOM_ID,
+	text='MISSION: 0day AMP-SHA-LIST-Creation - I have completed the AMP mission!')
 	print(message)

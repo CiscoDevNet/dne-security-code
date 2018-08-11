@@ -74,8 +74,8 @@ if(req.status_code == 200):
 	#walk through different options of status
 if(domainStatus == -1):
 	print("SUCCESS: The domain %(domain)s is found MALICIOUS at %(time)s" % {'domain': domain, 'time': time})
-	message = spark.messages.create(SPARK_ROOM_ID, files=[next_data_file], 
-	text='MISSION: 0day Umbrella-Investigate - I have completed the first mission!')
+	message = spark.messages.create(SPARK_ROOM_ID, 
+	text='MISSION: 0day Umbrella-Investigate - I have completed the Umbrella Investigate mission!')
 	print(message)
 elif(domainStatus == 1):
 	print("SUCCESS: The domain %(domain)s is found CLEAN at %(time)s" % {'domain': domain, 'time': time})
