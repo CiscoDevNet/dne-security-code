@@ -30,6 +30,7 @@ import ciscosparkapi
 import json
 import os
 import requests
+from pprint import pprint
 # Disable Certificate warning
 try:
     requests.packages.urllib3.disable_warnings()
@@ -39,6 +40,7 @@ import sys
 #Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
 SPARK_ACCESS_TOKEN = ""
 SPARK_ROOM_ID=""
+spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
 
 def getAMP(url):
 	try:
@@ -57,18 +59,24 @@ def getAMP(url):
 #Mission TODO2:  ENTER YOU CLIENT ID AND AMP API KEY HERE
 client_id = ""
 api_key = ""
-
+#Mission TODO: Enter the standard AMP event id for type of event for Malware... it is 1107296272
+event_id = ""
 #Mission TODO3: Create the AMP URL
 events_url = "https://{}:{}@api.amp.cisco.com/v1/events".format(client_id,api_key)
+events1 = getAMP(events_url)
+sha_list= {}
+#print (json.dumps(events1, indent=4, sort_keys=True))
+for events1 in events1["data"]:
+	if events1["event_type_id"] == 1107296272:
+		sha_list[events1["computer"]["hostname"]] = events1["file"]["identity"]
+	else:
+		continue
 
-events= getAMP(events_url)
-
-print events
-# Create a Cisco Spark object
-spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
-
- message = spark.messages.create(SPARK_ROOM_ID,
-              files=[next_data_file],
-              text='MISSION: 0day AMP-1- I have completed the first mission!')
-    print(message)
-	
+## Mission TODO: Print the List of infected computer hosts and associated SHA values 
+if sha_list == {}:
+	pprint("Mission--- not Complete... !!!!)
+else:
+	pprint(sha_list)
+	message = spark.messages.create(SPARK_ROOM_ID, files=[next_data_file], 
+	text='MISSION: 0day Umbrella-Investigate - I have completed the first mission!')
+	print(message)
