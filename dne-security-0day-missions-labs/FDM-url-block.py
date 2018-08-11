@@ -26,6 +26,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+import ciscosparkapi
 import requests
 from bravado.client import SwaggerClient
 from bravado.requests_client import RequestsClient
@@ -34,12 +35,17 @@ try:
     requests.packages.urllib3.disable_warnings()
 except:
     pass
+#Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
+SPARK_ACCESS_TOKEN = ""
+SPARK_ROOM_ID=""
 
+spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
 headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
     "Authorization": "Bearer "
 }
+#Mission TODO: Enter the FTD API access credentials here
 auth_payload = '''
 {
   "grant_type": "password",
@@ -47,6 +53,9 @@ auth_payload = '''
   "password": ""
 }
 '''
+
+#mission TODO: Enter the FTD hostname/ip here...
+
 hostname = ""
 
 def login():
@@ -65,8 +74,9 @@ def get_spec_json():
 # ----------------
 def create_url_object(client):
     url_object = client.get_model("URLObject")(type="urlobject")
-    url_object.name = "veerinternetbadguys"
-    url_object.url = "internetbadguys.com"
+    url_object.name = "DNEbadguys"
+    #Mission TODO: Enter the domain you found malicious or questionable in Umbrella Investigate to block on FTD
+    url_object.url = ""
     client.URLObject.addURLObject(body=url_object).result()
 
 
@@ -74,7 +84,7 @@ def create_access_rule(client):
     # get access policy first
     access_policy = client.AccessPolicy.getAccessPolicyList().result()['items'][0]
     # fetch the url object we created
-    url_object = client.URLObject.getURLObjectList(filter="name:veerinternetbadguys").result()['items'][0]
+    url_object = client.URLObject.getURLObjectList(filter="name:DNEbadguys").result()['items'][0]
     # reference model (name, id, type)
     ReferenceModel = client.get_model("ReferenceModel")
 
@@ -84,9 +94,13 @@ def create_access_rule(client):
     
     # Access Rule model
     access_rule = client.get_model("AccessRule")(type="accessrule")
-    access_rule.name = "block_veerinternetbadguys"
+    access_rule.name = "block_DNEbadguys"
     access_rule.urlFilter = embedded_url_filter
     client.AccessPolicy.addAccessRule(body=access_rule, parentId=access_policy.id).result()
+    message = spark.messages.create(SPARK_ROOM_ID,
+	text='MISSION: 0day FDM Blocking the Domain URL - I have completed the mission!')
+    #Mission TODO3: Print the response
+    print(Done!)
 
 if __name__ == '__main__':
     login()

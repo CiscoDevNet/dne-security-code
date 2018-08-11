@@ -25,6 +25,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+import ciscosparkapi
 import requests
 import json
 import threatgrid
@@ -36,16 +37,16 @@ except:
     pass
 
 #Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
-#SPARK_ACCESS_TOKEN = ""
-#SPARK_ROOM_ID=""
+SPARK_ACCESS_TOKEN = ""
+SPARK_ROOM_ID=""
 
-#spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
-# Mission TODO2: Insert the API key
+spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+# Mission TODO: Insert the SHA you want to hunt using TG
 
 
-sha_256 = "2f2501392432d22ef28a1d21bdbd1abe6a14f2f3e16a7e74efb29d839f11f4e0"
+sha_256 = ""
 
-# enter api credentials for the corresponding accounts
+# Mission TODO: enter the api credentials for the TG API access
 
 api_key = ""
 
@@ -96,8 +97,11 @@ for domain in domains["data"]["items"]:
             domain_list.append(domain["domain"])
             ip_list.append(item)
 
+message = spark.messages.create(SPARK_ROOM_ID, 
+	text='MISSION: 0day ISE - I have completed the first mission!')
+#Mission TODO3: Print the domains and ip....
 print ("\nAssociated domains:\n")
 print ("\n".join(domain_list))
 print ("\n samples made outbound connections on following IPs:\n")
 print ("\n".join(ip_list))
-print ("Finished Building list for Umbrella")
+print ("Finished Building list for Next Mission with Umbrella Investigate ...")

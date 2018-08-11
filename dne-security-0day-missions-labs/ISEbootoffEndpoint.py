@@ -48,9 +48,9 @@ ISE_ERSUSER="ersadmin"
 ISE_ERSPASSWORD="C1sco12345"
 ISE_HOSTNAME="198.18.133.27:9060"
 
-url = "https://" + ISE_ERSUSER + ":" + ISE_ERSPASSWORD + "@" + ISE_HOSTNAME + "/ers/config/ancpolicy"
+url = "https://" + ISE_ERSUSER + ":" + ISE_ERSPASSWORD + "@" + ISE_HOSTNAME + "/ers/config/endpoint"
 
-#print(url)
+print(url)
 #:C1sco12345@198.18.133.27:9060/ers/config/ancpolicy"
 
 headers = {
@@ -61,9 +61,24 @@ headers = {
 response = requests.request("GET", url, verify=False, headers=headers)
 if(response.status_code == 200):
      message = spark.messages.create(SPARK_ROOM_ID,
-	 text='MISSION: 0day ISE - I have completed the first mission to get the ISE policy!')
+	 text='MISSION: 0day ISE - I have completed the first mission to get the ISE Endpoint!')
     #Mission TODO3: Print the response
-    print(response.text)
+    print("Done!...Mission part 1 getting endpoint")
 else:
         print("An error has ocurred with the following code %(error)s" % {'error': response.status_code})
 
+
+url = "https://" + ISE_ERSUSER + ":" + ISE_ERSPASSWORD + "@" + ISE_HOSTNAME + "/ers/config/ancendpoint/apply"
+
+payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{\r\n    \"name\": \"macAddress\",\r\n    \"value\": \"11:22:33:44:55:66\"\r\n    },\r\n    {\r\n    \"name\": \"policyName\",\r\n    \"value\": \"ANC_Devnet\"\r\n    }]\r\n  }\r\n}"
+
+
+print (url)
+response = requests.request("PUT", url, data=payload, verify=False, headers=headers)
+if(response.status_code == 204):
+     message = spark.messages.create(SPARK_ROOM_ID,
+	 text='MISSION: 0day ISE - I have completed the first mission to get the ISE Endpoint!')
+    #Mission TODO3: Print the response
+    print("Done!...Mission part 2 applying Quarantine policy to the rouge endpoint")
+else:
+    print("An error has ocurred with the following code %(error)s" % {'error': response.status_code})
