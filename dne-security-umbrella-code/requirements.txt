@@ -1,0 +1,7 @@
+# BELOW ARE THE DEPENDENCIES THAT YOU MIGHT HAVE TO INSTALL (WHEN NOT USING dCLOUD)
+
+pip install --upgrade pip
+pip install json
+pip install requests
+pip install datetime
+pip install <other libraries>
