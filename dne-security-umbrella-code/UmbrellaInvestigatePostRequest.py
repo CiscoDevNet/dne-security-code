@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 
 # copy paste API key from previous section within the quotes
-APIkey = "<my-Investigate-API-key>"
+APIkey = "<insert-investigate-api-key-here>"
 
 # URL needed for the domain status and category
 investigateUrl = "https://investigate.api.umbrella.com/domains/categorization/"

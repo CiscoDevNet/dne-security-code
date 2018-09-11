@@ -5,7 +5,7 @@ import requests
 import json
 
 # copy paste API key from previous section within the quotes
-custkey = "<my-API-key>"
+custkey = "<insert-enforcement-api-key-here>"
 
 # URL needed to do GET requests
 domainUrl = "https://s-platform.api.opendns.com/1.0/domains"

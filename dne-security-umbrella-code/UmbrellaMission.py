@@ -6,13 +6,13 @@ import json
 from datetime import datetime
 
 # copy paste INVESTIGATE API key from previous section within the quotes
-APIkey = "<my-Investigate-API-key>"
+APIkey = "<insert-investigate-api-key-here>"
 
 # URL needed for the domain status and category (INVESTIGATE API)
 investigateUrl = "https://investigate.api.umbrella.com/domains/categorization/"
 
 # copy paste ENFORCEMENT API key from previous section within the quotes
-custkey = "<my-Enforcement-API-key>"
+custkey = "<insert-enforcement-api-key-here"
 
 # URL needed to do POST requests for ENFORCEMENT API
 eventurl = "https://s-platform.api.opendns.com/1.0/events"

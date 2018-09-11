@@ -6,7 +6,7 @@ from datetime import datetime
 import json
 
 # copy paste API key from previous section within the quotes
-custkey = "181dcf81-da5b-47f0-908a-e47ce336f330"
+custkey = "<insert-enforcement-api-key-here>"
 
 # URL needed to do POST requests
 eventurl = "https://s-platform.api.opendns.com/1.0/events"
