@@ -21,7 +21,7 @@ client_id = ""
 api_key = ""
 
 
-event_id_url = "https://{}:{}@api.amp.cisco.com/v1/event_types".format(client_id,api_key)
+event_id_url = "https://"
 
 event_ids= get(event_id_url)
 
