@@ -35,7 +35,7 @@ data = {
 # POST REQUEST: post request ensembly
 req = requests.post(UrlPost, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'})
 
-# error handling if true then the request was HTTP 202, so successful 
+# error handling if true then the request was HTTP 202, so successful
 if(req.status_code == 202):
   print("SUCCESS: domain (%(domain)s) was accepted, HTTP response: 202, timestamp: %(time)s" % {'domain': domain, 'time': time})
 else:

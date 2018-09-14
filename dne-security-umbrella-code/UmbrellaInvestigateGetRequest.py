@@ -12,10 +12,7 @@ APIkey = "<insert-investigate-api-key-here>"
 investigateUrl = "https://investigate.api.umbrella.com/domains/categorization/"
 
 # domain that will be checked
-domain = "internetbadguys.com"	
-
-# time for timestamp of verdict domain
-time = datetime.now().isoformat() 
+domain = "internetbadguys.com"
 
 #create header for authentication
 headers = {
@@ -28,7 +25,10 @@ getUrl = investigateUrl + domain + "?showLabels"
 # do GET request for the domain status and category
 req = requests.get(getUrl, headers=headers)
 
-# error handling if true then the request was HTTP 200, so successful 
+# time for timestamp of verdict domain
+time = datetime.now().isoformat() 
+
+# error handling if true then the request was HTTP 200, so successful
 if(req.status_code == 200):
 	# retrieve status for domain
 	output = req.json()

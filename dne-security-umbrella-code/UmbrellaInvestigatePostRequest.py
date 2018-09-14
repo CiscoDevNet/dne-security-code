@@ -17,9 +17,6 @@ domains = ["internetbadguys.com", "cnn.com", "cisco.com"]
 # put in right format to pass as argument in POST request
 values = str(json.dumps(domains))
 
-# time for timestamp of verdict domain
-time = datetime.now().isoformat() 
-
 #create header for authentication
 headers = {
   'Authorization': 'Bearer ' + APIkey
@@ -28,11 +25,14 @@ headers = {
 # do GET request for the domain status and category
 req = requests.post(investigateUrl, data=values, headers=headers)
 
-# error handling if true then the request was HTTP 200, so successful 
+# time for timestamp of verdict domain
+time = datetime.now().isoformat() 
+
+# error handling if true then the request was HTTP 200, so successful
 if(req.status_code == 200):
 	#give user feedback
 	print("SUCCESS: request has the following code: 200\n")
-	
+
 	# output of request in variable
 	output = req.json()
 
