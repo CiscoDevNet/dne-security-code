@@ -53,7 +53,7 @@ client_id = ""
 api_key = ""
 
 #TODO: Enter the URL with Filter applied for the event type and limit 
-events_url = "https://{}:{}@api.amp.cisco.com/v1/events?event_type[]=1090519054&limit=10".format(client_id,api_key)
+events_url = 
 
 events= get(events_url)
 
