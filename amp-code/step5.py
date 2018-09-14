@@ -1,6 +1,6 @@
 
 #!/usr/bin/env python
-"""0day Workflow Mission - edit this file
+"""AMP-CODE - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
  - 
