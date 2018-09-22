@@ -48,11 +48,13 @@ ISE_ERSUSER=
 ISE_ERSPASSWORD=
 ISE_HOSTNAME=
 
-# Mission TODO 3: We currently have only one endpoint registered with ISE in DNE dcloud pod
+# Mission Note: You have nothing to do here. But remember this information will come from the AMP (The MAC address of rouge endpoints)
+# currently have only one endpoint registered with ISE in DNE dcloud pod, hence we will use this information only. But in your network
+# you can automate this . AMP provides rouge/malicious endpoints MAC address and you Quarantine them using ISE ANC policy
 ISE_ENDPOINT="11:22:33:44:55:66"
 
 #Mission TODO 4: Create URL to Get the ANC policy : Hint you have already done this exercise in ISE DNE module
-url = 
+url = "MISSION"
 
 
 headers = {
