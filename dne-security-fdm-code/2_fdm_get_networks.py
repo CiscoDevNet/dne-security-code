@@ -34,7 +34,7 @@ def fdm_login(host=FDM_HOST,username=FDM_USER,password=FDM_PASSWORD):
     except:
         raise
 
-def fdm_get_networks(host=FDM_HOST,token=token):
+def fdm_get_networks(host,token):
     '''
     This is a GET request to obtain the list of all Network Objects in the system.
     '''
@@ -46,10 +46,12 @@ def fdm_get_networks(host=FDM_HOST,token=token):
     
     request = requests.get("https://{}:{}/api/fdm/v1/object/networks".format(host, FDM_PORT),
                            verify=False, headers=headers)
+    
+    return request.json() 
 
 if __name__ == "__main__":
 
     token = fdm_login()
     print(token)
-    networks = fdm_get_networks()
-    print(networks)
+    networks = fdm_get_networks(FDM_HOST,token)
+    print(json.dumps(networks,indent=4,sort_keys=True))
