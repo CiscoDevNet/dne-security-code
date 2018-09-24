@@ -5,10 +5,10 @@ import json
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-FDM_USER = "apiuser"
-FDM_PASSWORD = "C1sc0123"
-FDM_HOST = "10.19.66.126"
-FDM_PORT = "40003"
+FDM_USER = "admin"
+FDM_PASSWORD = "C1sco12345"
+FDM_HOST = "198.18.133.8"
+FDM_PORT = "443"
 
    
 def fdm_login(host=FDM_HOST,username=FDM_USER,password=FDM_PASSWORD):
@@ -22,18 +22,17 @@ def fdm_login(host=FDM_HOST,username=FDM_USER,password=FDM_PASSWORD):
         "Accept": "application/json",
         "Authorization":"Bearer"
     }
-    payload = '{{"grant_type": "password", "username": "{}", "password": "{}"}}'.format(username, password)
+    payload = {"grant_type": "password", "username": username, "password": password}
     
     request = requests.post("https://{}:{}/api/fdm/v1/fdm/token".format(host, FDM_PORT),
-                          data=payload, verify=False, headers=headers)
+                          json=payload, verify=False, headers=headers)
     if request.status_code == 400:
         raise Exception("Error logging in: {}".format(request.content))
     try:
         access_token = request.json()['access_token']
+        return access_token
     except:
         raise
-        
-    return access_token
     
 if __name__ == "__main__":
 
