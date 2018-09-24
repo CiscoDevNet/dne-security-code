@@ -71,7 +71,7 @@ def fdm_create_network(host,token):
     try:
         request = requests.post("https://{}:{}/api/fdm/v1/object/networks".format(host, FDM_PORT),
                     json=payload, headers=headers, verify=False)
-        return request
+        return request.json()
     except:
         raise
 
@@ -81,5 +81,5 @@ if __name__ == "__main__":
     print(token)
     networks = fdm_get_networks(FDM_HOST,token)
     print(json.dumps(networks,indent=4,sort_keys=True))
-    post_response = fdm_create_network(host,token)
-    print(post_response)
+    post_response = fdm_create_network(FDM_HOST,token)
+    print(json.dumps(post_response,indent=4,sort_keys=True))
