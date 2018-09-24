@@ -50,9 +50,37 @@ def fdm_get_networks(host,token):
     except:
         raise
 
+def fdm_create_network(host,token):
+    '''
+    This is a POST request to create a new network object in FDM.
+    '''
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization":"Bearer {}".format(token)
+    }
+
+    payload = {
+        "name":"PUT_NAME_HERE",
+        "description":"DevNet Security",
+        "subType":"HOST",
+        "value":"5.5.5.5",
+        "type":"networkobject"
+    }
+
+    try:
+        request = requests.post("https://{}:{}/api/fdm/v1/object/networks".format(host, FDM_PORT),
+                    json=payload, headers=headers, verify=False)
+        return request
+    except:
+        raise
+
+
 if __name__ == "__main__":
 
     token = fdm_login()
     print(token)
     networks = fdm_get_networks(FDM_HOST,token)
     print(json.dumps(networks,indent=4,sort_keys=True))
+    post_response = fdm_create_network(host,token)
+    print(post_response)
