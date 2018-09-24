@@ -75,7 +75,6 @@ def fdm_create_network(host,token):
     except:
         raise
 
-
 if __name__ == "__main__":
 
     token = fdm_login()
