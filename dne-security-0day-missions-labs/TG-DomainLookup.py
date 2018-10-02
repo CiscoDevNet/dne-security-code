@@ -1,7 +1,7 @@
 """0day Workflow Mission - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
- - 
+ -
 There are a few places to edit (search for MISSION comments)
 
 Script Dependencies:
@@ -40,13 +40,14 @@ except:
 SPARK_ACCESS_TOKEN = ""
 SPARK_ROOM_ID=""
 
-spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+#spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
 # Mission TODO: Insert the SHA you want to hunt using TG
 
 
-sha_256 = ""
+sha_256 = "fd0fbb6a4815de8ec2ff7b46645aa7f806b4442ba413b1e0ccc828dd0132afbb"
 
 # Mission TODO: enter the api credentials for the TG API access
+# Get the api_key value from a proctor to insert here.
 
 api_key = ""
 
@@ -96,9 +97,8 @@ for domain in domains["data"]["items"]:
         for item in domain["data"]["answers"]:
             domain_list.append(domain["domain"])
             ip_list.append(item)
-
-message = spark.messages.create(SPARK_ROOM_ID, 
-	text='MISSION: 0day ISE - I have completed the first mission!')
+#message = spark.messages.create(SPARK_ROOM_ID,
+text='MISSION: 0day ISE - I have completed the first mission!'
 #Mission TODO3: Print the domains and ip....
 print ("\nAssociated domains:\n")
 print ("\n".join(domain_list))

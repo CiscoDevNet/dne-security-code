@@ -40,11 +40,11 @@ import sys
 #Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
 SPARK_ACCESS_TOKEN = ""
 SPARK_ROOM_ID=""
-spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+#spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
 
 def getAMP(url):
 	try:
-	    response = requests.get(url)
+	    response = requests.get(url, verify= False)
 	    # Consider any status other than 2xx an error
 	    if not response.status_code // 100 == 2:
 	        return "Error: Unexpected response {}".format(response)
@@ -57,15 +57,16 @@ def getAMP(url):
 	    return "Error: {}".format(e)
 
 #Mission TODO2:  ENTER YOU CLIENT ID AND AMP API KEY HERE
-client_id = ""
-api_key = ""
+client_id = "162a5d92ad543ea8a2f0"
+api_key = "b52319b9-4a41-4f18-be77-b2d63abf5b06"
 #Mission TODO: Enter the standard AMP event id for type of event for Malware... it is 1107296272
-event_id = ""
+event_id = "1107296272"
 #Mission TODO3: Create the AMP URL
-events_url = "https://{}:{}@api.amp.cisco.com/v1/events".format(client_id,api_key)
+events_url = "https://{}:{}@amp.dcloud.cisco.com/v1/events".format(client_id,api_key)
 events1 = getAMP(events_url)
 sha_list= {}
 #print (json.dumps(events1, indent=4, sort_keys=True))
+
 for events1 in events1["data"]:
 	if events1["event_type_id"] == 1107296272:
 		sha_list[events1["computer"]["hostname"]] = events1["file"]["identity"]
@@ -77,6 +78,6 @@ if sha_list == {}:
 	pprint("Mission--- not Complete... !!!!")
 else:
 	pprint(sha_list)
-	message = spark.messages.create(SPARK_ROOM_ID,
-	text='MISSION: 0day AMP-SHA-LIST-Creation - I have completed the AMP mission!')
-	print(message)
+	#message = spark.messages.create(SPARK_ROOM_ID,
+	text='MISSION: 0day AMP-SHA-LIST-Creation - I have completed the AMP mission!'
+	#print(message)
