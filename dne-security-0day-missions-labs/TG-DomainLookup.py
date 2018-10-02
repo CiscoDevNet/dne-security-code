@@ -98,7 +98,7 @@ for domain in domains["data"]["items"]:
             ip_list.append(item)
 
 message = spark.messages.create(SPARK_ROOM_ID, 
-	text='MISSION: 0day ISE - I have completed the first mission!')
+	text='MISSION: 0day ThreatGrid - I have completed the mission!')
 #Mission TODO3: Print the domains and ip....
 print ("\nAssociated domains:\n")
 print ("\n".join(domain_list))
