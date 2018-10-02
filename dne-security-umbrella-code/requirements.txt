@@ -1,7 +1,7 @@
 # BELOW ARE THE DEPENDENCIES THAT YOU MIGHT HAVE TO INSTALL (WHEN NOT USING dCLOUD)
 
-pip install --upgrade pip
-pip install json
-pip install requests
-pip install datetime
-pip install <other libraries>
+python3 -m pip install --upgrade pip
+python3 -m pip install json
+python3 -m pip install requests
+python3 -m pip install datetime
+python3 -m pip install <other libraries>

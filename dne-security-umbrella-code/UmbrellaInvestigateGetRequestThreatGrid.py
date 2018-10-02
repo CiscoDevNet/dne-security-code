@@ -27,7 +27,7 @@ getUrl = investigateUrl + domain
 req = requests.get(getUrl, headers=headers)
 
 # time for timestamp of verdict domain
-time = datetime.now().isoformat() 
+time = datetime.now().isoformat()
 
 # error handling if true then the request was HTTP 200, so successful
 if(req.status_code == 200):
