@@ -4,11 +4,11 @@ This is your starting point for the 0day workflow  Mission.
 Edit this file to
  - 
 There are a few places to edit (search for MISSION comments)
-
 Script Dependencies:
-    requests
+    requests, json
 Depencency Installation:
     $ pip install requests
+    $ pip install json
 Copyright (c) 2018, Cisco Systems, Inc. All rights reserved.
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,38 +28,31 @@ SOFTWARE.
 """
 import requests
 import json
+import sys
 # Disable SSL Certificate warning
 try:
     requests.packages.urllib3.disable_warnings()
 except:
     pass
-#function definitions
-def get(url):
-	try:
-	    response = requests.get(url, verify=False)
-	    # Consider any status other than 2xx an error
-	    if not response.status_code // 100 == 2:
-	        return "Error: Unexpected response {}".format(response)
-	    try:
-	        return response.json()
-	    except:
-	        return "Error: Non JSON response {}".format(response.text)
-	except requests.exceptions.RequestException as e:
-	    # A serious problem happened, like an SSLError or InvalidURL
-	    return "Error: {}".format(e)
-
-#main code TODO: ENTER YOU CLIENT ID AND API KEY HERE
-client_id = ""
-api_key = ""
-
-#TODO: Enter the specific event you are interested in to find from the result for example malware execute event id is 1107296272
-event_id=
-
-events_url = "https://{}:{}@amp.dcloud.cisco.com/v1/events".format(client_id,api_key)
-
-events1= get(events_url)
-
-#TODO: Print the entire response
-
-#TODO: Print the events where Malware executed. You will be using For loop to parse the json in the response
-
+#TODO: Enter the key provided by the DNE instructor or your own threatgrid api key
+api_key = ''
+#TODO: Enter the resource URL
+url =''.format(api_key)
+try:
+	r = requests.get(url)
+	status_code = r.status_code
+	resp = r.text	
+	if (status_code == 200):
+		json_resp = json.loads(resp)
+		
+		resp2=json.dumps(json_resp,sort_keys=True,indent=4, separators=(',', ': '))
+		print(resp2)
+		#TODO: Create a file save the token into a text file, Hint refer to the python example on previous page in lab
+			
+	else:
+		r.raise_for_status()
+		print("Error occurred in GET --> "+resp)
+except requests.exceptions.HTTPError as err:
+    print ("Error in connection --> "+str(err)) 
+finally:
+    if r : r.close()

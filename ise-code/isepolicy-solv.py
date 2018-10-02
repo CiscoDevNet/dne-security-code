@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""0day Workflow Mission - edit this file
+"""isepolicy - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
  - 
@@ -26,7 +26,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import ciscosparkapi
 import requests
 import json
 from datetime import datetime
@@ -36,34 +35,26 @@ try:
 except:
     pass
 
-#Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
-SPARK_ACCESS_TOKEN = ""
-SPARK_ROOM_ID=""
 
-spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
-
-# Mission TO DO2: Get the ISE URL setup
-
+#TODO: Enter all authentication info
 ISE_ERSUSER="ersadmin"
 ISE_ERSPASSWORD="C1sco12345"
 ISE_HOSTNAME="198.18.133.27:9060"
-
+#TODO: Get the ISE URL setup
 url = "https://" + ISE_ERSUSER + ":" + ISE_ERSPASSWORD + "@" + ISE_HOSTNAME + "/ers/config/ancpolicy"
-
-#print(url)
-#:C1sco12345@198.18.133.27:9060/ers/config/ancpolicy"
-
+#Let's create content headers
 headers = {
     'content-type': "application/json",
     'accept': "application/json"
     }
-
+namelist={}
+#TODO:create the GET request 
 response = requests.request("GET", url, verify=False, headers=headers)
 if(response.status_code == 200):
-     message = spark.messages.create(SPARK_ROOM_ID,
-	 text='MISSION: 0day ISE - I have completed the first mission to get the ISE policy!')
-    #Mission TODO3: Print the response
-    print(response.text)
+    #TODO: Put the logic to parse the response to print the name of the ANC policies
+    resp_json=response.json()
+    for newlist in resp_json["SearchResult"]["resources"]:
+        namelist=newlist["name"]
+    print("Name of the ANC policy exits in system:",namelist)
 else:
         print("An error has ocurred with the following code %(error)s" % {'error': response.status_code})
-

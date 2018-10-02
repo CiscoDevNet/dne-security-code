@@ -44,14 +44,18 @@ spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
 
 # Mission TO DO2: Get the ISE URL setup
 
-ISE_ERSUSER="ersadmin"
-ISE_ERSPASSWORD="C1sco12345"
-ISE_HOSTNAME="198.18.133.27:9060"
+ISE_ERSUSER=
+ISE_ERSPASSWORD=
+ISE_HOSTNAME=
 
-url = "https://" + ISE_ERSUSER + ":" + ISE_ERSPASSWORD + "@" + ISE_HOSTNAME + "/ers/config/endpoint"
+# Mission Note: You have nothing to do here. But remember this information will come from the AMP (The MAC address of rouge endpoints)
+# currently have only one endpoint registered with ISE in DNE dcloud pod, hence we will use this information only. But in your network
+# you can automate this . AMP provides rouge/malicious endpoints MAC address and you Quarantine them using ISE ANC policy
+ISE_ENDPOINT="11:22:33:44:55:66"
 
-print(url)
-#:C1sco12345@198.18.133.27:9060/ers/config/ancpolicy"
+#Mission TODO 4: Create URL to Get the ANC policy : Hint you have already done this exercise in ISE DNE module
+url = "MISSION"
+
 
 headers = {
     'content-type': "application/json",
@@ -59,26 +63,36 @@ headers = {
     }
 
 response = requests.request("GET", url, verify=False, headers=headers)
+
+#Mission TODO 5: Parse and store your policy in this variable.
+namelist={} 
 if(response.status_code == 200):
-     message = spark.messages.create(SPARK_ROOM_ID,
-	 text='MISSION: 0day ISE - I have completed the first mission to get the ISE Endpoint!')
-    #Mission TODO3: Print the response
+    resp_json = response.json()
+    #Mission TODO 6: Parse the json dict using for loop to get Policy name and assign it to "namelist"
+    message = spark.messages.create(SPARK_ROOM_ID,
+	text='MISSION: 0day ISE - I have completed the first mission to get the ISE Policy!')
+    #Mission TODO3: Print the response policy name you parsed
+
+    print(namelist)
     print("Done!...Mission part 1 getting endpoint")
 else:
         print("An error has ocurred with the following code %(error)s" % {'error': response.status_code})
 
+#Mission TODO 7: Create url to apply policy use this endpoint /ers/config/ancendpoint/apply
+url = 
 
-url = "https://" + ISE_ERSUSER + ":" + ISE_ERSPASSWORD + "@" + ISE_HOSTNAME + "/ers/config/ancendpoint/apply"
+#Mission TODO 8: Update the payload with policy name variable you used to parse and store in TODO #6 hint "namelist"
+payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{\r\n    \"name\": \"macAddress\",\r\n    \"value\": \""+ ISE_ENDPOINT + "\"\r\n    },\r\n    {\r\n    \"name\": \"policyName\",\r\n    \"value\": \""+ TODO_UPDATE_ME+ '"' + "\r\n    }]\r\n  }\r\n}"
 
-payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{\r\n    \"name\": \"macAddress\",\r\n    \"value\": \"11:22:33:44:55:66\"\r\n    },\r\n    {\r\n    \"name\": \"policyName\",\r\n    \"value\": \"ANC_Devnet\"\r\n    }]\r\n  }\r\n}"
+#you can uncomment these line to quickly check you payload. If payload is not correct ISE will return 400 status code
+#print(payload)
+#print(url)
 
-
-print (url)
 response = requests.request("PUT", url, data=payload, verify=False, headers=headers)
 if(response.status_code == 204):
-     message = spark.messages.create(SPARK_ROOM_ID,
-	 text='MISSION: 0day ISE - I have completed the first mission to get the ISE Endpoint!')
-    #Mission TODO3: Print the response
+    message = spark.messages.create(SPARK_ROOM_ID,
+	text='MISSION: 0day ISE - I have completed the first mission to get the ISE Endpoint!')
+    #Mission TODO 9: Print the response
     print("Done!...Mission part 2 applying Quarantine policy to the rouge endpoint")
 else:
     print("An error has ocurred with the following code %(error)s" % {'error': response.status_code})

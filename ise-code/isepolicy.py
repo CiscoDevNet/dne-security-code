@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""step3 - edit this file
+"""isepolicy - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
  - 
@@ -28,38 +28,31 @@ SOFTWARE.
 """
 import requests
 import json
-# Disable SSL Certificate warning
+from datetime import datetime
+import sys
 try:
     requests.packages.urllib3.disable_warnings()
 except:
     pass
-#function definitions
-def get(url):
-	try:
-	    response = requests.get(url, verify=False)
-	    # Consider any status other than 2xx an error
-	    if not response.status_code // 100 == 2:
-	        return "Error: Unexpected response {}".format(response)
-	    try:
-	        return response.json()
-	    except:
-	        return "Error: Non JSON response {}".format(response.text)
-	except requests.exceptions.RequestException as e:
-	    # A serious problem happened, like an SSLError or InvalidURL
-	    return "Error: {}".format(e)
 
-#main code TODO: ENTER YOU CLIENT ID AND API KEY HERE
-client_id = ""
-api_key = ""
 
-#TODO: Enter the specific event you are interested in to find from the result for example malware execute event id is 1107296272
-event_id=
+#TODO: Enter all authentication info
+ISE_ERSUSER=""
+ISE_ERSPASSWORD=""
+ISE_HOSTNAME=""
+#TODO: Get the ISE URL setup
+url = "https://" + ISE_ERSUSER + ":" + ISE_ERSPASSWORD + "@" + ISE_HOSTNAME + "PUT_THE_RIGHT_API_ENDPOINT_HERE"
 
-events_url = "https://{}:{}@amp.dcloud.cisco.com/v1/events".format(client_id,api_key)
+#Let's create content headers
+headers = {
+    'content-type': "application/json",
+    'accept': "application/json"
+    }
 
-events1= get(events_url)
-
-#TODO: Print the entire response
-
-#TODO: Print the events where Malware executed. You will be using For loop to parse the json in the response
+#TODO:create the GET request 
+response = requests.request("ENTER THE HTTP METHOD", url, verify=False, headers=headers)
+if(response.status_code == 200):
+     #TODO: Put the logic to parse the response to print the name of the ANC policies
+else:
+        print("An error has ocurred with the following code %(error)s" % {'error': response.status_code})
 
