@@ -1,34 +1,48 @@
 #!/usr/bin/env python
+"""Authenticate with FMC and get a token to be used in subsequent API calls."""
 
-import json
-import sys
 import requests
-#Surpress HTTPS insecure errors for cleaner output
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+import requests.auth
 
-FMC_USER = "apiuser"
-FMC_PASSWORD = "C1sc0123"
+
+# Providing hostnames and access credentials in your source code is okay for
+# learning, not for production.  We recommend getting information like this
+# from the environment, CLI input, or from a configuration file.
 FMC_HOST = "10.19.66.126"
 FMC_PORT = "40003"
+FMC_USER = "apiuser"
+FMC_PASSWORD = "C1sc0123"
 
-def get_auth_token(host=FMC_HOST, username=FMC_USER, password=FMC_PASSWORD):
-	""" 
-	Authenticates with FMC and returns a token to be used in subsequent API calls
-	"""
-	headers = {'Content-Type': 'application/json'}
-	login_url = "https://{0}:{1}/api/fmc_platform/v1/auth/generatetoken".format(host,FMC_PORT)
+FMC_LOGIN_URL = "https://{host}:{port}/api/fmc_platform/v1/auth/generatetoken"
 
-	result = requests.post(url=login_url, headers=headers, auth=requests.auth.HTTPBasicAuth(username,password), verify=False)
-	result.raise_for_status()
-	auth_headers = result.headers
-	token = auth_headers.get('X-auth-access-token', default=None)
-	uuid = auth_headers.get('DOMAIN_UUID', default=None)
-	headers['X-auth-access-token'] = token
 
-	return headers,uuid
-	
+def get_auth_token(username, password, host, port):
+    """Authenticate with FMC and get a token."""
+    login_url = FMC_LOGIN_URL.format(hostname=host, port=port)
+    headers = {'Content-Type': 'application/json'}
+    authentication = requests.auth.HTTPBasicAuth(username, password)
+
+    response = requests.post(
+        url=login_url,
+        headers=headers,
+        auth=authentication,
+        verify=False,
+    )
+    response.raise_for_status()
+
+    token = response.headers.get('X-auth-access-token')
+
+    return token
+
+
 if __name__ == "__main__":
-
-    headers,uuid = get_auth_token()
-    print("Successfully authenticated to FMC\nReceived Auth Token: {0}\nDomain ID: {1}".format(headers['X-auth-access-token'],uuid))
+    auth_token = get_auth_token(FMC_USER, FMC_PASSWORD, FMC_HOST, FMC_PORT)
+    print(
+        """
+        Successfully authenticated to FMC {host}
+        Received Auth Token: {auth_token}
+        """.format(
+            host=FMC_HOST,
+            auth_token=auth_token,
+        )
+    )
