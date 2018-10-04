@@ -1,23 +1,35 @@
 #!/usr/bin/env python
-"""Authenticate with FMC and get a token to be used in subsequent API calls."""
+"""Authenticate with FMC.
+
+The `get_auth_token_and_domain_uuid()` function authenticates against FMC and
+returns the authentication token and domain UUID to be used in subsequent API
+requests.
+"""
 
 import requests
 import requests.auth
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+# Get the absolute path for the directory where this file is located "here"
+# Extend the system path to include this directory
+here = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, here)
+
+from fmc_environment import FMC_HOST, FMC_PORT, FMC_USER, FMC_PASSWORD
 
 
-# Providing hostnames and access credentials in your source code is okay for
-# learning, not for production.  We recommend getting information like this
-# from the environment, CLI input, or from a configuration file.
-FMC_HOST = "10.19.66.126"
-FMC_PORT = "40003"
-FMC_USER = "apiuser"
-FMC_PASSWORD = "C1sc0123"
-
+# Constants
 FMC_LOGIN_URL = "https://{host}:{port}/api/fmc_platform/v1/auth/generatetoken"
 
 
-def get_auth_token_and_domain_uuid(username, password, host, port):
-    """Authenticate with FMC and get a token."""
+# Disable insecure request warnings
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+
+# Helper Functions
+def get_auth_token_and_domain_uuid(username=FMC_USER, password=FMC_PASSWORD,
+                                   host=FMC_HOST, port=FMC_PORT):
+    """Authenticate with FMC; get the auth token and domain UUID."""
     login_url = FMC_LOGIN_URL.format(hostname=host, port=port)
     headers = {"Content-Type": "application/json"}
     authentication = requests.auth.HTTPBasicAuth(username, password)
@@ -36,13 +48,9 @@ def get_auth_token_and_domain_uuid(username, password, host, port):
     return token, uuid
 
 
+# If this script is the "main" script running
 if __name__ == "__main__":
-    auth_token, domain_uuid = get_auth_token_and_domain_uuid(
-        username=FMC_USER,
-        password=FMC_PASSWORD,
-        host=FMC_HOST,
-        port=FMC_PORT,
-    )
+    auth_token, domain_uuid = get_auth_token_and_domain_uuid()
     print(
         """
         Successfully authenticated to FMC: {host}
