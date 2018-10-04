@@ -16,10 +16,10 @@ FMC_PASSWORD = "C1sc0123"
 FMC_LOGIN_URL = "https://{host}:{port}/api/fmc_platform/v1/auth/generatetoken"
 
 
-def get_auth_token(username, password, host, port):
+def get_auth_token_and_domain_uuid(username, password, host, port):
     """Authenticate with FMC and get a token."""
     login_url = FMC_LOGIN_URL.format(hostname=host, port=port)
-    headers = {'Content-Type': 'application/json'}
+    headers = {"Content-Type": "application/json"}
     authentication = requests.auth.HTTPBasicAuth(username, password)
 
     response = requests.post(
@@ -30,19 +30,27 @@ def get_auth_token(username, password, host, port):
     )
     response.raise_for_status()
 
-    token = response.headers.get('X-auth-access-token')
+    token = response.headers.get("X-auth-access-token")
+    uuid = response.headers.get("DOMAIN_UUID")
 
-    return token
+    return token, uuid
 
 
 if __name__ == "__main__":
-    auth_token = get_auth_token(FMC_USER, FMC_PASSWORD, FMC_HOST, FMC_PORT)
+    auth_token, domain_uuid = get_auth_token_and_domain_uuid(
+        username=FMC_USER,
+        password=FMC_PASSWORD,
+        host=FMC_HOST,
+        port=FMC_PORT,
+    )
     print(
         """
-        Successfully authenticated to FMC {host}
+        Successfully authenticated to FMC: {host}
         Received Auth Token: {auth_token}
+        For Domain (UUID): {domain_uuid}
         """.format(
             host=FMC_HOST,
             auth_token=auth_token,
+            domain_uuid=domain_uuid,
         )
     )
