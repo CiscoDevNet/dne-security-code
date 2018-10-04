@@ -42,23 +42,24 @@ def get_auth_token_and_domain_uuid(username=FMC_USER, password=FMC_PASSWORD,
     )
     response.raise_for_status()
 
-    token = response.headers.get("X-auth-access-token")
-    uuid = response.headers.get("DOMAIN_UUID")
+    auth_token = response.headers.get("X-auth-access-token")
+    domain_uuid = response.headers.get("DOMAIN_UUID")
 
-    return token, uuid
-
-
-# If this script is the "main" script running
-if __name__ == "__main__":
-    auth_token, domain_uuid = get_auth_token_and_domain_uuid()
     print(
         """
         Successfully authenticated to FMC: {host}
         Received Auth Token: {auth_token}
         For Domain (UUID): {domain_uuid}
         """.format(
-            host=FMC_HOST,
+            host=host,
             auth_token=auth_token,
             domain_uuid=domain_uuid,
         )
     )
+
+    return auth_token, domain_uuid
+
+
+# If this script is the "main" script running
+if __name__ == "__main__":
+    get_auth_token_and_domain_uuid()
