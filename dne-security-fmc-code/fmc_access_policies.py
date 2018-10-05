@@ -35,7 +35,7 @@ repository_root = os.path.abspath(os.path.join(here, ".."))
 sys.path.insert(0, repository_root)
 sys.path.insert(0, here)
 
-from fmc_requests import fmc_authenticate, fmc_post
+from fmc_requests import fmc_authenticate, fmc_post     # noqa
 
 
 # Authenticate with FMC

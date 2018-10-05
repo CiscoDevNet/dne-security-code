@@ -38,7 +38,7 @@ repository_root = os.path.abspath(os.path.join(here, ".."))
 sys.path.insert(0, repository_root)
 sys.path.insert(0, here)
 
-from env_lab import FMC
+from env_lab import FMC     # noqa
 
 
 # Constants
@@ -107,7 +107,7 @@ def fmc_authenticate():
 
 def create_url(endpoint_path):
     """Create an FMC configuration API endpoint URL."""
-    url =  FMC_CONFIG_URL.format(
+    url = FMC_CONFIG_URL.format(
         host=FMC["host"],
         port=FMC["port"],
         domain_uuid=domain_uuid,
