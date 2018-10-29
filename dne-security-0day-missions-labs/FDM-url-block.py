@@ -40,6 +40,7 @@ SPARK_ACCESS_TOKEN = ""
 SPARK_ROOM_ID=""
 
 spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+
 headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
@@ -56,7 +57,7 @@ auth_payload = '''
 
 #mission TODO: Enter the FTD hostname/ip here...
 
-hostname = ""
+hostname = "https://10.89.21.213:3865/"
 
 def login():
     r = requests.post(hostname + "/api/fdm/v2/fdm/token", data=auth_payload, verify=False, headers=headers)
@@ -76,7 +77,7 @@ def create_url_object(client):
     url_object = client.get_model("URLObject")(type="urlobject")
     url_object.name = "DNEbadguys"
     #Mission TODO: Enter the domain you found malicious or questionable in Umbrella Investigate to block on FTD
-    url_object.url = ""
+    url_object.url = "realbaddomain.com"
     client.URLObject.addURLObject(body=url_object).result()
 
 
@@ -100,7 +101,7 @@ def create_access_rule(client):
     message = spark.messages.create(SPARK_ROOM_ID,
 	text='MISSION: 0day FDM Blocking the Domain URL - I have completed the mission!')
     #Mission TODO3: Print the response
-    print(Done!)
+    print("Done! MISSION: 0day FDM Blocking the Domain URL - I have completed the mission!")
 
 if __name__ == '__main__':
     login()
