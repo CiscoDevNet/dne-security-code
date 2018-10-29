@@ -16,3 +16,8 @@ with open('domains.txt') as inputfile:
 # loop through all domains
 for domain in domainList:
     print(domain)
+
+    # DO Umbrella Investigate check
+
+    # if(associated sample has a Threat Score of higher or equal then 90)
+        # POST request to Enforcement API
