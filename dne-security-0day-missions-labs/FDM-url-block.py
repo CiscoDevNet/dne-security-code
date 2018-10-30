@@ -59,7 +59,7 @@ auth_payload = '''
 hostname = ""
 
 def login():
-    r = requests.post(hostname + "/api/fdm/v2/fdm/token", data=auth_payload, verify=False, headers=headers)
+    r = requests.post(hostname + "/api/fdm/v1/fdm/token", data=auth_payload, verify=False, headers=headers)
     access_token = "Bearer %s" % r.json()['access_token']
     headers['Authorization'] = access_token
 
@@ -100,7 +100,7 @@ def create_access_rule(client):
     message = spark.messages.create(SPARK_ROOM_ID,
     text='MISSION: 0day FDM Blocking the Domain URL - I have completed the mission!')
     #Mission TODO3: Print the response
-    print(Done!)
+    print(message)
 
 if __name__ == '__main__':
     login()
