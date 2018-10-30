@@ -36,6 +36,10 @@ except:
     pass
 #TODO: Enter the API Key provided by DNE instructor or use your own threatgrid api key
 api_key = ''
+
+#TODO: Enter from the example given in the learning lab
+SHA256 = ''
+
 #TODO: Enter the request URL, Hint please refer to the intro-threat-grid-api learning lab
 url =''.format(api_key)
 try:
