@@ -54,7 +54,7 @@ auth_payload = '''
 }
 '''
 
-#mission TODO: Enter the FTD hostname/ip here...
+#mission TODO: Enter the FTD hostname/ip here... (TIP: dont't forget to use HTTPS + the IP)
 
 hostname = ""
 
