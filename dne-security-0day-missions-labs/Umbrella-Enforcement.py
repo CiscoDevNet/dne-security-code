@@ -27,6 +27,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+import ciscosparkapi
 import requests
 import json
 from datetime import datetime
@@ -37,16 +38,16 @@ except:
     pass
 
 #Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
-#SPARK_ACCESS_TOKEN = ""
-#SPARK_ROOM_ID=""
+SPARK_ACCESS_TOKEN = ""
+SPARK_ROOM_ID = ""
 
-#spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
 # import necessary libraries / modules
 import requests
 from datetime import datetime
 import json
 
-# copy paste API key from previous section within the quotes
+#Mission TODO2: copy paste API key from previous section within the quotes
 custkey = ""
 
 # URL needed to do POST requests
@@ -78,8 +79,7 @@ req = requests.post(UrlPost, data=json.dumps(data), headers={'Content-type': 'ap
 # error handling if true then the request was HTTP 202, so successful 
 if(req.status_code == 202):
     print("SUCCESS: domain (%(domain)s) was accepted, HTTP response: 202, timestamp: %(time)s" % {'domain': domain, 'time': time})
-#    message = spark.messages.create(SPARK_ROOM_ID,
-#		  files=[next_data_file], 
-#		  text='MISSION: 0day Umbrella-Investigate - I have completed the first mission!')
+    message = spark.messages.create(SPARK_ROOM_ID,text='MISSION: 0day Umbrella-Enforcement - I have completed the first mission!')
+    print(message)
 else:
     print("An error has ocurred with the following code %(error)s, please consult the following link: https://enforcement-api.readme.io/" % {'error': req.status_code})
