@@ -2,7 +2,7 @@
 """AMP-CODE - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
- - 
+ -
 There are a few places to edit (search for MISSION comments)
 
 Script Dependencies:
@@ -38,18 +38,18 @@ except:
 
 #function definitions
 def get(url):
-	try:
-	    response = requests.get(url, verify=False)
-	    # Consider any status other than 2xx an error
-	    if not response.status_code // 100 == 2:
-	        return "Error: Unexpected response {}".format(response)
-	    try:
-	        return response.json()
-	    except:
-	        return "Error: Non JSON response {}".format(response.text)
-	except requests.exceptions.RequestException as e:
-	    # A serious problem happened, like an SSLError or InvalidURL
-	    return "Error: {}".format(e)
+    try:
+        response = requests.get(url, verify=False)
+        # Consider any status other than 2xx an error
+        if not response.status_code // 100 == 2:
+            return "Error: Unexpected response {}".format(response)
+        try:
+            return response.json()
+        except:
+            return "Error: Non JSON response {}".format(response.text)
+    except requests.exceptions.RequestException as e:
+        # A serious problem happened, like an SSLError or InvalidURL
+        return "Error: {}".format(e)
 
 #main code TODO: ENTER YOU CLIENT ID AND API KEY HERE
 client_id = "1512e5b0c0c2f2b85401"
@@ -67,7 +67,7 @@ print (json.dumps(events1, indent=4, sort_keys=True))
 
 #TODO: Print the events where Malware executed. You will be using For loop to parse the json in the response
 for events1 in events1["data"]:
-	if events1["event_type_id"] == event_id:
-		print(events1)
-	else:
-		continue
+    if events1["event_type_id"] == event_id:
+        print(events1)
+    else:
+        continue

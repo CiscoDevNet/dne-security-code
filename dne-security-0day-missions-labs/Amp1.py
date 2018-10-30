@@ -2,7 +2,7 @@
 """0day Workflow Mission - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
- - 
+ -
 There are a few places to edit (search for MISSION comments)
 
 Script Dependencies:
@@ -43,18 +43,18 @@ SPARK_ROOM_ID=""
 spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
 
 def getAMP(url):
-	try:
-	    response = requests.get(url)
-	    # Consider any status other than 2xx an error
-	    if not response.status_code // 100 == 2:
-	        return "Error: Unexpected response {}".format(response)
-	    try:
-	        return response.json()
-	    except:
-	        return "Error: Non JSON response {}".format(response.text)
-	except requests.exceptions.RequestException as e:
-	    # A serious problem happened, like an SSLError or InvalidURL
-	    return "Error: {}".format(e)
+    try:
+        response = requests.get(url)
+        # Consider any status other than 2xx an error
+        if not response.status_code // 100 == 2:
+            return "Error: Unexpected response {}".format(response)
+        try:
+            return response.json()
+        except:
+            return "Error: Non JSON response {}".format(response.text)
+    except requests.exceptions.RequestException as e:
+        # A serious problem happened, like an SSLError or InvalidURL
+        return "Error: {}".format(e)
 
 #Mission TODO2:  ENTER YOU CLIENT ID AND AMP API KEY HERE
 client_id = ""
@@ -67,16 +67,16 @@ events1 = getAMP(events_url)
 sha_list= {}
 #print (json.dumps(events1, indent=4, sort_keys=True))
 for events1 in events1["data"]:
-	if events1["event_type_id"] == 1107296272:
-		sha_list[events1["computer"]["hostname"]] = events1["file"]["identity"]
-	else:
-		continue
+    if events1["event_type_id"] == 1107296272:
+        sha_list[events1["computer"]["hostname"]] = events1["file"]["identity"]
+    else:
+        continue
 
-## Mission TODO: Print the List of infected computer hosts and associated SHA values 
+## Mission TODO: Print the List of infected computer hosts and associated SHA values
 if sha_list == {}:
-	pprint("Mission--- not Complete... !!!!")
+    pprint("Mission--- not Complete... !!!!")
 else:
-	pprint(sha_list)
-	message = spark.messages.create(SPARK_ROOM_ID,
-	text='MISSION: 0day AMP-SHA-LIST-Creation - I have completed the AMP mission!')
-	print(message)
+    pprint(sha_list)
+    message = spark.messages.create(SPARK_ROOM_ID,
+    text='MISSION: 0day AMP-SHA-LIST-Creation - I have completed the AMP mission!')
+    print(message)

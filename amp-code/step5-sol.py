@@ -2,7 +2,7 @@
 """AMP-CODE - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
- - 
+ -
 There are a few places to edit (search for MISSION comments)
 
 Script Dependencies:
@@ -49,11 +49,11 @@ file_list_url = "https://{}:{}@amp.dcloud.cisco.com/v1/file_lists/simple_custom_
 response = requests.get(file_list_url, verify=False)
 print(file_list_url)
 file_lists= response.json()
-#TODO: Parse the response json, and find the "File Blacklist" 
+#TODO: Parse the response json, and find the "File Blacklist"
 print(file_lists)
 for item in file_lists["data"]:
-	if item["name"] == "File Blacklist":
-		list_id = item["guid"]
+    if item["name"] == "File Blacklist":
+        list_id = item["guid"]
 
 print(list_id)
 #Create the payload to update the list with new SHA

@@ -1,7 +1,7 @@
 """0day Workflow Mission - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
- - 
+ -
 There are a few places to edit (search for MISSION comments)
 
 Script Dependencies:
@@ -97,8 +97,8 @@ for domain in domains["data"]["items"]:
             domain_list.append(domain["domain"])
             ip_list.append(item)
 
-message = spark.messages.create(SPARK_ROOM_ID, 
-	text='MISSION: 0day ThreatGrid - I have completed the mission!')
+message = spark.messages.create(SPARK_ROOM_ID,
+    text='MISSION: 0day ThreatGrid - I have completed the mission!')
 #Mission TODO3: Print the domains and ip....
 print ("\nAssociated domains:\n")
 print ("\n".join(domain_list))

@@ -2,7 +2,7 @@
 """0day Workflow Mission - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
- - 
+ -
 There are a few places to edit (search for MISSION comments)
 
 Script Dependencies:
@@ -91,14 +91,14 @@ def create_access_rule(client):
     # create embedded app filter
     embedded_url_filter = client.get_model("EmbeddedURLFilter")(type="embeddedurlfilter")
     embedded_url_filter.urlObjects = [ReferenceModel(id=url_object.id, type=url_object.type)]
-    
+
     # Access Rule model
     access_rule = client.get_model("AccessRule")(type="accessrule")
     access_rule.name = "block_DNEbadguys"
     access_rule.urlFilter = embedded_url_filter
     client.AccessPolicy.addAccessRule(body=access_rule, parentId=access_policy.id).result()
     message = spark.messages.create(SPARK_ROOM_ID,
-	text='MISSION: 0day FDM Blocking the Domain URL - I have completed the mission!')
+    text='MISSION: 0day FDM Blocking the Domain URL - I have completed the mission!')
     #Mission TODO3: Print the response
     print(Done!)
 

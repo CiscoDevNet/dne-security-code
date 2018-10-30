@@ -2,7 +2,7 @@
 """0day Workflow Mission - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
- - 
+ -
 There are a few places to edit (search for MISSION comments)
 
 Script Dependencies:
@@ -65,12 +65,12 @@ headers = {
 response = requests.request("GET", url, verify=False, headers=headers)
 
 #Mission TODO 5: Parse and store your policy in this variable.
-namelist={} 
+namelist={}
 if(response.status_code == 200):
     resp_json = response.json()
     #Mission TODO 6: Parse the json dict using for loop to get Policy name and assign it to "namelist"
     message = spark.messages.create(SPARK_ROOM_ID,
-	text='MISSION: 0day ISE - I have completed the first mission to get the ISE Policy!')
+    text='MISSION: 0day ISE - I have completed the first mission to get the ISE Policy!')
     #Mission TODO3: Print the response policy name you parsed
 
     print(namelist)
@@ -79,7 +79,7 @@ else:
         print("An error has ocurred with the following code %(error)s" % {'error': response.status_code})
 
 #Mission TODO 7: Create url to apply policy use this endpoint /ers/config/ancendpoint/apply
-url = 
+url =
 
 #Mission TODO 8: Update the payload with policy name variable you used to parse and store in TODO #6 hint "namelist"
 payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{\r\n    \"name\": \"macAddress\",\r\n    \"value\": \""+ ISE_ENDPOINT + "\"\r\n    },\r\n    {\r\n    \"name\": \"policyName\",\r\n    \"value\": \""+ TODO_UPDATE_ME+ '"' + "\r\n    }]\r\n  }\r\n}"
@@ -91,7 +91,7 @@ payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{
 response = requests.request("PUT", url, data=payload, verify=False, headers=headers)
 if(response.status_code == 204):
     message = spark.messages.create(SPARK_ROOM_ID,
-	text='MISSION: 0day ISE - I have completed the first mission to get the ISE Endpoint!')
+    text='MISSION: 0day ISE - I have completed the first mission to get the ISE Endpoint!')
     #Mission TODO 9: Print the response
     print("Done!...Mission part 2 applying Quarantine policy to the rouge endpoint")
 else:
