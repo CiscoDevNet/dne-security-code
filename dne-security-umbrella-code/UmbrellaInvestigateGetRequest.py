@@ -26,20 +26,20 @@ getUrl = investigateUrl + domain + "?showLabels"
 req = requests.get(getUrl, headers=headers)
 
 # time for timestamp of verdict domain
-time = datetime.now().isoformat() 
+time = datetime.now().isoformat()
 
 # error handling if true then the request was HTTP 200, so successful
 if(req.status_code == 200):
-	# retrieve status for domain
-	output = req.json()
-	domainOutput = output[domain]
-	domainStatus = domainOutput["status"]
-	# walk through different options of status
-	if(domainStatus == -1):
-		print("SUCCESS: The domain %(domain)s is found MALICIOUS at %(time)s" % {'domain': domain, 'time': time})
-	elif(domainStatus == 1):
-		print("SUCCESS: The domain %(domain)s is found CLEAN at %(time)s" % {'domain': domain, 'time': time})
-	else:
-		print("SUCCESS: The domain %(domain)s is found UNDEFINED / RISKY at %(time)s" % {'domain': domain, 'time': time})
+    # retrieve status for domain
+    output = req.json()
+    domainOutput = output[domain]
+    domainStatus = domainOutput["status"]
+    # walk through different options of status
+    if(domainStatus == -1):
+        print("SUCCESS: The domain %(domain)s is found MALICIOUS at %(time)s" % {'domain': domain, 'time': time})
+    elif(domainStatus == 1):
+        print("SUCCESS: The domain %(domain)s is found CLEAN at %(time)s" % {'domain': domain, 'time': time})
+    else:
+        print("SUCCESS: The domain %(domain)s is found UNDEFINED / RISKY at %(time)s" % {'domain': domain, 'time': time})
 else:
-	print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" % {'error': req.status_code})
+    print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" % {'error': req.status_code})

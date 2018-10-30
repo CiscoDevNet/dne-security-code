@@ -83,8 +83,8 @@ try:
                     print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" % {'error': reqPost.status_code})
 
         else:
-        	# error handling
-        	print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/enforcement-api/reference/" % {'error': reqGet.status_code})
+            # error handling
+            print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/enforcement-api/reference/" % {'error': reqGet.status_code})
 
 except KeyboardInterrupt:
     print("\nExiting...\n")

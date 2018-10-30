@@ -15,7 +15,7 @@ UrlDelete = domainUrl+'?customerKey='+custkey+'&where[name]='+deleteDomain
 
 req = requests.delete(UrlDelete)
 
-# error handling if true then the request was HTTP 204, so successful 
+# error handling if true then the request was HTTP 204, so successful
 if(req.status_code == 204):
     print("SUCCESS: the following domain is deleted from your current custom Block List: %(domain)s" %{'domain': deleteDomain})
 else:

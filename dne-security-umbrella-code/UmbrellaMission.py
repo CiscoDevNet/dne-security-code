@@ -27,11 +27,11 @@ domains = ["internetbadguys.com", "cnn.com", "cisco.com", "google.com", "news.co
 values = str(json.dumps(domains))
 
 # time for timestamp of verdict domain
-time = datetime.now().isoformat() 
+time = datetime.now().isoformat()
 
 #create header for authentication
 headers = {
-  'Authorization': 'Bearer ' + APIkey
+    'Authorization': 'Bearer ' + APIkey
 }
 
 # do GET request for the domain status and category
@@ -40,55 +40,55 @@ req = requests.post(investigateUrl, data=values, headers=headers)
 # create empty list for malicious domains that need to be added to block list
 maliciousDomains = []
 
-# error handling if true then the request was HTTP 200, so successful 
+# error handling if true then the request was HTTP 200, so successful
 if(req.status_code == 200):
-	#give user feedback
-	print("SUCCESS: Investigate POST request has the following code: 200\n")
-	
-	# output of request in variable
-	output = req.json()
+    #give user feedback
+    print("SUCCESS: Investigate POST request has the following code: 200\n")
 
-	# loop through domains and retrieve status for domains
-	for domain in domains:
-		domainOutput = output[domain]
-		domainStatus = domainOutput["status"]
-		# walk through different options of status
-		if(domainStatus == -1):
-			print("The domain %(domain)s is found MALICIOUS at %(time)s\n" % {'domain': domain, 'time': time})
-			
-			# add domain to list if malicious
-			maliciousDomains.append(domain)
-		elif(domainStatus == 1):
-			print("The domain %(domain)s is found CLEAN at %(time)s\n" % {'domain': domain, 'time': time})
-		else:
-			print("The domain %(domain)s is found UNDEFINED / RISKY at %(time)s\n" % {'domain': domain, 'time': time})
+    # output of request in variable
+    output = req.json()
+
+    # loop through domains and retrieve status for domains
+    for domain in domains:
+        domainOutput = output[domain]
+        domainStatus = domainOutput["status"]
+        # walk through different options of status
+        if(domainStatus == -1):
+            print("The domain %(domain)s is found MALICIOUS at %(time)s\n" % {'domain': domain, 'time': time})
+
+            # add domain to list if malicious
+            maliciousDomains.append(domain)
+        elif(domainStatus == 1):
+            print("The domain %(domain)s is found CLEAN at %(time)s\n" % {'domain': domain, 'time': time})
+        else:
+            print("The domain %(domain)s is found UNDEFINED / RISKY at %(time)s\n" % {'domain': domain, 'time': time})
 else:
-	print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" % {'error': req.status_code})
+    print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" % {'error': req.status_code})
 
 # create empty list to contain security events that can be uploaded to Umbrella Enforcement API
 data = []
 
 # loop through malicious domains, create security events and append to empty data list
 for maliciousDomain in maliciousDomains:
-	entry = {
-		"alertTime": time + "Z",
-		"deviceId": "ba6a59f4-e692-4724-ba36-c28132c761de",
-		"deviceVersion": "13.7a",
-		"dstDomain": domain,
-		"dstUrl": "http://" + domain + "/",
-		"eventTime": time + "Z",
-		"protocolVersion": "1.0a",
-		"providerName": "Security Platform"
-	}
-	data.append(entry)
+    entry = {
+        "alertTime": time + "Z",
+        "deviceId": "ba6a59f4-e692-4724-ba36-c28132c761de",
+        "deviceVersion": "13.7a",
+        "dstDomain": domain,
+        "dstUrl": "http://" + domain + "/",
+        "eventTime": time + "Z",
+        "protocolVersion": "1.0a",
+        "providerName": "Security Platform"
+    }
+    data.append(entry)
 
 # POST REQUEST for Enforcement API: post request ensembly
 reqEnf = requests.post(UrlPost, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'})
 
-# error handling if true then the request was HTTP 202, so successful 
+# error handling if true then the request was HTTP 202, so successful
 if(reqEnf.status_code == 202):
-	print("SUCCESS: Enforcement POST request has the following code: 202\n")
-	for maliciousDomain in maliciousDomains:
-		print("The following domain: (%(domain)s) was added to your Block List, timestamp: %(time)s\n" % {'domain': maliciousDomain, 'time': time})
+    print("SUCCESS: Enforcement POST request has the following code: 202\n")
+    for maliciousDomain in maliciousDomains:
+        print("The following domain: (%(domain)s) was added to your Block List, timestamp: %(time)s\n" % {'domain': maliciousDomain, 'time': time})
 else:
-	print("An error has ocurred with the following code %(error)s, please consult the following link: https://enforcement-api.readme.io/" % {'error': req.status_code})
+    print("An error has ocurred with the following code %(error)s, please consult the following link: https://enforcement-api.readme.io/" % {'error': req.status_code})
