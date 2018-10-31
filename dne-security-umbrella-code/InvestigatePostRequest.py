@@ -6,10 +6,10 @@ import json
 from datetime import datetime
 
 # copy paste API key from previous section within the quotes
-APIkey = "<insert-investigate-api-key-here>"
+investigate_api_key = "<insert-investigate-api-key-here>"
 
 # URL needed for the domain status and category
-investigateUrl = "https://investigate.api.umbrella.com/domains/categorization/"
+investigate_url = "https://investigate.api.umbrella.com/domains/categorization/"
 
 # domains that will be checked
 domains = ["internetbadguys.com", "cnn.com", "cisco.com"]
@@ -19,11 +19,11 @@ values = str(json.dumps(domains))
 
 #create header for authentication
 headers = {
-    'Authorization': 'Bearer ' + APIkey
+    'Authorization': 'Bearer ' + investigate_api_key
 }
 
 # do GET request for the domain status and category
-req = requests.post(investigateUrl, data=values, headers=headers)
+req = requests.post(investigate_url, data=values, headers=headers)
 
 # time for timestamp of verdict domain
 time = datetime.now().isoformat()
@@ -38,12 +38,12 @@ if(req.status_code == 200):
 
     # loop through domains and retrieve status for domains
     for domain in domains:
-        domainOutput = output[domain]
-        domainStatus = domainOutput["status"]
+        domain_output = output[domain]
+        domain_status = domain_output["status"]
         # walk through different options of status
-        if(domainStatus == -1):
+        if(domain_status == -1):
             print("The domain %(domain)s is found MALICIOUS at %(time)s\n" % {'domain': domain, 'time': time})
-        elif(domainStatus == 1):
+        elif(domain_status == 1):
             print("The domain %(domain)s is found CLEAN at %(time)s\n" % {'domain': domain, 'time': time})
         else:
             print("The domain %(domain)s is found UNDEFINED / RISKY at %(time)s\n" % {'domain': domain, 'time': time})

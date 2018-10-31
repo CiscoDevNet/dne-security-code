@@ -6,19 +6,19 @@ import json
 from datetime import datetime
 
 # copy paste INVESTIGATE API key from previous section within the quotes
-APIkey = "<insert-investigate-api-key-here>"
+investigate_api_key = "<insert-investigate-api-key-here>"
 
 # URL needed for the domain status and category (INVESTIGATE API)
 investigateUrl = "https://investigate.api.umbrella.com/domains/categorization/"
 
 # copy paste ENFORCEMENT API key from previous section within the quotes
-custkey = "<insert-enforcement-api-key-here"
+enforcement_api_key = "<insert-enforcement-api-key-here"
 
 # URL needed to do POST requests for ENFORCEMENT API
 eventurl = "https://s-platform.api.opendns.com/1.0/events"
 
 # ensemble URL needed for POST request for ENFORCEMENT API
-UrlPost = eventurl+'?customerKey='+custkey
+UrlPost = eventurl+'?customerKey='+enforcement_api_key
 
 # domains that will be checked
 domains = ["internetbadguys.com", "cnn.com", "cisco.com", "google.com", "news.com.com"]
@@ -31,7 +31,7 @@ time = datetime.now().isoformat()
 
 #create header for authentication
 headers = {
-    'Authorization': 'Bearer ' + APIkey
+    'Authorization': 'Bearer ' + investigate_api_key
 }
 
 # do GET request for the domain status and category

@@ -6,25 +6,25 @@ import json
 from datetime import datetime
 
 # copy paste API key from previous section within the quotes
-APIkey = "<insert-investigate-api-key-here>"
+investigate_api_key = "<insert-investigate-api-key-here>"
 
 # URL needed for the domain status and category
-investigateUrl = "https://investigate.api.umbrella.com/samples/"
+investigate_url = "https://investigate.api.umbrella.com/samples/"
 
 # domain that will be checked
 domain = "internetbadguys.com"
 
 #create header for authentication and set limit of sample return to 1
 headers = {
-    'Authorization': 'Bearer ' + APIkey,
+    'Authorization': 'Bearer ' + investigate_api_key,
     'limit': '1'
 }
 
 # assemble the URI, show labels give readable output
-getUrl = investigateUrl + domain
+get_url = investigate_url + domain
 
 # do GET request for the domain status and category
-req = requests.get(getUrl, headers=headers)
+req = requests.get(get_url, headers=headers)
 
 # time for timestamp of verdict domain
 time = datetime.now().isoformat()
@@ -39,11 +39,11 @@ if(req.status_code == 200):
     else:
         # go through json and store hash and score in variable
         sample = output["samples"][0]
-        hashSample = sample["sha256"]
-        scoreSample = sample["threatScore"]
+        hash_sample = sample["sha256"]
+        score_sample = sample["threatScore"]
 
         # print hash and score of domain
-        print("SUCCESS: The domain %(domain)s has an associated sample with Hash: %(hash)s and Threat Score: %(score)i at %(time)s" % {'domain': domain, 'hash': hashSample, 'score': scoreSample, 'time': time})
+        print("SUCCESS: The domain %(domain)s has an associated sample with Hash: %(hash)s and Threat Score: %(score)i at %(time)s" % {'domain': domain, 'hash': hash_sample, 'score': score_sample, 'time': time})
 else:
     # error handling
     print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" % {'error': req.status_code})

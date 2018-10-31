@@ -6,10 +6,10 @@ from datetime import datetime
 import json
 
 # copy paste API key from previous section within the quotes
-custkey = "<insert-enforcement-api-key-here>"
+enforcement_api_key = "<insert-enforcement-api-key-here>"
 
 # URL needed to do POST requests
-eventurl = "https://s-platform.api.opendns.com/1.0/events"
+event_url = "https://s-platform.api.opendns.com/1.0/events"
 
 # time for AlertTime and EventTime when domains are added to Umbrella
 time = datetime.now().isoformat()
@@ -18,7 +18,7 @@ time = datetime.now().isoformat()
 domain = "internetbadguys.com"
 
 # URL needed for POST request
-UrlPost = eventurl+'?customerKey='+custkey
+url_post = event_url+'?customerKey='+enforcement_api_key
 
 # NOTE: Although this information MUST be provided when using the API, not all of it is utilized in the destination lists within Umbrella
 data = {
@@ -33,7 +33,7 @@ data = {
 }
 
 # POST REQUEST: post request ensembly
-req = requests.post(UrlPost, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'})
+req = requests.post(url_post, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'})
 
 # error handling if true then the request was HTTP 202, so successful
 if(req.status_code == 202):
