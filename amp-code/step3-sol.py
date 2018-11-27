@@ -52,8 +52,8 @@ def get(url):
 	    return "Error: {}".format(e)
 
 #main code TODO: ENTER YOU CLIENT ID AND API KEY HERE
-client_id = "1512e5b0c0c2f2b85401"
-api_key = "eaef340f-0ccd-46a5-bcd3-dd62dcbdfb02"
+client_id = ""
+api_key = ""
 
 #TODO: Enter the specific event you are interested in to find from the result for example malware execute event id is 1107296272
 event_id=1107296272
