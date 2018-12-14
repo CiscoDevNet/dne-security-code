@@ -40,7 +40,7 @@ import sys
 #Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
 SPARK_ACCESS_TOKEN = ""
 SPARK_ROOM_ID=""
-#spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
 
 def getAMP(url):
 	try:
@@ -78,6 +78,5 @@ if sha_list == {}:
 	pprint("Mission--- not Complete... !!!!")
 else:
 	pprint(sha_list)
-	#message = spark.messages.create(SPARK_ROOM_ID,
-	text='MISSION: 0day AMP-SHA-LIST-Creation - I have completed the AMP mission!'
-	#print(message)
+	message = spark.messages.create(SPARK_ROOM_ID,text='MISSION: 0day AMP-SHA-LIST-Creation - I have completed the AMP mission!')
+	print(message)
