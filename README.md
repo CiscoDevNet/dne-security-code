@@ -2,6 +2,39 @@
 
 This repository contains the sample code to go along with [Cisco DevNet Learning Labs](https://learninglabs.cisco.com) covering security topics. During the setup steps of the labs, you'll be asked to clone this repository down to your workstation to get started.
 
+## Getting started
+1. Go to <https://learninglabs.cisco.com/tracks/devnet-express-security#dne-security-verify> and login or register if you're not registerd
+2. Follow the instructions in the lab. The lab environment offers a step-by-step path to configure and run the examples of this repository.
+
+## Technical requirements
+You may either do the labs in the virtual environment offered by Cisco or configure your own environment on your desktop.
+
+## Accessing Cisco virtual lab environment
+You need a PC or MAC with the following software: 
+- Anyconnect VPN client : either the package provided by Cisco for Windows environment or the free client available on Linux platforme, openconnect <http://ubuntuhandbook.org/index.php/2014/11/connect-cisco-anyconnect-vpn-ubuntu/>
+- RDP client to connect to windows, either the RDP client embarked in any windows OS or a free alternative such as Remmina <https://remmina.org/how-to-install-remmina/>
+The connection parameters are provided in the lab environment.
+
+## Working on your own desktop
+### Python 3.6
+Python is required to run the sample scripts.
+
+You have to install python 3.6. We suggest that you work in a virtual environment to work with python. If you want to know more about virtual env, this document is an excellent introduction <http://christopher5106.github.io/python/2017/10/12/python-packages-and-their-managers-apt-yum-easy_install-pip-virtualenv-conda.html>. The lab explains you how to install virtual-env. You can work with Miniconda either. To install miniconda, follow the official instructions here : <https://conda.io/miniconda.html>
+
+### Postman
+Postman is suggested to test Rest API in a graphical environment. To install Postman, follow the official instructions here : <https://learning.getpostman.com/docs/postman/launching_postman/installation_and_updates/>.
+
+### Creating virtual env with conda
+You should run the following commands on Linux:
+```
+$conda create --name cisco python=3.6
+$source activate cisco
+```
+and you're done!
+
+
+
+## Contributing
 Contributions are welcome, and we are glad to review changes through pull requests. See [contributing.md](contributing.md) for details.
 
 The goal of these learning labs is to ensure a 'hands-on' learning approach rather than just theory or instructions.
