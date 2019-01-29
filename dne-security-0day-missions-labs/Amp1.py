@@ -44,7 +44,7 @@ spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
 
 def getAMP(url):
     try:
-        response = requests.get(url)
+        response = requests.get(url, verify=False)
         # Consider any status other than 2xx an error
         if not response.status_code // 100 == 2:
             return "Error: Unexpected response {}".format(response)
@@ -62,7 +62,7 @@ api_key = ""
 #Mission TODO: Enter the standard AMP event id for type of event for Malware... it is 1107296272
 event_id = ""
 #Mission TODO3: Create the AMP URL
-events_url = "https://{}:{}@api.amp.cisco.com/v1/events".format(client_id,api_key)
+events_url = "https://{}:{}@amp.dcloud.cisco.com/v1/events".format(client_id,api_key)
 events1 = getAMP(events_url)
 sha_list= {}
 #print (json.dumps(events1, indent=4, sort_keys=True))
