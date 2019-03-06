@@ -1,9 +1,9 @@
 ## Cisco DevNet DevNet Express Security Track Code
 
-This repository contains the sample code to go along with [Cisco DevNet Learning Labs](https://learninglabs.cisco.com) covering security topics. During the setup steps of the labs, you'll be asked to clone this repository down to your workstation to get started.
+This repository contains the sample code to go along with [Cisco DevNet Learning Labs](https://developer.cisco.com/learning) covering security topics. During the setup steps of the labs, you'll be asked to clone this repository down to your workstation to get started.
 
 ## Getting started
-1. Go to <https://learninglabs.cisco.com/tracks/devnet-express-security#dne-security-verify> and login or register if you're not registerd
+1. Go to <https://developer.cisco.com/learning/tracks/devnet-express-security#dne-security-verify> and login or register if you're not registered.
 2. Follow the instructions in the lab. The lab environment offers a step-by-step path to configure and run the examples of this repository.
 
 ## Technical requirements
@@ -48,8 +48,8 @@ Within this repository are several files and folders covering different topics a
 | [`env_lab.py`](env_lab.py)                     | A Python file containing lab infrastructure details for routers, switches and appliances leveraged in the different labs.  This file provides a centralized  Python `import` that is used in  other code samples to retrieve IPs, usernames, and passwords for connections |
 | [`env_user.template`](env_user.template)       | Similar to `env_lab.py`, this is a template for end users to copy within their own code repo as `env_user.py` where they can provide unique details for their own accounts.  For example, their Webex Teams (formerly Cisco Spark) authentication token.  Not all labs require this file, if one does it will be specified in setup. |
 | [`requirements.txt`](requirements.txt)         | Global Python requirements file containing the requirements for **all** labs within this repository.  Each folder also contains a local `requirements.txt` file. |
-| [`intro-python-code/`](intro-python-code/)     | Sample code and exercises for the [Python Fundamentals Learning Labs](https://learninglabs.cisco.com/modules/programming-fundamentals/parsing-json-python/step/1) Pulled in through a file copy in November 2018. Note that the submodule tracks with the `master` branch, but solutions are on the `solution` branch in the [original CiscoDevNet/intro-python-code repository](https://github.com/CiscoDevNet/intro-python-code). <br> |
-| [`intro-rest-api/`](intro-rest-api/)           | Sample code and exercises for the [REST API Fundamentals Learning Labs](https://learninglabs.cisco.com/modules/rest-api-fundamentals/hands-on-postman/step/1) Pulled in through a file copy in November 2018. |
+| [`intro-python-code/`](intro-python-code/)     | Sample code and exercises for the [Python Fundamentals Learning Labs](https://developer.cisco.com/learning/modules/programming-fundamentals/parsing-json-python/step/1) Pulled in through a file copy in November 2018. Note that the submodule tracks with the `master` branch, but solutions are on the `solution` branch in the [original CiscoDevNet/intro-python-code repository](https://github.com/CiscoDevNet/intro-python-code). <br> |
+| [`intro-rest-api/`](intro-rest-api/)           | Sample code and exercises for the [REST API Fundamentals Learning Labs](https://developer.cisco.com/learning/modules/rest-api-fundamentals/hands-on-postman/step/1) Pulled in through a file copy in November 2018. |
 | [`intro-umbrella/`](intro-umbrella/)           | Sample code and exercises for the [Introduction to Cisco Umbrella Learning Labs]() <br> (_Publishing Soon_) |
 | [`verify/`](verify/)                           | A series of verification scripts primarily used during DevNet Express events to ensure the workshop environment is fully operational. |
 | [`dev/`](dev/)                                 | Resources and information for building code samples and labs. |
