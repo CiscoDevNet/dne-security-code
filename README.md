@@ -3,7 +3,7 @@
 This repository contains the sample code to go along with [Cisco DevNet Learning Labs](https://developer.cisco.com/learning) covering security topics. During the setup steps of the labs, you'll be asked to clone this repository down to your workstation to get started.
 
 ## Getting started
-1. Go to <https://developer.cisco.com/learning/tracks/devnet-express-security#dne-security-verify> and login or register if you're not registerd
+1. Go to <https://developer.cisco.com/learning/tracks/devnet-express-security#dne-security-verify> and login or register if you're not registered.
 2. Follow the instructions in the lab. The lab environment offers a step-by-step path to configure and run the examples of this repository.
 
 ## Technical requirements
