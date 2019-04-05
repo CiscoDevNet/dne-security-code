@@ -25,6 +25,7 @@ from env_lab import ENFORCEMENT
 from env_lab import INVESTIGATE
 from env_lab import AMP
 from env_lab import THREATGRID
+from env_lab import WEBEXTEAMS
 time.sleep(2)
 host=FMC["host"]
 port=FMC["port"]
@@ -75,3 +76,9 @@ host = THREATGRID["host"]
 apikey = THREATGRID["apiKey"]
 print (f"THREATGRID HOST: {host}")
 print (f"THREATGRID API KEY: {apikey}\n\n")
+time.sleep(2)
+print("\n\nYour WEBEX TEAMS Configuration:\n")
+roomID = WEBEXTEAMS["roomID"]
+apikey = WEBEXTEAMS["apiKey"]
+print (f"WEBEX TEAMS ROOM ID : {roomID}")
+print (f"WEBEX TEAMS API KEY: {apikey}\n\n")

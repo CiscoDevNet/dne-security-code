@@ -84,9 +84,15 @@ elif ENVIRONMENT_IN_USE == "express":
         "apiKey" : "PUT THE AMP API KEY HERE",
         "host" : "amp.dcloud.cisco.com",
     }
+    # Values for the ThreatGrid  in the DevNet Express Security Session
     THREATGRID = {
         "apiKey" : "PUT YOUR THREATGRID API KEY HERE" ,
         "host" : "panacea.threatgrid.com/api/v2",
+    }
+    # Values for the WebEx Teams in the DevNet Express Security
+    WEBEXTEAMS = {
+        "apiKey" : "PUT YOUR WEBEX TEAMS API KEY HERE",
+        "roomID" : "PUT YOUR WEBEX TEAMS ROOM ID HERE",
     }
 
 elif ENVIRONMENT_IN_USE == "custom":
