@@ -56,6 +56,38 @@ elif ENVIRONMENT_IN_USE == "express":
         "username": "apiuser",
         "password": "C1sco12345",
     }
+    # Values for the FDM in the DevNet Express Security dCloud Pod
+    FDM = {
+        "host": "198.18.133.8",
+        "port": 443,
+        "username": "admin",
+        "password": "C1sco12345",
+    }
+    # Values for the ISE in the DevNet Express Security dCloud Pod
+    ISE = {
+        "host": "198.18.133.27",
+        "port": 9060,
+        "username": "ersadmin",
+        "password": "C1sco12345",
+    }
+    # Values for the Umbrella Enforcement API in the DevNet Express Security Session
+    ENFORCEMENT = {
+        "apiKey" : "PUT THE UMBRELLA ENFORCEMENT KEY HERE"
+    }
+    # Values for the Umbrella Investigate API in the DevNet Express Security Session
+    INVESTIGATE = {
+        "token" : "PUT THE UMBRELLA INVESTIGATE KEY HERE" 
+    }
+    # Values for the AMP for endpoints API in the DevNet Express Security dCloud Pod
+    AMP = {
+        "clientId" : "PUT THE AMP CLIENT ID HERE",
+        "apiKey" : "PUT THE AMP API KEY HERE",
+        "host" : "amp.dcloud.cisco.com",
+    }
+    THREATGRID = {
+        "apiKey" : "PUT YOUR THREATGRID API KEY HERE" ,
+        "host" : "panacea.threatgrid.com/api/v2",
+    }
 
 elif ENVIRONMENT_IN_USE == "custom":
     # Values for your FMC
