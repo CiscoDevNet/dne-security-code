@@ -9,10 +9,10 @@ flake8 = "*"
 black = "==19.3b0"
 
 [packages]
-ciscosparkapi = "*"
 requests = "*"
 urllib3 = "*"
 bravado = "*"
+webexteamssdk = "*"
 
 [requires]
 python_version = "3.7"

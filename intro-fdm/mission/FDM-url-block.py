@@ -26,7 +26,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import ciscosparkapi
+import webexteamssdk
 import requests
 from bravado.client import SwaggerClient
 from bravado.requests_client import RequestsClient
@@ -35,11 +35,11 @@ try:
     requests.packages.urllib3.disable_warnings()
 except:
     pass
-#Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
-SPARK_ACCESS_TOKEN = ""
-SPARK_ROOM_ID=""
+#Mission TODO1: Please add your WEBEX_TEAMS_ACCESS_TOKEN and WEBEX_TEAMS_ROOM_ID here
+WEBEX_TEAMS_ACCESS_TOKEN = ""
+WEBEX_TEAMS_ROOM_ID=""
 
-spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
 headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
@@ -97,7 +97,7 @@ def create_access_rule(client):
     access_rule.name = "block_DNEbadguys"
     access_rule.urlFilter = embedded_url_filter
     client.AccessPolicy.addAccessRule(body=access_rule, parentId=access_policy.id).result()
-    message = spark.messages.create(SPARK_ROOM_ID,
+    message = teams.messages.create(WEBEX_TEAMS_ROOM_ID,
     text='MISSION: 0day FDM Blocking the Domain URL - I have completed the mission!')
     #Mission TODO3: Print the response
     print(message)

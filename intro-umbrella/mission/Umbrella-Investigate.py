@@ -26,7 +26,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import ciscosparkapi
+import webexteamssdk
 import requests
 import json
 from datetime import datetime
@@ -36,11 +36,11 @@ try:
 except:
     pass
 
-#Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
-SPARK_ACCESS_TOKEN = ""
-SPARK_ROOM_ID=""
+#Mission TODO1: Please add your WEBEX_TEAMS_ACCESS_TOKEN and WEBEX_TEAMS_ROOM_ID here
+WEBEX_TEAMS_ACCESS_TOKEN = ""
+WEBEX_TEAMS_ROOM_ID=""
 
-spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
 # Mission TODO2: Insert the API key
 APIkey = ""
 
@@ -74,7 +74,7 @@ if(req.status_code == 200):
     #walk through different options of status
 if(domainStatus == -1):
     print("SUCCESS: The domain %(domain)s is found MALICIOUS at %(time)s" % {'domain': domain, 'time': time})
-    message = spark.messages.create(SPARK_ROOM_ID,
+    message = teams.messages.create(WEBEX_TEAMS_ROOM_ID,
     text='MISSION: 0day Umbrella-Investigate - I have completed the Umbrella Investigate mission!')
     print(message)
 elif(domainStatus == 1):

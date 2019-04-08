@@ -25,7 +25,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import ciscosparkapi
+import webexteamssdk
 import requests
 import json
 import threatgrid
@@ -36,11 +36,11 @@ try:
 except:
     pass
 
-#Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
-SPARK_ACCESS_TOKEN = ""
-SPARK_ROOM_ID=""
+#Mission TODO1: Please add your WEBEX_TEAMS_ACCESS_TOKEN and WEBEX_TEAMS_ROOM_ID here
+WEBEX_TEAMS_ACCESS_TOKEN = ""
+WEBEX_TEAMS_ROOM_ID=""
 
-spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
 # Mission TODO: Insert the SHA you want to hunt using TG
 
 
@@ -97,7 +97,7 @@ for domain in domains["data"]["items"]:
             domain_list.append(domain["domain"])
             ip_list.append(item)
 
-message = spark.messages.create(SPARK_ROOM_ID,
+message = teams.messages.create(WEBEX_TEAMS_ROOM_ID,
     text='MISSION: 0day ThreatGrid - I have completed the mission!')
 #Mission TODO3: Print the domains and ip....
 print ("\nAssociated domains:\n")

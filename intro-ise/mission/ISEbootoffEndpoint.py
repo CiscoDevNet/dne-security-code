@@ -26,7 +26,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import ciscosparkapi
+import webexteamssdk
 import requests
 import json
 from datetime import datetime
@@ -36,11 +36,11 @@ try:
 except:
     pass
 
-#Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
-SPARK_ACCESS_TOKEN = ""
-SPARK_ROOM_ID=""
+#Mission TODO1: Please add your WEBEX_TEAMS_ACCESS_TOKEN and WEBEX_TEAMS_ROOM_ID here
+WEBEX_TEAMS_ACCESS_TOKEN = ""
+WEBEX_TEAMS_ROOM_ID=""
 
-spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
 
 # Mission TO DO2: Get the ISE URL setup
 
@@ -69,7 +69,7 @@ namelist={}
 if(response.status_code == 200):
     resp_json = response.json()
     #Mission TODO 6: Parse the json dict using for loop to get Policy name and assign it to "namelist"
-    message = spark.messages.create(SPARK_ROOM_ID,
+    message = teams.messages.create(WEBEX_TEAMS_ROOM_ID,
     text='MISSION: 0day ISE - I have completed the first mission to get the ISE Policy!')
     #Mission TODO3: Print the response policy name you parsed
 
@@ -90,7 +90,7 @@ payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{
 
 response = requests.request("PUT", url, data=payload, verify=False, headers=headers)
 if(response.status_code == 204):
-    message = spark.messages.create(SPARK_ROOM_ID,
+    message = teams.messages.create(WEBEX_TEAMS_ROOM_ID,
     text='MISSION: 0day ISE - I have completed the first mission to get the ISE Endpoint!')
     #Mission TODO 9: Print the response
     print("Done!...Mission part 2 applying Quarantine policy to the rouge endpoint")

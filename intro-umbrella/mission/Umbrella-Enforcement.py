@@ -3,7 +3,7 @@
 """0day Workflow Mission - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
- - 
+ -
 There are a few places to edit (search for MISSION comments)
 
 Script Dependencies:
@@ -27,7 +27,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import ciscosparkapi
+import webexteamssdk
 import requests
 import json
 from datetime import datetime
@@ -37,11 +37,11 @@ try:
 except:
     pass
 
-#Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
-SPARK_ACCESS_TOKEN = ""
-SPARK_ROOM_ID = ""
+#Mission TODO1: Please add your WEBEX_TEAMS_ACCESS_TOKEN and WEBEX_TEAMS_ROOM_ID here
+WEBEX_TEAMS_ACCESS_TOKEN = ""
+WEBEX_TEAMS_ROOM_ID = ""
 
-spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
 # import necessary libraries / modules
 import requests
 from datetime import datetime
@@ -54,7 +54,7 @@ custkey = ""
 eventurl = "https://s-platform.api.opendns.com/1.0/events"
 # time for AlertTime and EventTime when domains are added to Umbrella
 
-time = datetime.now().isoformat() 
+time = datetime.now().isoformat()
 
 # domain that will be uploaded
 domain = "hjhqmbxyinislkkt.1j9r76.top"
@@ -76,10 +76,10 @@ data = {
 
 # POST REQUEST: post request ensembly
 req = requests.post(UrlPost, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'})
-# error handling if true then the request was HTTP 202, so successful 
+# error handling if true then the request was HTTP 202, so successful
 if(req.status_code == 202):
     print("SUCCESS: domain (%(domain)s) was accepted, HTTP response: 202, timestamp: %(time)s" % {'domain': domain, 'time': time})
-    message = spark.messages.create(SPARK_ROOM_ID,text='MISSION: 0day Umbrella-Enforcement - I have completed the first mission!')
+    message = teams.messages.create(WEBEX_TEAMS_ROOM_ID,text='MISSION: 0day Umbrella-Enforcement - I have completed the first mission!')
     print(message)
 else:
     print("An error has ocurred with the following code %(error)s, please consult the following link: https://enforcement-api.readme.io/" % {'error': req.status_code})

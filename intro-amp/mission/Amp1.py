@@ -26,21 +26,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import ciscosparkapi
+
+import webexteamssdk
 import json
 import os
 import requests
 from pprint import pprint
+
 # Disable Certificate warning
 try:
     requests.packages.urllib3.disable_warnings()
 except:
     pass
 import sys
-#Mission TODO1: Please add your SPARK_ACCESS_TOKEN and SPARK_ROOM_ID here
-SPARK_ACCESS_TOKEN = ""
-SPARK_ROOM_ID=""
-spark = ciscosparkapi.CiscoSparkAPI(SPARK_ACCESS_TOKEN)
+#Mission TODO1: Please add your WEBEX_TEAMS_ACCESS_TOKEN and WEBEX_TEAMS_ROOM_ID here
+WEBEX_TEAMS_ACCESS_TOKEN = ""
+WEBEX_TEAMS_ROOM_ID=""
+teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
 
 def getAMP(url):
     try:
@@ -77,6 +79,6 @@ if sha_list == {}:
     pprint("Mission--- not Complete... !!!!")
 else:
     pprint(sha_list)
-    message = spark.messages.create(SPARK_ROOM_ID,
+    message = teams.messages.create(WEBEX_TEAMS_ROOM_ID,
     text='MISSION: 0day AMP-SHA-LIST-Creation - I have completed the AMP mission!')
     print(message)
