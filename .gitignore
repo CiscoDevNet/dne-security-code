@@ -8,8 +8,9 @@ env_user.py
 # Virtual Environments
 .venv
 venv/
+
+# Version and Dependency Management
 .python-version
-Pipfile
 Pipfile.lock
 
 
@@ -18,4 +19,3 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
-
