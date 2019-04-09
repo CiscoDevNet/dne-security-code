@@ -5,7 +5,7 @@ information needed to connect to your lab backend.  You provide this info here
 once and the scripts in this repository will access it as needed by the lab.
 
 
-Copyright (c) 2018 Cisco and/or its affiliates.
+Copyright (c) 2019 Cisco and/or its affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -38,68 +38,59 @@ ENVIRONMENT_IN_USE = "express"
 # End User Input
 
 
-# Set the 'Environment Variables' based on the lab environment in use
 if ENVIRONMENT_IN_USE == "sandbox":
     # Values for the Reservable FMC Sandbox
     FMC = {
         "host": "fmcrestapisandbox.cisco.com",
         "port": 443,
-        "username": "",     # Generated when reserved
-        "password": "",     # Generated when reserved
+        "username": "",  # Generated when reserved
+        "password": "",  # Generated when reserved
     }
 
 elif ENVIRONMENT_IN_USE == "express":
-    # Values for the FMC in the DevNet Express Security dCloud Pod
+    # FMC in the DevNet Express Security dCloud Pod
     FMC = {
         "host": "198.18.133.9",
         "port": 443,
         "username": "apiuser",
         "password": "C1sco12345",
     }
-    # Values for the FDM in the DevNet Express Security dCloud Pod
+
+    # FDM in the DevNet Express Security dCloud Pod
     FDM = {
         "host": "198.18.133.8",
         "port": 443,
         "username": "admin",
         "password": "C1sco12345",
     }
-    # Values for the ISE in the DevNet Express Security dCloud Pod
+
+    # ISE in the DevNet Express Security dCloud Pod
     ISE = {
         "host": "198.18.133.27",
         "port": 9060,
         "username": "ersadmin",
         "password": "C1sco12345",
     }
-    # Values for the Umbrella Enforcement API in the DevNet Express Security Session
-    ENFORCEMENT = {
-        "apiKey" : "PUT THE UMBRELLA ENFORCEMENT KEY HERE"
-    }
-    # Values for the Umbrella Investigate API in the DevNet Express Security Session
-    INVESTIGATE = {
-        "token" : "PUT THE UMBRELLA INVESTIGATE KEY HERE" 
-    }
-    # Values for the AMP for endpoints API in the DevNet Express Security dCloud Pod
-    AMP = {
-        "clientId" : "PUT THE AMP CLIENT ID HERE",
-        "apiKey" : "PUT THE AMP API KEY HERE",
-        "host" : "amp.dcloud.cisco.com",
-    }
-    # Values for the ThreatGrid  in the DevNet Express Security Session
-    THREATGRID = {
-        "apiKey" : "PUT YOUR THREATGRID API KEY HERE" ,
-        "host" : "panacea.threatgrid.com/api/v2",
-    }
-    # Values for the WebEx Teams in the DevNet Express Security
-    WEBEXTEAMS = {
-        "apiKey" : "PUT YOUR WEBEX TEAMS API KEY HERE",
-        "roomID" : "PUT YOUR WEBEX TEAMS ROOM ID HERE",
-    }
+
+    # AMP for endpoints in the DevNet Express Security dCloud Pod
+    AMP = {"host": "amp.dcloud.cisco.com"}
+
+    # ThreatGrid in the DevNet Express Cloud Environment
+    THREATGRID = {"host": "panacea.threatgrid.com/api/v2"}
+
 
 elif ENVIRONMENT_IN_USE == "custom":
-    # Values for your FMC
-    FMC = {
-        "host": "",
-        "port": 443,
-        "username": "",
-        "password": "",
-    }
+    # Your FMC
+    FMC = {"host": "", "port": 443, "username": "", "password": ""}
+
+    # Your FDM
+    FDM = {"host": "", "port": 443, "username": "", "password": ""}
+
+    # Your ISE
+    ISE = {"host": "", "port": 9060, "username": "", "password": ""}
+
+    # Your AMP
+    AMP = {"host": ""}
+
+    # Your ThreatGrid
+    THREATGRID = {"host": ""}

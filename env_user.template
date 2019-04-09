@@ -34,7 +34,22 @@ SOFTWARE.
 
 # User Input
 
+# Webex Teams
 WEBEX_TEAMS_ACCESS_TOKEN = ""
 WEBEX_TEAMS_ROOM_ID = ""
+
+
+# Cisco Umbrella
+UMBRELLA_ENFORCEMENT_KEY = ""
+UMBRELLA_INVESTIGATE_KEY = ""
+
+
+# Cisco AMP
+AMP_CLIENT_ID = ""
+AMP_API_KEY = ""
+
+
+# Cisco ThreatGrid
+THREATGRID_API_KEY = ""
 
 # End User Input
