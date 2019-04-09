@@ -38,13 +38,13 @@ from crayons import green
 here = Path(__file__).parent.absolute()
 
 # Get the path for the project / repository root
-project_root = (here/"..").resolve()
+project_root = (here / "..").resolve()
 
 
 # Extend the system path to include the project root and import the env files
 sys.path.insert(0, str(project_root))
-import env_lab      # noqa
-import env_user     # noqa
+import env_lab  # noqa
+import env_user  # noqa
 
 
 # TODO: Insert your code here.  What follows is just an example.
