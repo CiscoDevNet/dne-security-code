@@ -5,7 +5,7 @@ information needed to connect to your lab backend.  You provide this info here
 once and the scripts in this repository will access it as needed by the lab.
 
 
-Copyright (c) 2018 Cisco and/or its affiliates.
+Copyright (c) 2018-2019 Cisco and/or its affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -59,7 +59,7 @@ port=FMC["port"]
 username=FMC["username"]
 password=FMC["password"]
 print("\n\nYour FMC Configuration:\n")
-print (f"FMC HOST: {host}") 
+print (f"FMC HOST: {host}")
 print (f"FMC PORT:  {port}")
 print (f"FMC UserName: {username}")
 print (f"FMC Password: {password}")
@@ -69,7 +69,7 @@ username=FDM["username"]
 password=FDM["password"]
 time.sleep(2)
 print("\n\nYour FDM Configuration:\n")
-print (f"FDM HOST: {host}") 
+print (f"FDM HOST: {host}")
 print (f"FDM PORT:  {port}")
 print (f"FDM UserName: {username}")
 print (f"FDM Password: {password}")
@@ -79,23 +79,23 @@ username=ISE["username"]
 password=ISE["password"]
 time.sleep(2)
 print("\n\nYour ISE Configuration:\n")
-print (f"ISE HOST: {host}") 
+print (f"ISE HOST: {host}")
 print (f"ISE PORT:  {port}")
 print (f"ISE UserName: {username}")
 print (f"ISE Password: {password}")
 time.sleep(2)
 print("\n\nYour Umbrella Configuration:\n")
 apikey=ENFORCEMENT["apiKey"]
-print (f"Umbrella enforcement Key: {apikey}") 
+print (f"Umbrella enforcement Key: {apikey}")
 token=INVESTIGATE["token"]
-print (f"Umbrella Investigate Key: {token}") 
+print (f"Umbrella Investigate Key: {token}")
 custid = AMP["clientId"]
 apikey = AMP["apiKey"]
 host   = AMP["host"]
 time.sleep(2)
 print("\n\nYour AMP Configuration:\n")
 print (f"AMP Customer ID: {custid}")
-print (f"AMP API Key: {apikey}") 
+print (f"AMP API Key: {apikey}")
 print (f"AMP HOSTNAME: {host}")
 time.sleep(2)
 print("\n\nYour THREATGRID Configuration:\n")

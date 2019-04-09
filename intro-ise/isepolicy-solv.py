@@ -2,14 +2,14 @@
 """isepolicy - edit this file
 This is your starting point for the 0day workflow  Mission.
 Edit this file to
- - 
+ -
 There are a few places to edit (search for MISSION comments)
 
 Script Dependencies:
     requests
 Depencency Installation:
     $ pip install requests
-Copyright (c) 2018, Cisco Systems, Inc. All rights reserved.
+Copyright (c) 2018-2019 Cisco and/or its affiliates.
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -48,7 +48,7 @@ headers = {
     'accept': "application/json"
     }
 namelist={}
-#TODO:create the GET request 
+#TODO:create the GET request
 response = requests.request("GET", url, verify=False, headers=headers)
 if(response.status_code == 200):
     #TODO: Put the logic to parse the response to print the name of the ANC policies
