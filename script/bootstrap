@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Bootstrap the project by installing development dependencies.
+
+set -e
+cd "$(dirname "$0")/.."
+
+
+# Ensure that packages are only installed in an active virtual environment
+export PIP_REQUIRE_VIRTUALENV=true
+
+
+if [[ -n "$(pipenv --version 2>/dev/null)" ]]; then
+    echo "==> Installing pipenv environment Pipfile development dependencies"
+    pipenv install --dev
+
+else
+    echo "This project uses pipenv to manage development dependencies.  Please install pipenv and run the script again."
+    echo "See https://pipenv.readthedocs.io for more information."
+    exit 1
+
+fi

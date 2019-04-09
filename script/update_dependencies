@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Update the project's dependencies and create a new requirements.txt file.
+#
+# Use pipenv to manage the user vs. dev requirements and to create complete locked user requirements.txt file in the
+# repository root.
+
+
+
+set -e
+cd "$(dirname "$0")/.."
+
+
+# Ensure that packages are only installed in an active virtual environment
+export PIP_REQUIRE_VIRTUALENV=true
+
+
+echo "==> Updating the project dependencies"
+pipenv update
+
+echo "==> Updating the repository requirements.txt file"
+pipenv lock -r > requirements.txt
