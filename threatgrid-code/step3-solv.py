@@ -5,7 +5,7 @@ import sys
 
 api_key = ''
 
-url ='https://panacea.threatgrid.com/api/v2/iocs/feeds/domains?domain=lamp.troublerifle.bid&api_key={}'.format(api_key)
+url ='https://panacea.threatgrid.com/api/v2/iocs/feeds/domains?after=2018-07-18T21:39:13Z&before=2019-07-18T22:39:13Z&domain=lamp.troublerifle.bid&api_key={}'.format(api_key)
 try:
     r = requests.get(url)
     status_code = r.status_code
