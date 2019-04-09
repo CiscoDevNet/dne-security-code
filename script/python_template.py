@@ -29,20 +29,21 @@ SOFTWARE.
 
 import os
 import sys
+from pathlib import Path
 
 import webexteamssdk
 from crayons import green
 
 
-# Get the absolute path for the directory where this file is located "here"
-here = os.path.abspath(os.path.dirname(__file__))
+# Get the absolute path for the directory where this file is located
+here = Path(__file__).parent.absolute()
 
-# Get the absolute path for the project / repository root
-project_root = os.path.abspath(os.path.join(here, ".."))
+# Get path for the project / repository root
+project_root = (here/"..").resolve()
 
 
 # Extend the system path to include the project root and import the env files
-sys.path.insert(0, project_root)
+sys.path.insert(0, str(project_root))
 import env_lab  # noqa
 import env_user  # noqa
 
