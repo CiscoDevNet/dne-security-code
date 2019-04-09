@@ -5,7 +5,7 @@ Multi-line description of your script (make sure you include the copyright and
 license notice).
 
 
-Copyright (c) 2018 Cisco and/or its affiliates.
+Copyright (c) 2018-2019 Cisco and/or its affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ SOFTWARE.
 """
 
 
-import os
 import sys
 from pathlib import Path
 
@@ -38,17 +37,18 @@ from crayons import green
 # Get the absolute path for the directory where this file is located
 here = Path(__file__).parent.absolute()
 
-# Get path for the project / repository root
+# Get the path for the project / repository root
 project_root = (here/"..").resolve()
 
 
 # Extend the system path to include the project root and import the env files
 sys.path.insert(0, str(project_root))
-import env_lab  # noqa
-import env_user  # noqa
+import env_lab      # noqa
+import env_user     # noqa
 
 
 # TODO: Insert your code here.  What follows is just an example.
+
 
 teams = webexteamssdk.WebexTeamsAPI(env_user.WEBEX_TEAMS_ACCESS_TOKEN)
 
