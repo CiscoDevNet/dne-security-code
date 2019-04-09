@@ -22,41 +22,46 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import os
 import sys
+from pathlib import Path
+
+from crayons import blue, green
 
 
 # Locate the directory containing this file and the repository root.
 # Temporarily add these directories to the system path so that we can import
 # local files.
-here = os.path.abspath(os.path.dirname(__file__))
-repository_root = os.path.abspath(os.path.join(here, ".."))
-sys.path.insert(0, repository_root)
-sys.path.insert(0, here)
+here = Path(__file__).parent.absolute()
+repository_root = (here / "..").resolve()
 
-from fmc_requests import fmc_authenticate, fmc_get, fmc_delete      # noqa
+sys.path.insert(0, str(repository_root))
+sys.path.insert(0, str(here))
+
+
+from fmc_requests import fmc_authenticate, fmc_get, fmc_delete  # noqa
 
 
 # Authenticate with FMC
+print(blue("===> Authenticating to FMC"))
 fmc_authenticate()
 
 
 # Get the configured access policies
+print(blue("\n===> Retrieving the configured access policies"))
 configured_policies = fmc_get("policy/accesspolicies")
 
 
 # Look for a policy named `DNE Security Access Control Policy`
 for policy in configured_policies["items"]:
     if policy["name"] == "DNE Security Access Control Policy":
-        print("Policy `DNE Security Access Control Policy` found; deleting")
-        deleted_policy = fmc_delete(
-            "policy/accesspolicies/{}".format(policy["id"])
-        )
-        print("Policy deleted")
+        print("Policy `DNE Security Access Control Policy` found")
+
+        print(blue("\n===> Deleting `DNE Security Access Control Policy`"))
+        fmc_delete(f"policy/accesspolicies/{policy['id']}")
+        print(green("Policy deleted"))
         break
 
 else:
-    print(
-        "The `DNE Security Access Control Policy` doesn't exist; "
-        "you are good to go!"
-    )
+    print(green("""
+The `DNE Security Access Control Policy` doesn't exist; you are good to go!"
+"""))

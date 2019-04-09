@@ -22,29 +22,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import os
 import sys
+from pathlib import Path
 
 import requests
 import requests.auth
+from crayons import green, red
 from urllib3.exceptions import InsecureRequestWarning
 
 
 # Locate the directory containing this file and the repository root.
 # Temporarily add these directories to the system path so that we can import
 # local files.
-here = os.path.abspath(os.path.dirname(__file__))
-repository_root = os.path.abspath(os.path.join(here, ".."))
-sys.path.insert(0, repository_root)
-sys.path.insert(0, here)
+here = Path(__file__).parent.absolute()
+repository_root = (here / "..").resolve()
 
-from env_lab import FMC     # noqa
+
+# Extend the system path to include the project root and import the env files
+sys.path.insert(0, str(repository_root))
+sys.path.insert(0, str(here))
+
+from env_lab import FMC  # noqa
 
 
 # Constants
 FMC_LOGIN_URL = "https://{host}:{port}/api/fmc_platform/v1/auth/generatetoken"
-FMC_CONFIG_URL = "https://{host}:{port}/api/fmc_config/v1/" \
-                 "domain/{domain_uuid}/{endpoint_path}"
+FMC_CONFIG_URL = (
+    "https://{host}:{port}/api/fmc_config/v1/"
+    "domain/{domain_uuid}/{endpoint_path}"
+)
 
 
 # Global Variables
@@ -65,21 +71,17 @@ def fmc_authenticate():
 
     login_url = FMC_LOGIN_URL.format(host=FMC["host"], port=FMC["port"])
     authentication = requests.auth.HTTPBasicAuth(
-        username=FMC["username"],
-        password=FMC["password"],
+        username=FMC["username"], password=FMC["password"]
     )
 
     try:
         response = requests.post(
-            url=login_url,
-            headers=headers,
-            auth=authentication,
-            verify=False,
+            url=login_url, headers=headers, auth=authentication, verify=False
         )
         response.raise_for_status()
 
     except requests.exceptions.RequestException as error:
-        print("Request Exception:", error)
+        print(red("Request Exception:"), error)
         sys.exit(1)
 
     # Get our authentication token and domain UUID from the response
@@ -90,17 +92,11 @@ def fmc_authenticate():
     headers["X-auth-access-token"] = auth_token
     headers["DOMAIN_UUID"] = domain_uuid
 
-    print(
-        """
-        Successfully authenticated to FMC: {host}
-        Received Auth Token: {auth_token}
-        For Domain (UUID): {domain_uuid}
-        """.format(
-            host=FMC["host"],
-            auth_token=auth_token,
-            domain_uuid=domain_uuid,
-        )
-    )
+    print(f"""
+{green("Successfully authenticated to FMC:")} {FMC["host"]}
+Received Auth Token: {auth_token}
+For Domain (UUID): {domain_uuid}
+""")
 
     return auth_token, domain_uuid
 
@@ -113,8 +109,6 @@ def create_url(endpoint_path):
         domain_uuid=domain_uuid,
         endpoint_path=endpoint_path,
     )
-
-    print("Created URL:", url)
 
     return url
 
@@ -129,10 +123,9 @@ def fmc_post(endpoint_path, data):
         response.raise_for_status()
 
     except requests.exceptions.RequestException as error:
-        print("Request Exception:", error)
+        print(red("Request Exception:"), error)
         sys.exit(1)
 
-    print("Post was successful, status code:", response.status_code)
     return response.json()
 
 
@@ -146,10 +139,9 @@ def fmc_get(endpoint_path):
         response.raise_for_status()
 
     except requests.exceptions.RequestException as error:
-        print("Request Exception:", error)
+        print(red("Request Exception:"), error)
         sys.exit(1)
 
-    print("Get was successful, status code:", response.status_code)
     return response.json()
 
 
@@ -163,13 +155,12 @@ def fmc_delete(endpoint_path):
         response.raise_for_status()
 
     except requests.exceptions.RequestException as error:
-        print("Request Exception:", error)
+        print(red("Request Exception:"), error)
         sys.exit(1)
 
-    print("Delete was successful, status code:", response.status_code)
     return response.json()
 
 
-# If this script is the "main" script running
+# If this script is the "main" script, run...
 if __name__ == "__main__":
     fmc_authenticate()
