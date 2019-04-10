@@ -82,7 +82,7 @@ def extract_observables(amp_events):
     observables = []
 
     # Standard AMP event ID for Malware events
-    malware_event_id = "1107296272"
+    malware_event_id =  1107296272 # Note: This comes back in response as INT not string
 
     for event in amp_events:
         if event["event_type_id"] == malware_event_id:
@@ -128,7 +128,7 @@ if __name__ == "__main__":
 
     # Save the malware SHA256 hashes to a JSON file. We will use these in the
     # ThreatGrid Mission.
-    sha256_path = repository_root / "mission-data/macaddr.json"
+    sha256_path = repository_root / "mission-data/sha256list.json"
     print(blue(f"\n==> Saving SHA256 hash observables to: {sha256_path}"))
 
     with open(sha256_path, "w") as file:

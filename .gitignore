@@ -6,8 +6,8 @@ env_user.py
 .vscode
 
 # Mission Data
-macaddr.txt
-sha.txt
+macaddr.json
+sha256list.json
 
 # Virtual Environments
 .venv
