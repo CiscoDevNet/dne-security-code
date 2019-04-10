@@ -20,6 +20,9 @@ for i in ${@}; do
 done
 
 
+echo "==> Removing OS artifacts..."
+find . -name '.DS_Store' -exec rm -f {} +
+
 echo "==> Removing Python build artifacts..."
 find . -name '*.pyc' -exec rm -f {} +
 find . -name '*.pyo' -exec rm -f {} +
