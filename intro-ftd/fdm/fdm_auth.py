@@ -93,8 +93,11 @@ def fdm_login(
     except ValueError:
         raise ValueError("Error parsing the response from FDM")
 
-    print(green("Login was successful!"))
-    print(f"Access Token: {access_token}")
+    print(
+        green("Login was successful!"),
+        f"Access Token: {access_token}",
+        sep="\n"
+    )
 
     return access_token
 

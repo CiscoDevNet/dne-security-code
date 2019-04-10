@@ -94,7 +94,7 @@ if __name__ == "__main__":
     new_network_details = fdm_create_network(NETWORK_OBJECT, token)
 
     print(
-        f"{white('Network Details:', bold=True)}",
-        f"{pformat(new_network_details)}",
+        white("Network Details:", bold=True),
+        pformat(new_network_details),
         sep="\n"
     )

@@ -76,7 +76,7 @@ if __name__ == "__main__":
     networks = fdm_get_networks(token)
 
     print(
-        f"{white('Network(s):', bold=True)}",
-        f"{pformat(networks)}",
+        white('Network(s):', bold=True),
+        pformat(networks),
         sep="\n",
     )
