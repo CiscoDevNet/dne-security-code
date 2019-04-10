@@ -36,7 +36,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # Temporarily add these directories to the system path so that we can import
 # local files.
 here = Path(__file__).parent.absolute()
-repository_root = (here / "..").resolve()
+repository_root = (here / ".." / "..").resolve()
 
 sys.path.insert(0, str(repository_root))
 sys.path.insert(0, str(here))

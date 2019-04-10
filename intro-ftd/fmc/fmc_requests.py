@@ -35,7 +35,7 @@ from urllib3.exceptions import InsecureRequestWarning
 # Temporarily add these directories to the system path so that we can import
 # local files.
 here = Path(__file__).parent.absolute()
-repository_root = (here / "..").resolve()
+repository_root = (here / ".." / "..").resolve()
 
 
 # Extend the system path to include the project root and import the env files
