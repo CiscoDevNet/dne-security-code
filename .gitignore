@@ -5,6 +5,10 @@
 env_user.py
 .vscode
 
+# Mission Data
+macaddr.txt
+sha.txt
+
 # Virtual Environments
 .venv
 venv/

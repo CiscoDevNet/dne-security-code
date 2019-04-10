@@ -72,7 +72,8 @@ elif ENVIRONMENT_IN_USE == "express":
         "password": "C1sco12345",
     }
 
-    # AMP for endpoints in the DevNet Express Security dCloud Pod
+    # AMP for endpoints in the DevNet Express Security dCloud Pod,
+    # If you are using your own cloud AMP account change this to api.amp.cisco.com
     AMP = {"host": "amp.dcloud.cisco.com"}
 
     # ThreatGrid in the DevNet Express Cloud Environment
