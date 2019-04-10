@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Configure FMC Access Policies and Rules.
+"""Create an FMC Access Policy and Rules.
 
 Copyright (c) 2018-2019 Cisco and/or its affiliates.
 
@@ -43,12 +43,12 @@ from fmc_requests import fmc_authenticate, fmc_post  # noqa
 
 
 # Authenticate with FMC
-print(blue("===> Authenticating to FMC"))
 fmc_authenticate()
 
 
-# Configure an Access Policy
-print(blue("\n===> Configuring Access Policy"))
+# Create an Access Policy
+print(blue("\n==> Creating a new Access Policy on FMC"))
+
 access_policy = {
     "type": "AccessPolicy",
     "name": "DNE Security Access Control Policy",
@@ -58,14 +58,16 @@ access_policy = {
 
 created_policy = fmc_post("policy/accesspolicies", access_policy)
 
-print(f"""
-{green("Policy Created:")}
-{pformat(access_policy)}
-""")
+print(
+    green('Policy Created:'),
+    pformat(access_policy),
+    sep="\n",
+)
 
 
-# Configure an Access Rule
-print(blue("\n===> Configuring Access Rule"))
+# Create an Access Rule in the new policy
+print(blue("\n==> Creating an Access Rule in the new policy"))
+
 access_rule = {
     "action": "ALLOW",
     "enabled": True,
@@ -88,11 +90,12 @@ access_rule = {
 }
 
 created_rule = fmc_post(
-    endpoint_path=f"policy/accesspolicies/{created_policy['id']}/accessrules",
-    data=access_rule,
+    f"policy/accesspolicies/{created_policy['id']}/accessrules",
+    access_rule,
 )
 
-print(f"""
-{green("Access Rule Created:")}
-{pformat(created_rule)}
-""")
+print(
+    green("Access Rule Created:"),
+    pformat(created_rule),
+    sep="\n",
+)

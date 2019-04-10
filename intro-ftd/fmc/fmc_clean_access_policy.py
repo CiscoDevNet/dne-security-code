@@ -42,26 +42,38 @@ from fmc_requests import fmc_authenticate, fmc_get, fmc_delete  # noqa
 
 
 # Authenticate with FMC
-print(blue("===> Authenticating to FMC"))
 fmc_authenticate()
 
 
 # Get the configured access policies
-print(blue("\n===> Retrieving the configured access policies"))
+print(blue("\n==> Retrieving the configured access policies"))
+
 configured_policies = fmc_get("policy/accesspolicies")
 
+print(
+    green("Successfully retrieved the list of configured access policies"),
+    f"Retrieved {len(configured_policies['items'])} policies",
+    sep="\n"
+)
 
-# Look for a policy named `DNE Security Access Control Policy`
+
+# Look for a policy named "DNE Security Access Control Policy"
+print(blue("\n==> Looking for the 'DNE Security Access Control Policy'"))
+
 for policy in configured_policies["items"]:
     if policy["name"] == "DNE Security Access Control Policy":
-        print("Policy `DNE Security Access Control Policy` found")
+        print("Policy found")
 
-        print(blue("\n===> Deleting `DNE Security Access Control Policy`"))
+        print(blue("\n==> Deleting the `DNE Security Access Control Policy`"))
+
         fmc_delete(f"policy/accesspolicies/{policy['id']}")
+
         print(green("Policy deleted"))
+
         break
 
 else:
-    print(green("""
-The `DNE Security Access Control Policy` doesn't exist; you are good to go!"
-"""))
+    print(green(
+        "The `DNE Security Access Control Policy` doesn't exist; "
+        "you are good to go!"
+    ))

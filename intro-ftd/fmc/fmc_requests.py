@@ -22,12 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+
 import sys
 from pathlib import Path
 
 import requests
-import requests.auth
-from crayons import green, red
+from crayons import blue, green
+from requests.auth import HTTPBasicAuth
 from urllib3.exceptions import InsecureRequestWarning
 
 
@@ -37,26 +38,18 @@ from urllib3.exceptions import InsecureRequestWarning
 here = Path(__file__).parent.absolute()
 repository_root = (here / ".." / "..").resolve()
 
-
-# Extend the system path to include the project root and import the env files
 sys.path.insert(0, str(repository_root))
 sys.path.insert(0, str(here))
 
 from env_lab import FMC  # noqa
 
 
-# Constants
-FMC_LOGIN_URL = "https://{host}:{port}/api/fmc_platform/v1/auth/generatetoken"
-FMC_CONFIG_URL = (
-    "https://{host}:{port}/api/fmc_config/v1/"
-    "domain/{domain_uuid}/{endpoint_path}"
-)
-
-
 # Global Variables
-headers = {"Content-Type": "application/json"}
-auth_token = ""
 domain_uuid = ""
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
 
 
 # Disable insecure request warnings
@@ -64,67 +57,58 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 # Helper Functions
-def fmc_authenticate():
+def fmc_authenticate(
+    host=FMC.get("host"),
+    port=FMC.get("port"),
+    username=FMC.get("username"),
+    password=FMC.get("password"),
+):
     """Authenticate with FMC; get and store the auth token and domain UUID."""
-    global auth_token
+    print(blue("\n==> Authenticating with FMC and requesting an access token"))
+
     global domain_uuid
 
-    login_url = FMC_LOGIN_URL.format(host=FMC["host"], port=FMC["port"])
-    authentication = requests.auth.HTTPBasicAuth(
-        username=FMC["username"], password=FMC["password"]
+    authentication = HTTPBasicAuth(username, password)
+
+    response = requests.post(
+        f"https://{host}:{port}/api/fmc_platform/v1/auth/generatetoken",
+        headers=headers,
+        auth=authentication,
+        verify=False
     )
+    response.raise_for_status()
 
-    try:
-        response = requests.post(
-            url=login_url, headers=headers, auth=authentication, verify=False
-        )
-        response.raise_for_status()
-
-    except requests.exceptions.RequestException as error:
-        print(red("Request Exception:"), error)
-        sys.exit(1)
-
-    # Get our authentication token and domain UUID from the response
-    auth_token = response.headers.get("X-auth-access-token")
+    # Get the authentication token and domain UUID from the response
+    access_token = response.headers.get("X-auth-access-token")
     domain_uuid = response.headers.get("DOMAIN_UUID")
 
-    # Update the headers used for requests to FMC
-    headers["X-auth-access-token"] = auth_token
+    # Update the headers used for subsequent requests to FMC
     headers["DOMAIN_UUID"] = domain_uuid
+    headers["X-auth-access-token"] = access_token
 
-    print(f"""
-{green("Successfully authenticated to FMC:")} {FMC["host"]}
-Received Auth Token: {auth_token}
-For Domain (UUID): {domain_uuid}
-""")
-
-    return auth_token, domain_uuid
-
-
-def create_url(endpoint_path):
-    """Create an FMC configuration API endpoint URL."""
-    url = FMC_CONFIG_URL.format(
-        host=FMC["host"],
-        port=FMC["port"],
-        domain_uuid=domain_uuid,
-        endpoint_path=endpoint_path,
+    print(
+        green('Successfully authenticated to FMC!'),
+        f"Domain UUID: {domain_uuid}",
+        f"Access Token: {access_token}",
+        sep="\n"
     )
 
-    return url
+    return access_token, domain_uuid
+
+
+def create_url(endpoint_path, host=FMC.get("host"), port=FMC.get("port")):
+    """Create an FMC configuration API endpoint URL."""
+    return f"https://{host}:{port}/api/fmc_config/v1" \
+           f"/domain/{domain_uuid}/{endpoint_path}"
 
 
 def fmc_post(endpoint_path, data):
     """Send a POST request to FMC and return the parsed JSON response."""
     url = create_url(endpoint_path)
 
-    try:
-        print("Sending POST request to", url)
-        response = requests.post(url, headers=headers, json=data, verify=False)
-        response.raise_for_status()
-
-    except requests.exceptions.RequestException as error:
-        print(red("Request Exception:"), error)
-        sys.exit(1)
+    print("Sending POST request to", url)
+    response = requests.post(url, headers=headers, json=data, verify=False)
+    response.raise_for_status()
 
     return response.json()
 
@@ -133,14 +117,9 @@ def fmc_get(endpoint_path):
     """Send a GET request to FMC and return the parsed JSON response."""
     url = create_url(endpoint_path)
 
-    try:
-        print("Sending GET request to", url)
-        response = requests.get(url, headers=headers, verify=False)
-        response.raise_for_status()
-
-    except requests.exceptions.RequestException as error:
-        print(red("Request Exception:"), error)
-        sys.exit(1)
+    print("Sending GET request to", url)
+    response = requests.get(url, headers=headers, verify=False)
+    response.raise_for_status()
 
     return response.json()
 
@@ -149,14 +128,9 @@ def fmc_delete(endpoint_path):
     """Send a DELETE request to FMC and return the parsed JSON response."""
     url = create_url(endpoint_path)
 
-    try:
-        print("Sending DELETE request to", url)
-        response = requests.delete(url, headers=headers, verify=False)
-        response.raise_for_status()
-
-    except requests.exceptions.RequestException as error:
-        print(red("Request Exception:"), error)
-        sys.exit(1)
+    print("Sending DELETE request to", url)
+    response = requests.delete(url, headers=headers, verify=False)
+    response.raise_for_status()
 
     return response.json()
 
