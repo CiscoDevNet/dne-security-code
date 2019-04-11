@@ -1,6 +1,9 @@
 # User Environments
 env_user.py
 
+# Lab Data
+intro-threatgrid/*.json
+
 # Mission Data
 mission-data/
 !mission-data/README.md
