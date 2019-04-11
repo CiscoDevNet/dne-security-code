@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-"""Zero-day Workflow Mission - Cisco AMP
+"""Mission - Cisco AMP
 
-This is your starting point for the Zero-day Workflow Mission.  There are a few
-places where you will need to do some work (search for MISSION comments).
+This is your starting point for the Zero-day Workflow.
 
 
 Copyright (c) 2018-2019 Cisco and/or its affiliates.
