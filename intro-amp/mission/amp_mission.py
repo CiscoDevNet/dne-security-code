@@ -60,7 +60,7 @@ def get_amp_events(
     api_key=env_user.AMP_API_KEY,
 ):
     """Get a list of recent events from Cisco AMP."""
-    print("\n==> Getting recent events from AMP")
+    print(blue("\n==> Getting recent events from AMP"))
 
     url = f"https://{client_id}:{api_key}@{host}/v1/events"
 
@@ -119,19 +119,19 @@ if __name__ == "__main__":
     # Save the MAC addresses of the endpoints where malware executed to a JSON
     # file.  In the ISE Mission we will read this file and quarantine these
     # endpoints.
-    macaddr_path = repository_root / "mission-data/macaddr.json"
-    print(blue(f"\n==> Saving MAC address observables to: {macaddr_path}"))
+    mac_addresses_path = repository_root / "mission-data/mac-addresses.json"
+    print(blue(f"\n==> Saving MAC addresses to: {mac_addresses_path}"))
 
-    with open(macaddr_path, "w") as file:
+    with open(mac_addresses_path, "w") as file:
         mac_addresses = [o["mac_address"] for o in amp_observables]
         json.dump(mac_addresses, file, indent=2)
 
     # Save the malware SHA256 hashes to a JSON file. We will use these in the
     # ThreatGrid Mission.
-    sha256_path = repository_root / "mission-data/sha256list.json"
-    print(blue(f"\n==> Saving SHA256 hash observables to: {sha256_path}"))
+    sha256_list_path = repository_root / "mission-data/sha256-list.json"
+    print(blue(f"\n==> Saving SHA256 hashes to: {sha256_list_path}"))
 
-    with open(sha256_path, "w") as file:
+    with open(sha256_list_path, "w") as file:
         sha256_hashes = [o["sha256"] for o in amp_observables]
         json.dump(sha256_hashes, file, indent=2)
 
@@ -141,8 +141,8 @@ if __name__ == "__main__":
     teams = webexteamssdk.WebexTeamsAPI(env_user.WEBEX_TEAMS_ACCESS_TOKEN)
     teams.messages.create(
         roomId=env_user.WEBEX_TEAMS_ROOM_ID,
-        markdown=f"**AMP Mission completed!!!**\n"
-                 f"I extracted observables from {len(amp_observables)} AMP"
+        markdown=f"**AMP Mission completed!!!** \n\n"
+                 f"I extracted observables from {len(amp_observables)} AMP "
                  f"malware events."
     )
 
