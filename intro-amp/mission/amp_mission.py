@@ -82,7 +82,7 @@ def extract_observables(amp_events):
     observables = []
 
     # Standard AMP event ID for Malware events
-    malware_event_id =  1107296272 # Note: This comes back in response as INT not string
+    malware_event_id = 1107296272
 
     for event in amp_events:
         if event["event_type_id"] == malware_event_id:
