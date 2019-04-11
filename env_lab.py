@@ -76,8 +76,8 @@ elif ENVIRONMENT_IN_USE == "express":
     # If you are using your own cloud AMP account change this to api.amp.cisco.com
     AMP = {"host": "amp.dcloud.cisco.com"}
 
-    # ThreatGrid in the DevNet Express Cloud Environment
-    THREATGRID = {"host": "panacea.threatgrid.com/api/v2"}
+    # ThreatGrid Cloud
+    THREATGRID = {"host": "panacea.threatgrid.com"}
 
 
 elif ENVIRONMENT_IN_USE == "custom":

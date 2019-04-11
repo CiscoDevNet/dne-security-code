@@ -20,6 +20,10 @@ for i in ${@}; do
 done
 
 
+echo "==> DevNet Express Lab and Mission data..."
+rm -f mission-data/*.json
+rm -f intro-threatgrid/*.json
+
 echo "==> Removing OS artifacts..."
 find . -name '.DS_Store' -exec rm -f {} +
 
