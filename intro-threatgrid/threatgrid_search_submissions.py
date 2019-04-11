@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Query the ThreatGrid Indication of Compromise (IoC) feed.
+"""Search ThreatGrid Submissions.
 
 Copyright (c) 2018-2019 Cisco and/or its affiliates.
 
@@ -25,11 +25,10 @@ SOFTWARE.
 
 import json
 import sys
-from datetime import datetime, timedelta
 from pathlib import Path
 
 import requests
-from crayons import blue, green, white
+from crayons import blue, green, red, white
 
 
 # Locate the directory containing this file and the repository root.
@@ -44,67 +43,53 @@ from env_lab import THREATGRID  # noqa
 from env_user import THREATGRID_API_KEY  # noqa
 
 
-# Constants
-TIME_PERIOD = 180  # Search the IoC feed for the past TIME_PERIOD days
-
-
-def query_threatgrid_ioc_feed(
-    domain,
-    after=None,
-    before=None,
+def search_threatgrid_submissions(
+    sha256,
     host=THREATGRID.get("host"),
     api_key=THREATGRID_API_KEY,
 ):
-    """Query the IoC feed by domain and return the list of malware samples.
+    """Search TreatGrid Submissions, by sha256.
 
     Args:
-        domain(str): Lookup this domain name in the ThreatGrid IoC feed.
-        after(str): Query for events that occurred after this datetime.
-        before(str): Query for events that occurred before this datetime.
+        sha256(str): Lookup this hash in ThreatGrid Submissions.
         host(str): The ThreatGrid host.
         api_key(str): Your ThreatGrid API key.
     """
-    print(blue(f"\n==> Querying the ThreatGrid IoC feed for domain: {domain}"))
+    print(blue(f"\n==> Searching the ThreatGrid Submissions for: {sha256}"))
 
     query_parameters = {
-        "domain": domain,
-        "after": after,
-        "before": before,
+        "q": sha256,
         "api_key": api_key,
     }
 
     response = requests.get(
-        f"https://{host}/api/v2/iocs/feeds/domains",
+        f"https://{host}/api/v2/search/submissions",
         params=query_parameters,
     )
     response.raise_for_status()
 
-    samples = response.json()["data"]["items"]
+    submission_info = response.json()["data"]["items"]
 
-    print(green(f"Successfully retrieved data on "
-                f"{len(samples)} malware samples"))
+    if submission_info:
+        print(green("Successfully retrieved data on the sha256 submission"))
+    else:
+        print(red("Unable to retrieve data on the sha256 submission"))
+        sys.exit(1)
 
-    return samples
+    return submission_info
 
 
 # If this script is the "main" script, run...
 if __name__ == "__main__":
     if len(sys.argv) == 2:
-        _, query_domain = sys.argv
+        _, sha256 = sys.argv
     else:
-        print(f"{white('Usage:', bold=True)} {Path(__file__).name} DOMAIN")
+        print(f"{white('Usage:', bold=True)} {Path(__file__).name} SHA256")
         sys.exit(1)
 
-    query_start = datetime.utcnow() - timedelta(days=TIME_PERIOD)
-    query_end = datetime.utcnow()
+    submission_info = search_threatgrid_submissions(sha256)
 
-    malware_samples = query_threatgrid_ioc_feed(
-        query_domain,
-        after=f"{query_start.isoformat()}Z",
-        before=f"{query_end.isoformat()}Z",
-    )
-
-    malware_samples_path = here / f"{query_domain}-malware-samples-data.json"
-    print(blue(f"\n==> Saving samples data to: {malware_samples_path}"))
-    with open(malware_samples_path, "w") as file:
-        json.dump(malware_samples, file, indent=2)
+    submission_info_path = here / f"{sha256}-submission-info.json"
+    print(blue(f"\n==> Saving submission info to: {submission_info_path}"))
+    with open(submission_info_path, "w") as file:
+        json.dump(submission_info, file, indent=2)
