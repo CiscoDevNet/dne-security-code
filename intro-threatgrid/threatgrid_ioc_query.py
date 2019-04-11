@@ -25,6 +25,7 @@ SOFTWARE.
 
 import json
 import sys
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import requests
@@ -84,15 +85,17 @@ def query_threatgrid_ioc_feed(
 
 # If this script is the "main" script, run...
 if __name__ == "__main__":
-    domain = "lamp.troublerifle.bid"
+    query_domain = "lamp.troublerifle.bid"
+    query_start = datetime.utcnow() - timedelta(days=180)
+    query_end = datetime.utcnow()
 
     malware_samples = query_threatgrid_ioc_feed(
-        domain,
-        after="2018-07-18T21:39:13Z",
-        before="2019-07-18T22:39:13Z",
+        query_domain,
+        after=f"{query_start.isoformat()}Z",
+        before=f"{query_end.isoformat()}Z",
     )
 
-    malware_samples_path = here / f"{domain}-malware-samples-data.json"
+    malware_samples_path = here / f"{query_domain}-malware-samples-data.json"
     print(blue(f"\n==> Saving samples data to: {malware_samples_path}"))
     with open(malware_samples_path, "w") as file:
         json.dump(malware_samples, file, indent=2)
