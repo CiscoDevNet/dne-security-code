@@ -1,13 +1,9 @@
-# Operating Systems
-.DS_Store
-
-# User Environment
+# User Environments
 env_user.py
-.vscode
 
 # Mission Data
-macaddr.json
-sha256list.json
+mission-data/
+!mission-data/README.md
 
 # Virtual Environments
 .venv
@@ -17,9 +13,15 @@ venv/
 .python-version
 Pipfile.lock
 
+# IDE / Text-Editor Artifacts
+.vscode
+.idea
 
 # Python Artifacts
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+
+# OS Artifacts
+.DS_Store
