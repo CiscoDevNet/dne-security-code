@@ -55,7 +55,7 @@ def fdm_login(
 ):
     """Login to FDM and return an access token that may be used for API calls.
 
-    This is login will give you an access token that is valid for ~30 minutes
+    This login will give you an access token that is valid for ~30 minutes
     with no refresh. Using this token should be fine for short running scripts.
 
     Do not use for services that need to last longer than 30 minutes.
@@ -104,4 +104,4 @@ def fdm_login(
 
 # If this script is the "main" script, run...
 if __name__ == "__main__":
-    token = fdm_login()
+    fdm_login()
