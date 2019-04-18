@@ -137,8 +137,7 @@ def find_Obervables(sha_256_1):
 def writer_file(filename, glist, ioc) :
     with open(filename, "w") as file:
         if ioc==None:
-            jsondata = glist
-            json.dump(jsondata, file, indent=2)
+            json.dump(glist, file, indent=2)
         else:
             jsondata = [o[ioc] for o in glist]
             json.dump(jsondata, file, indent=2)
@@ -162,7 +161,7 @@ if __name__ == "__main__":
     teams = webexteamssdk.WebexTeamsAPI(env_user.WEBEX_TEAMS_ACCESS_TOKEN)
     teams.messages.create(
         roomId=env_user.WEBEX_TEAMS_ROOM_ID,
-        markdown=f"**AMP Mission completed!!!** \n\n"
-                 f"I extracted observables from {len(amp_observables)} AMP "
-                 f"malware events."
+        markdown=f"**ThreatGrid Mission completed!!!** \n\n"
+                 f"I extracted domains & IP associated with SHAs {len(observables)} using ThreatGrid "
+                 f"APIs Sample Search."
     )
