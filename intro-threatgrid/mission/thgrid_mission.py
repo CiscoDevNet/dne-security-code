@@ -1,22 +1,21 @@
-"""0day Workflow Mission - edit this file
-This is your starting point for the 0day workflow  Mission.
-Edit this file to
- -
-There are a few places to edit (search for MISSION comments)
+#!/usr/bin/env python
+"""Mission - Cisco ThreatGrid
 
-Script Dependencies:
-    requests
-Depencency Installation:
-    $ pip install requests
+This is your research step in the Zero-day Workflow.
+
+
 Copyright (c) 2018-2019 Cisco and/or its affiliates.
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,83 +24,145 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import webexteamssdk
-import requests
+
+
 import json
-import threatgrid
-from datetime import datetime
 import sys
-try:
-    requests.packages.urllib3.disable_warnings()
-except:
-    pass
+from pathlib import Path
 
-#Mission TODO1: Please add your WEBEX_TEAMS_ACCESS_TOKEN and WEBEX_TEAMS_ROOM_ID here
-WEBEX_TEAMS_ACCESS_TOKEN = ""
-WEBEX_TEAMS_ROOM_ID=""
-
-teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
-# Mission TODO: Insert the SHA you want to hunt using TG
+import requests
+import webexteamssdk
+from crayons import blue, green, red
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-sha_256 = ""
+# Locate the directory containing this file and the repository root.
+# Temporarily add these directories to the system path so that we can import
+# local files.
+here = Path(__file__).parent.absolute()
+repository_root = (here / ".." / "..").resolve()
 
-# Mission TODO: enter the api credentials for the TG API access
+sys.path.insert(0, str(repository_root))
 
-api_key = ""
+sys.path.insert(0, str(repository_root))
 
-# intialize  threatgrid objects
-
-threatgrid_api = threatgrid.tg_account(api_key)
+from env_lab import THREATGRID  # noqa
+from env_user import THREATGRID_API_KEY  # noqa
+# Disable insecure request warnings
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+th_headers = {
+    'Content-Type': 'application/json'
+    }
+#Containers for the domains
+domain_list = []
+#containers for the Ips
+ip_list = []
+observables=[]
+def readIocsFile(filename) :
+    with open (filename, 'r') as fp:
+        shalist = json.loads(fp.read())
+    return shalist
 
 # step one query threatgrid for the sha_256 and extract relevant information
 # important info is sample id
 # import info is threat_score
 
-samples = threatgrid_api.get("/search/submissions?q={}".format(sha_256))
-# dictionary of the samples with their scores and behaviors
 
-#print(json.dumps(samples, indent=4, sort_keys=True))
-sample_ids = {}
-behaviors = []
-for sample in samples['data']['items']:
-    sample_ids[sample["item"]["sample"]] = sample["item"]["analysis"]["threat_score"]
-    for behavior in sample["item"]["analysis"]["behaviors"]:
-        behaviors.append(behavior["title"])
+def get_FromThreatGrid(path,
+                       host=THREATGRID.get("host"),
+                       key=THREATGRID_API_KEY,):
+    """GET method for Threatgrid."""
+    url = f"{host}/api/v2"
+    response = requests.get(
+        "https://{}{}&api_key={}".format(url, path, key),
+        headers=th_headers
+    )
+    #print (response.json())
+    # Consider any status other than 2xx an error
+    response.raise_for_status()
+    return response.json()
 
+
+def find_Obervables(sha_256_1):
+    print(f"Picking up the next sha from the list: {sha_256_1} ")
+    samples = get_FromThreatGrid("/search/submissions?q={}".format(sha_256_1))
+    #print (samples)
+    if(samples == None):
+        return
+    if (samples == "Response [408]"):
+        return
+    sample_ids = {}
+    behaviors = []
+    flist_path = repository_root / "mission-data" / f"{sha_256_1}.json" 
+    for sample in samples['data']['items']:
+        sample_ids[sample["item"]["sample"]
+                   ] = sample["item"]["analysis"]["threat_score"]
+        for behavior in sample["item"]["analysis"]["behaviors"]:
+            behaviors.append(behavior["title"])
 # Prepare TG report to screen with average score after number of runs and behavior
-behaviors = set(behaviors)
+    behaviors = set(behaviors)
+    num_of_runs = len(sample_ids)
+    total = 0
+    sample_string = ""
+    domains = ""
+    writeme=[]
+    for sample, score in sample_ids.items():
+        total = total + score
+        sample_string = "{}{},".format(sample_string, sample)
+        #average = total/num_of_runs
+    #print ("Sample was run {} times and results in an average score of {}".format (num_of_runs, average))
+    print("Behavior of sample:")
+    for value in behaviors:
+        if len(value)== 0:
+            writeme.append(f"Sample for {sha_256_1} not found in the ThreatGrid.. Try increasing the time window or upload the sample")
+        else: 
+            writeme.append(value)
+        sample_string = sample_string[:-1]
+    writer_file(flist_path, writeme, None)
+    #print (sample_string)
+    if len(sample_string) != 0:
+        domains = get_FromThreatGrid(
+            "/samples/feeds/domains?sample={}&after=2018-2-2".format(sample_string))
+        if (domains == "Response [408]"):
+            return
+        else:
+            for domain in domains["data"]["items"]:
+                if domain["relation"] == "dns-lookup":
+                    for item in domain["data"]["answers"]:
+                        observables.append({
+                            "domains": domain["domain"],
+                            "ip_address": item,
+                        })
 
-num_of_runs = len(sample_ids)
-total = 0
-sample_string = ""
-for sample, score in sample_ids.items():
-    total = total + score
-    sample_string = "{}{},".format(sample_string,sample)
-average = total/num_of_runs
+def writer_file(filename, glist, ioc) :
+    with open(filename, "w") as file:
+        if ioc==None:
+            jsondata = glist
+            json.dump(jsondata, file, indent=2)
+        else:
+            jsondata = [o[ioc] for o in glist]
+            json.dump(jsondata, file, indent=2)
+    file.close()
 
-print ("Sample was run {} times and results in an average score of {}".format (num_of_runs, average))
-print ("Behavior of sample:")
-for value in behaviors:
-    print (value)
-sample_string = sample_string[:-1]
-#print sample_string
-# now that we got everything from TG lets take the samples and seach them for all domains
-domains = threatgrid_api.get("/samples/feeds/domains?sample={}&after=2017-2-2".format(sample_string))
-#build a list of domains for Umbrella
-domain_list = []
-ip_list = []
-for domain in domains["data"]["items"]:
-    if domain["relation"] == "dns-lookup":
-        for item in domain["data"]["answers"]:
-            domain_list.append(domain["domain"])
-            ip_list.append(item)
+if __name__ == "__main__":
+    # Save the MAC addresses of the endpoints where malware executed to a JSON
+    # file.  In the ISE Mission we will read this file and quarantine these
+    # endpoints.sha256-list.json
+    shalist_path = repository_root / "mission-data/sha256-list.json"
+    shalist = readIocsFile(shalist_path)
+    for items in shalist:
+        find_Obervables(items)
+    domainlist_path = repository_root / "mission-data/domainlist.json"
+    iplist_path = repository_root / "mission-data/iplist.json"
+    writer_file(domainlist_path, observables, "domains")
+    writer_file(iplist_path, observables, "ip_address")
+    # Finally, post a message to the Webex Teams Room to brag!!!
+    print(blue("\n==> Posting message to Webex Teams"))
 
-message = teams.messages.create(WEBEX_TEAMS_ROOM_ID,
-    text='MISSION: 0day ThreatGrid - I have completed the mission!')
-#Mission TODO3: Print the domains and ip....
-print ("\nAssociated domains:\n")
-print ("\n".join(domain_list))
-print ("\n samples made outbound connections on following IPs:\n")
-print ("\n".join(ip_list))
-print ("Finished Building list for Next Mission with Umbrella Investigate ...")
+    teams = webexteamssdk.WebexTeamsAPI(env_user.WEBEX_TEAMS_ACCESS_TOKEN)
+    teams.messages.create(
+        roomId=env_user.WEBEX_TEAMS_ROOM_ID,
+        markdown=f"**AMP Mission completed!!!** \n\n"
+                 f"I extracted observables from {len(amp_observables)} AMP "
+                 f"malware events."
+    )

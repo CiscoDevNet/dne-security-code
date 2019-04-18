@@ -61,7 +61,7 @@ def search_threatgrid_submissions(
         "q": sha256,
         "api_key": api_key,
     }
-
+    
     response = requests.get(
         f"https://{host}/api/v2/search/submissions",
         params=query_parameters,
