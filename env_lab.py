@@ -79,6 +79,9 @@ elif ENVIRONMENT_IN_USE == "express":
     # ThreatGrid Cloud
     THREATGRID = {"host": "panacea.threatgrid.com"}
 
+    UMBRELLA = {"en_url": "https://s-platform.api.opendns.com/1.0/events",
+                "inv_url": "https://investigate.api.umbrella.com", }
+
 
 elif ENVIRONMENT_IN_USE == "custom":
     # Your FMC

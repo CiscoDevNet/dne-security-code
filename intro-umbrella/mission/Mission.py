@@ -1,94 +1,188 @@
-# SOLUTION SECTION #3 MISSION UMBRELLA LAB 5-HandsOn-Investigate-API-Hunting
+#!/usr/bin/env python
+"""Mission - Cisco ThreatGrid
 
-# import necessary libraries / modules
-import requests
-import json
+This is your research step in the Zero-day Workflow.
+
+
+Copyright (c) 2018-2019 Cisco and/or its affiliates.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 from datetime import datetime
+import requests
+import socket
+import configparser
+import json
+import sys
+from pathlib import Path
+import webexteamssdk
+from crayons import blue, green, red
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
-# copy paste INVESTIGATE API key from previous section within the quotes
-investigate_api_key = "<insert-investigate-api-key-here>"
 
-# URL needed for the domain status and category (INVESTIGATE API)
-investigateUrl = "https://investigate.api.umbrella.com/domains/categorization/"
+# Locate the directory containing this file and the repository root.
+# Temporarily add these directories to the system path so that we can import
+# local files.
+here = Path(__file__).parent.absolute()
+repository_root = (here / ".." / "..").resolve()
 
-# copy paste ENFORCEMENT API key from previous section within the quotes
-enforcement_api_key = "<insert-enforcement-api-key-here"
+sys.path.insert(0, str(repository_root))
 
-# URL needed to do POST requests for ENFORCEMENT API
-eventurl = "https://s-platform.api.opendns.com/1.0/events"
+sys.path.insert(0, str(repository_root))
 
-# ensemble URL needed for POST request for ENFORCEMENT API
-UrlPost = eventurl+'?customerKey='+enforcement_api_key
+from env_lab import UMBRELLA  # noqa
+from env_user import UMBRELLA_ENFORCEMENT_KEY
+from env_user import UMBRELLA_INVESTIGATE_KEY  # noqa
+# Disable insecure request warnings
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-# domains that will be checked
-domains = ["internetbadguys.com", "cnn.com", "cisco.com", "google.com", "news.com.com"]
 
-# put in right format to pass as argument in POST request
-values = str(json.dumps(domains))
 
-# time for timestamp of verdict domain
+def is_valid_ipv4_address(address):
+    try:
+        socket.inet_pton(socket.AF_INET, address)
+    except AttributeError:  # no inet_pton here, sorry
+        try:
+            print(address)
+            socket.inet_aton(address)
+        except socket.error:
+            return False
+        return address.count('.') == 3
+    except socket.error:  # not a valid address
+        return False
+
+    return True
+
+# Read the config file to get settings
+
+enforcement_api_key = UMBRELLA_ENFORCEMENT_KEY
+
 time = datetime.now().isoformat()
 
-#create header for authentication
+investigate_api_key = UMBRELLA_INVESTIGATE_KEY
+
+
+# URL needed to do POST requests
+event_url = UMBRELLA.get("en_url")
+
+# URL needed for POST request
+url_post = event_url + '?customerKey=' + enforcement_api_key
+
+inv_u = UMBRELLA.get("inv_url")
+# URL needed for the domain status and category
+investigate_url = f"{inv_u}/domains/categorization/" 
+#https://investigate.api.umbrella.com/samples/"
+
+#create header for authentication and set limit of sample return to 1
 headers = {
-    'Authorization': 'Bearer ' + investigate_api_key
+'Authorization': 'Bearer ' + investigate_api_key,
+'limit': '1'
 }
+print(url_post)
 
-# do GET request for the domain status and category
-req = requests.post(investigateUrl, data=values, headers=headers)
-
-# create empty list for malicious domains that need to be added to block list
-maliciousDomains = []
-
-# error handling if true then the request was HTTP 200, so successful
-if(req.status_code == 200):
-    #give user feedback
-    print("SUCCESS: Investigate POST request has the following code: 200\n")
-
-    # output of request in variable
-    output = req.json()
-
-    # loop through domains and retrieve status for domains
-    for domain in domains:
+def get_DomainStatus(getUrl, domain) :
+    print(getUrl)
+    req = requests.get(getUrl, headers=headers)
+    if(req.status_code == 200):
+        output = req.json()
         domainOutput = output[domain]
         domainStatus = domainOutput["status"]
-        # walk through different options of status
         if(domainStatus == -1):
-            print("The domain %(domain)s is found MALICIOUS at %(time)s\n" % {'domain': domain, 'time': time})
-
-            # add domain to list if malicious
-            maliciousDomains.append(domain)
+            print("SUCCESS: The domain %(domain)s is found MALICIOUS at %(time)s" % 
+            {'domain': domain, 'time': time})
+            return "bad"
         elif(domainStatus == 1):
-            print("The domain %(domain)s is found CLEAN at %(time)s\n" % {'domain': domain, 'time': time})
-        else:
-            print("The domain %(domain)s is found UNDEFINED / RISKY at %(time)s\n" % {'domain': domain, 'time': time})
-else:
-    print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" % {'error': req.status_code})
+            print("SUCCESS: The domain %(domain)s is found CLEAN at %(time)s" %
+            {'domain': domain, 'time': time})
+            return "clean"
+        elif(domainStatus == 0):
+            print("SUCCESS: The domain %(domain)s is found UNDEFINED / RISKY at %(time)s" %
+            {'domain': domain, 'time': time})
+            return "risky"
+    else:
+        print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" %
+          {'error': req.status_code})
+        return "error"
 
-# create empty list to contain security events that can be uploaded to Umbrella Enforcement API
-data = []
+def readIocsFile(filename) :
+    with open (filename, 'r') as fp:
+        shalist = json.loads(fp.read())
+    return shalist
 
-# loop through malicious domains, create security events and append to empty data list
-for maliciousDomain in maliciousDomains:
-    entry = {
-        "alertTime": time + "Z",
-        "deviceId": "ba6a59f4-e692-4724-ba36-c28132c761de",
-        "deviceVersion": "13.7a",
-        "dstDomain": domain,
-        "dstUrl": "http://" + domain + "/",
-        "eventTime": time + "Z",
-        "protocolVersion": "1.0a",
-        "providerName": "Security Platform"
+def removeDups(list) :
+    domain_list_r = []
+    domin_filter_ip = []
+    domain_final = []
+    for i in list:
+        if i not in domain_list_r:
+            domain_list_r.append(i)
+            domain_filter_ip = domain_list_r
+    print("We found dulicates and pruned the list :\n")
+    return domain_filter_ip
+
+def handleDomains(filename) :
+    try:
+        domain_list = readIocsFile(filename)
+        time = datetime.now().isoformat()
+        domain_list = removeDups(domain_list)
+        print (domain_list)
+        for domain in domain_list:
+            print(domain)
+            get_url = investigate_url + domain +  "?showLabels"
+            status = get_DomainStatus(get_url, domain)
+            if(status != "error"):
+                if ((status == "bad") or (status == "risky")):
+                    post_Enforcement(domain)
+                else:
+                    print(f"Found clean domain, ignoring enforcement on {domain}")
+            else:
+                print("got error from Umbrella investigate")
+    except KeyboardInterrupt:
+        print("\nExiting...\n")
+
+def post_Enforcement(domdata):
+    data={
+                "alertTime": time + "Z",
+                "deviceId": "ba6a59f4-e692-4724-ba36-c28132c761de",
+                "deviceVersion": "13.7a",
+                "dstDomain": domdata,
+                "dstUrl": "http://" + domdata + "/",
+                "eventTime": time + "Z",
+                "protocolVersion": "1.0a",
+                "providerName": "Security Platform"
     }
-    data.append(entry)
+    request_post = requests.post(url_post, data=json.dumps(data), headers={
+                                             'Content-type': 'application/json', 'Accept': 'application/json'})
+    if(request_post.status_code == 202):
+        print("\n")
+        print(f"SUCCESS: {domdata} BLOCKED!!")
+        print("\n")
+                # error handling
+    else:
+        print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" %
+                          {'error': request_post.status_code})
 
-# POST REQUEST for Enforcement API: post request ensembly
-reqEnf = requests.post(UrlPost, data=json.dumps(data), headers={'Content-type': 'application/json', 'Accept': 'application/json'})
 
-# error handling if true then the request was HTTP 202, so successful
-if(reqEnf.status_code == 202):
-    print("SUCCESS: Enforcement POST request has the following code: 202\n")
-    for maliciousDomain in maliciousDomains:
-        print("The following domain: (%(domain)s) was added to your Block List, timestamp: %(time)s\n" % {'domain': maliciousDomain, 'time': time})
-else:
-    print("An error has ocurred with the following code %(error)s, please consult the following link: https://enforcement-api.readme.io/" % {'error': req.status_code})
+if __name__ == "__main__":
+    # Save the MAC addresses of the endpoints where malware executed to a JSON
+    # file.  In the ISE Mission we will read this file and quarantine these
+    # endpoints.sha256-list.json
+    domainlist_path = repository_root / "mission-data/domainlist.json"
+    handleDomains(domainlist_path)
