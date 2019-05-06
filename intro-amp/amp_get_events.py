@@ -67,6 +67,9 @@ def get_amp_events(
     events_list = response.json()["data"]
     #TODO: Return the event list
     return events_list
+def write_events_to_file(filepath, ampevents):
+    with open(events_path, "w") as file:
+        json.dump(ampevents, file, indent=2)
 
 # If this script is the "main" script, run...
 if __name__ == "__main__":
@@ -74,4 +77,9 @@ if __name__ == "__main__":
     amp_events = get_amp_events()
     #TODO: Print the total number of events observed. 
     print(yellow(f"Received total {len(amp_events)} malware events"))
+    repository_root = (here).resolve()
+    events_path = repository_root / "events.json"
+    #TODO: Store the events observed in a file
+    print(green(f"\n==> Saving events to: {events_path}"))
+    write_events_to_file(events_path, amp_events)
 
