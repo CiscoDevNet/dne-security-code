@@ -27,10 +27,8 @@ SOFTWARE.
 import json
 import sys
 from pathlib import Path
-
 import requests
-import webexteamssdk
-from crayons import blue, green, red, yellow
+from crayons import green, yellow
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
@@ -39,7 +37,6 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # local files.
 here = Path(__file__).parent.absolute()
 repository_root = (here / ".." ).resolve()
-
 sys.path.insert(0, str(repository_root))
 
 import env_lab  # noqa
@@ -58,28 +55,31 @@ def get_amp_events(
 ):
     """Get a list of recent events from Cisco AMP."""
     print("\n==> Getting recent events from AMP")
-    #TODO: Construct the URL
+    # TODO: Construct the URL
     url = f"https://{client_id}:{api_key}@{host}/v1/events"
 
     response = requests.get(url, verify=False)
     response.raise_for_status()
 
     events_list = response.json()["data"]
-    #TODO: Return the event list
+    # TODO: Return the event list
     return events_list
+
+
 def write_events_to_file(filepath, ampevents):
     with open(events_path, "w") as file:
         json.dump(ampevents, file, indent=2)
 
+
 # If this script is the "main" script, run...
 if __name__ == "__main__":
-    #TODO: Get the list of events from AMP
+    # TODO: Get the list of events from AMP
     amp_events = get_amp_events()
-    #TODO: Print the total number of events observed. 
+    # TODO: Print the total number of events observed. 
     print(yellow(f"Received total {len(amp_events)} malware events"))
     repository_root = (here).resolve()
     events_path = repository_root / "events.json"
-    #TODO: Store the events observed in a file
+    # TODO: Store the events observed in a file
     print(green(f"\n==> Saving events to: {events_path}"))
     write_events_to_file(events_path, amp_events)
 
