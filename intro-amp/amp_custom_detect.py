@@ -81,7 +81,7 @@ def post_to_amp(
     host=env_lab.AMP.get("host"),
     client_id=env_user.AMP_CLIENT_ID,
     api_key=env_user.AMP_API_KEY):
-    print("\n==> Adding  SHA to AMP custome detections list")
+    print("\n==> Adding  SHA to AMP custom detections list")
 
     url = f"https://{client_id}:{api_key}@{host}/v1/file_lists/{list_id}/files/{SAMPLE_SHA256}"
 
@@ -97,10 +97,10 @@ if __name__ == "__main__":
     #TODO: Call the function to get detections
     dects = get_amp_detections()
     #TODO: Call the function to parse the custome detections list
-    list_id=parseResponse(dects)
+    list_id = parseResponse(dects)
     post_this =  {'description':'created by DNE user using API'}
     #TODO: Call post function to add a problem sha to your custom detection list 
     response = post_to_amp(list_id, post_this)
     
-    print(f"\n==> Successfully added "{SAMPLE_SHA256}" to AMP custom detections list")
+    print(f"\n==> Successfully added {SAMPLE_SHA256} to AMP custom detections list")
 
