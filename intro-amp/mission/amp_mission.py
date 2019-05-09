@@ -73,6 +73,20 @@ def get_amp_events(
     return events_list
 
 
+def get_amp_computer_details( url,
+    client_id=env_user.AMP_CLIENT_ID,
+    api_key=env_user.AMP_API_KEY,
+    ):
+
+    """Get details of infected computer from Cisco AMP."""
+    print(blue("\n==> Geting infected computer details from AMP"))
+    url = f"https://{client_id}:{api_key}@{url}"
+    response = requests.get(url, verify=False)
+    response.raise_for_status()
+    events_list = response.json()["data"]
+    return events_list
+
+
 def extract_observables(amp_events):
     """Extract hash, IP, and MAC address observables from Malware events."""
     print(blue("\n==> Extracting observables from the AMP events"))
@@ -82,14 +96,26 @@ def extract_observables(amp_events):
 
     # Standard AMP event ID for Malware events
     malware_event_id = 1107296272
-
+    value = ""
+    ip = ""
+    mac = ""
+    sha256= ""
     for event in amp_events:
         if event["event_type_id"] == malware_event_id:
-            hostname = event["computer"]["hostname"]
-            ip = event["computer"]["network_addresses"][0]["ip"]
-            mac = event["computer"]["network_addresses"][0]["mac"]
-            sha256 = event["file"]["identity"]["sha256"]
-
+            try:
+                hostname = event["computer"]["hostname"]
+                """ get the links URL to get details of infected computer"""
+                url = event["computer"]["links"]["computer"]
+                malU=url.partition("https://")[2]
+               
+                """ get the links URL to get details of infected computer"""
+                events_list = get_amp_computer_details(malU)
+                ip = events_list["network_addresses"][0]["ip"]
+                mac = events_list["network_addresses"][0]["mac"]
+                sha256 = event["file"]["identity"]["sha256"]
+                """ Handle missing dict Key errors"""
+            except KeyError as ke:
+                value = "None"
             observables.append({
                 "hostname": hostname,
                 "ip_address": ip,
