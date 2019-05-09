@@ -128,6 +128,10 @@ def readIocsFile(filename) :
         shalist = json.loads(fp.read())
     return shalist
 
+def write_risky_domains_for_firewall(filenamed, domainlist):
+    with open(filenamed, "w") as file:
+        json.dump(domainlist, file, indent=2)
+
 def removeDups(list) :
     domain_list_r = []
     domin_filter_ip = []
@@ -143,6 +147,7 @@ def handleDomains(filename) :
     try:
         domain_list = readIocsFile(filename)
         time = datetime.now().isoformat()
+        domain_list_f = []
         ## TODO call correct
         domain_list = removeDups(domain_list)
         print (domain_list)
@@ -153,10 +158,15 @@ def handleDomains(filename) :
             if(status != "error"):
                 if ((status == "bad") or (status == "risky")):
                     post_Enforcement(domain)
+                    domain_list_f.append(domain)
                 else:
                     print(f"Found clean domain, ignoring enforcement on {domain}")
             else:
                 print("got error from Umbrella investigate")
+        #Let's save another file with Umbrella Disposition on Domains 
+        # so that we block only bad & risky domains on firewalls
+        filenamed = repository_root / "mission-data/riskydomains.json"
+        write_risky_domains_for_firewall(filenamed, domain_list_f)
     except KeyboardInterrupt:
         print("\nExiting...\n")
 

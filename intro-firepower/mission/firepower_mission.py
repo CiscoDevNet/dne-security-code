@@ -46,7 +46,6 @@ from env_lab import FDM
 
 pathf = Path(__file__).parent.absolute()
 fdmfolder = (pathf / ".." / "fdm").resolve()
-from fdm_auth import fdm_login
 
 
 # Disable insecure request warnings
@@ -69,10 +68,13 @@ def login(host=FDM.get("host"),
     payload = {
         "grant_type": "password",
         "username": username,
-        "password": password,
+        "password": password
     }
     url = f"https://{host}:{port}/api/fdm/v1/fdm/token"
-    r = requests.post(url, data=auth_payload, verify=False, headers=headers)
+    print (url)
+    print (payload)
+    r = requests.post(url, json=payload, verify=False, headers=headers)
+    print(r)
     access_token = "Bearer %s" % r.json()['access_token']
     headers['Authorization'] = access_token
 
@@ -88,19 +90,20 @@ def get_spec_json(host=FDM.get("host"),
     return client
 
 # ----------------
-def create_url_object(client):
+def create_url_object(client, domains):
     url_object = client.get_model("URLObject")(type="urlobject")
-    url_object.name = "DNEbadguys"
+    url_object.name = domains
     #Mission TODO: Enter the domain you found malicious or questionable in Umbrella Investigate to block on FTD
-    url_object.url = "internetbadguys.com"
+    url_object.url = domains
     client.URLObject.addURLObject(body=url_object).result()
+    print(f"Created URL Object : {domains}\n\n")
 
 
-def create_access_rule(client):
+def create_access_rule(client, domains):
     # get access policy first
     access_policy = client.AccessPolicy.getAccessPolicyList().result()['items'][0]
     # fetch the url object we created
-    url_object = client.URLObject.getURLObjectList(filter="name:DNEbadguys").result()['items'][0]
+    url_object = client.URLObject.getURLObjectList(filter=domains).result()['items'][0]
     # reference model (name, id, type)
     ReferenceModel = client.get_model("ReferenceModel")
 
@@ -110,28 +113,53 @@ def create_access_rule(client):
 
     # Access Rule model
     access_rule = client.get_model("AccessRule")(type="accessrule")
-    access_rule.name = "block_DNEbadguys"
+    access_rule.name = domains
     access_rule.urlFilter = embedded_url_filter
+    access_rule.ruleAction = "DENY"
     client.AccessPolicy.addAccessRule(body=access_rule, parentId=access_policy.id).result()
-    print(blue("\n==> Posting message to Webex Teams"))
+    print(f"Created Access Policy to block URL Object : {domains}\n\n")
 
+        
+def removeDups(list) :
+    domain_list_r = []
+    domin_filter_ip = []
+    domain_final = []
+    for i in list:
+        if i not in domain_list_r:
+            domain_list_r.append(i)
+            domain_filter_ip = domain_list_r
+    print("We found dulicates and pruned the list :\n")
+    return domain_filter_ip
+
+
+def readdomains_file(filename) :
+    with open (filename, 'r') as fp:
+        maclist = json.loads(fp.read())
+    return maclist
+
+
+if __name__ == '__main__':
+    #TODO Mission login for API access
+    login()
+    client = get_spec_json()
+    domain_list = []
+    clean_domains = []
+    #Read the domain file created by ThreatGrid
+    domainlist_path = repository_root / "mission-data/riskydomains.json"
+    domain_list = readdomains_file(domainlist_path)
+    #TODO Mission make sure there no duplicate domains
+    clean_domains = removeDups(domain_list)
+    #TODO Mission itrate through the domain list and create URL objects and rules
+    for doms in clean_domains:
+        create_url_object(client, doms)
+        create_access_rule(client, doms)
+    #post Message to WebEx Teams!
+    print(blue("\n==> Posting message to Webex Teams"))
     teams = webexteamssdk.WebexTeamsAPI(env_user.WEBEX_TEAMS_ACCESS_TOKEN)
     teams.messages.create(
         roomId=env_user.WEBEX_TEAMS_ROOM_ID,
         markdown=f"**Firepower - FDM Mission completed!!!** \n\n"
-                 f"I was able to block domains {} "
-                 
+                 f"I was able to block domains from the file"
+
     )
-
     print(green("Firepower - FDM: Mission Completed!!!"))
-    
-    message = teams.messages.create(WEBEX_TEAMS_ROOM_ID,
-    text='MISSION: 0day FDM Blocking the Domain URL - I have completed the mission!')
-    #Mission TODO3: Print the responset 
-    print(message)
-
-if __name__ == '__main__':
-    login()
-    client = get_spec_json()
-    create_url_object(client)
-    create_access_rule(client)
