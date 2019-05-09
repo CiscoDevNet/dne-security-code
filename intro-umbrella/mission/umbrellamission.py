@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Mission - Cisco ThreatGrid
+"""Mission - Cisco Umbrella
 
 This is your research step in the Zero-day Workflow.
 
