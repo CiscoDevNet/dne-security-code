@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-"""Mission - Cisco Umbrella
-
-This is your research step in the Zero-day Workflow.
+"""
 
 
 Copyright (c) 2018-2019 Cisco and/or its affiliates.
@@ -65,7 +63,7 @@ domain_url = "https://s-platform.api.opendns.com/1.0/domains"
 
 # URL needed for POST request
 url_get = domain_url + '?customerKey=' + enforcement_api_key
-print (url_get)
+
 # create empty list to contain all domains already in Umbrella
 domain_list = []
 
