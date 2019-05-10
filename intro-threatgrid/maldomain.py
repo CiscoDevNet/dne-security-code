@@ -1,4 +1,5 @@
-"""Simple Script for ThreatGrid Hands-On Lab - Step 3.
+#!/usr/bin/env python
+"""Search ThreatGrid Submissions.
 
 Copyright (c) 2018-2019 Cisco and/or its affiliates.
 
@@ -23,30 +24,26 @@ SOFTWARE.
 
 
 import json
+import sys
+from datetime import datetime, timedelta
+from pathlib import Path
 
 import requests
+from crayons import blue, green, white
 
 
-# Request parameters
-parameters = {
-    "domain": "lamp.troublerifle.bid",
-    "after": "2018-07-18T21:39:13Z",
-    "before": "2019-07-18T22:39:13Z",
-    "api_key": "",
-}
+# Locate the directory containing this file and the repository root.
+# Temporarily add these directories to the system path so that we can import
+# local files.
+here = Path(__file__).parent.absolute()
+repository_root = (here / "..").resolve()
 
-# Make the request
-response = requests.get(
-    "https://panacea.threatgrid.com/api/v2/iocs/feeds/domains",
-    params=parameters,
-)
+sys.path.insert(0, str(repository_root))
 
-# Check that the request was successful; raise an exception if it it wasn't
-response.raise_for_status()
+from env_lab import THREATGRID  # noqa
+from env_user import THREATGRID_API_KEY  # noqa
+api_key = THREATGRID_API_KEY
 
-# Parse the response data
-response_data = response.json()
-
-# Write the parsed data to a local file
-with open("step3-results.json", "w") as file:
-    json.dump(response_data, file, indent=2)
+url = 'https://panacea.threatgrid.com/api/v2/iocs/feeds/domains?after=2018-07-18T21:39:13Z&before=2019-07-18T22:39:13Z&domain=lamp.troublerifle.bid&api_key={}'.format(api_key)
+r = requests.get(url)
+print (r.json())

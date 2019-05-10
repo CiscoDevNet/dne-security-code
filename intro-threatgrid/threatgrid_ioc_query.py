@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     query_start = datetime.utcnow() - timedelta(days=TIME_PERIOD)
     query_end = datetime.utcnow()
-
+    #TODO Call the function for query feed.
     malware_samples = query_threatgrid_ioc_feed(
         query_domain,
         after=f"{query_start.isoformat()}Z",
@@ -106,5 +106,6 @@ if __name__ == "__main__":
 
     malware_samples_path = here / f"{query_domain}-malware-samples-data.json"
     print(blue(f"\n==> Saving samples data to: {malware_samples_path}"))
+    #TODO: Pass the proper path to the open function
     with open(malware_samples_path, "w") as file:
         json.dump(malware_samples, file, indent=2)
