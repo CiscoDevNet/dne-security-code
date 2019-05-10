@@ -91,6 +91,6 @@ if __name__ == "__main__":
 
     submission_info_path = here / f"{sha256}-submission-info.json"
     print(blue(f"\n==> Saving submission info to: {submission_info_path}"))
-     """ #TODO Pass the file path to open function to write the file """
+    """ #TODO Pass the file path to open function to write the file """
     with open(submission_info_path, "w") as file:
         json.dump(submission_info, file, indent=2)
