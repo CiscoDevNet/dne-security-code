@@ -20,7 +20,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-
 from datetime import datetime
 import requests
 import socket
@@ -28,7 +27,7 @@ import configparser
 import json
 import sys
 from pathlib import Path
-import webexteamssdk
+
 from crayons import blue, green, red
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
@@ -56,7 +55,7 @@ import requests
 import json
 from datetime import datetime
 
-# copy paste API key from previous section within the quotes
+# API key from evn_user.py
 investigate_api_key = UMBRELLA_INVESTIGATE_KEY
 
 # URL needed for the domain status and category
@@ -99,6 +98,7 @@ def get_umbrella_dispos(domains):
     else:
         print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" %
               {'error': req.status_code})
+
 if __name__ == "__main__":
     #TODO Call the function to get dispostion on these domains 
     domains = ["internetbadguys.com", "cnn.com", "cisco.com"]
