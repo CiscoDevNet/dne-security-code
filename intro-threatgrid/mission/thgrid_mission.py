@@ -109,9 +109,10 @@ def find_Obervables(sha_256_1):
     for sample, score in sample_ids.items():
         total = total + score
         sample_string = "{}{},".format(sample_string, sample)
-        #average = total/num_of_runs
-    #print ("Sample was run {} times and results in an average score of {}".format (num_of_runs, average))
-    print("Behavior of sample:")
+    if(num_of_runs>0):
+        print(f"Threat Score of sample: {total/num_of_runs}\n")
+    else:
+        print(f"Sample not found in the time window provided\n")
     for value in behaviors:
         if len(value)== 0:
             writeme.append(f"Sample for {sha_256_1} not found in the ThreatGrid.. Try increasing the time window or upload the sample")
@@ -149,6 +150,7 @@ if __name__ == "__main__":
     # endpoints.sha256-list.json
     shalist_path = repository_root / "mission-data/sha256-list.json"
     shalist = readIocsFile(shalist_path)
+    #TODO: Mission iterate the shalist and find obereravales
     for items in shalist:
         find_Obervables(items)
     domainlist_path = repository_root / "mission-data/domainlist.json"
