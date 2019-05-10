@@ -62,7 +62,7 @@ def is_valid_ipv4_address(address):
         socket.inet_pton(socket.AF_INET, address)
     except AttributeError:  # no inet_pton here, sorry
         try:
-            print(address)
+            #print(address)
             socket.inet_aton(address)
         except socket.error:
             return False
@@ -97,10 +97,10 @@ headers = {
 'Authorization': 'Bearer ' + investigate_api_key,
 'limit': '1'
 }
-print(url_post)
+#print(url_post)
 
 def get_DomainStatus(getUrl, domain) :
-    print(getUrl)
+    #print(getUrl)
     req = requests.get(getUrl, headers=headers)
     if(req.status_code == 200):
         output = req.json()
@@ -111,8 +111,8 @@ def get_DomainStatus(getUrl, domain) :
             {'domain': domain, 'time': time})
             return "bad"
         elif(domainStatus == 1):
-            print("SUCCESS: The domain %(domain)s is found CLEAN at %(time)s" %
-            {'domain': domain, 'time': time})
+            #print("SUCCESS: The domain %(domain)s is found CLEAN at %(time)s" %
+            #{'domain': domain, 'time': time})
             return "clean"
         elif(domainStatus == 0):
             print("SUCCESS: The domain %(domain)s is found UNDEFINED / RISKY at %(time)s" %
@@ -150,9 +150,9 @@ def handleDomains(filename) :
         domain_list_f = []
         ## TODO call correct
         domain_list = removeDups(domain_list)
-        print (domain_list)
+        #print (domain_list)
         for domain in domain_list:
-            print(domain)
+            print(f"Working on {domain} .....")
             get_url = investigate_url + domain +  "?showLabels"
             status = get_DomainStatus(get_url, domain)
             if(status != "error"):
@@ -198,6 +198,7 @@ if __name__ == "__main__":
     # file.  In the ISE Mission we will read this file and quarantine these
     # endpoints.sha256-list.json
     domainlist_path = repository_root / "mission-data/domainlist.json"
+    #TODO: Mission call the function to handle domains
     handleDomains(domainlist_path)
     teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
     teams.messages.create(
