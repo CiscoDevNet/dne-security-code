@@ -48,6 +48,8 @@ sys.path.insert(0, str(repository_root))
 
 from env_lab import THREATGRID  # noqa
 from env_user import THREATGRID_API_KEY  # noqa
+from env_user import WEBEX_TEAMS_ACCESS_TOKEN
+from env_user import WEBEX_TEAMS_ROOM_ID
 # Disable insecure request warnings
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 th_headers = {
@@ -93,7 +95,7 @@ def find_Obervables(sha_256_1):
         return
     sample_ids = {}
     behaviors = []
-    flist_path = repository_root / "mission-data" / f"{sha_256_1}.json" 
+    flist_path = repository_root / "mission-data" / f"{sha_256_1}.json"
     for sample in samples['data']['items']:
         sample_ids[sample["item"]["sample"]
                    ] = sample["item"]["analysis"]["threat_score"]
@@ -116,7 +118,7 @@ def find_Obervables(sha_256_1):
     for value in behaviors:
         if len(value)== 0:
             writeme.append(f"Sample for {sha_256_1} not found in the ThreatGrid.. Try increasing the time window or upload the sample")
-        else: 
+        else:
             writeme.append(value)
         sample_string = sample_string[:-1]
     writer_file(flist_path, writeme, None)
@@ -160,9 +162,9 @@ if __name__ == "__main__":
     # Finally, post a message to the Webex Teams Room to brag!!!
     print(blue("\n==> Posting message to Webex Teams"))
 
-    teams = webexteamssdk.WebexTeamsAPI(env_user.WEBEX_TEAMS_ACCESS_TOKEN)
+    teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
     teams.messages.create(
-        roomId=env_user.WEBEX_TEAMS_ROOM_ID,
+        roomId=WEBEX_TEAMS_ROOM_ID,
         markdown=f"**ThreatGrid Mission completed!!!** \n\n"
                  f"I extracted domains & IP associated with SHAs {len(observables)} using ThreatGrid "
                  f"APIs Sample Search."
