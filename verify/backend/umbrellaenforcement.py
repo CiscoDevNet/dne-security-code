@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-"""
+"""Verify the Umbrella Plaform Enforcement API is accessible and responding.
 
-
-Copyright (c) 2018-2019 Cisco and/or its affiliates.
+Copyright (c) 2019-2020 Cisco and/or its affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -60,25 +59,26 @@ domain_url = "https://s-platform.api.opendns.com/1.0/domains"
 # URL needed for POST request
 url_get = domain_url + '?customerKey=' + enforcement_api_key
 
-# create empty list to contain all domains already in Umbrella
-domain_list = []
-
 # keep doing GET requests, until looped through all domains
-while True:
-    req = requests.get(url_get)
-    json_file = req.json()
-    for row in json_file["data"]:
-        domain_list.append(row["name"])
-    # GET requests will only list 200 domains, if more than that, it will request next bulk of 200 domains
-    if bool(json_file["meta"]["next"]):
-        Url = json_file["meta"]["next"]
-    # break out of loop when finished
-    else:    
-        break
 
-# error handling if true then the request was HTTP 200, so successful 
-if(req.status_code == 200):
-  print("SUCCESS: the following domain(s) are in your current custom Block List:")
-  print(domain_list)
-else:
-  print("An error has ocurred with the following code %(error)s, please consult the following link: https://enforcement-api.readme.io/" % {'error': req.status_code})
+def verify() -> bool:
+    """Verify access to the NFVIS Device."""
+    print("==> Verifying access to the Umbrella Platform Enforecment APIs in Cloud.")
+    try:
+        req = requests.get(url_get)
+        if(req.status_code == 200):
+            print(f"Umbrella Platform Enforcement API is accessible and API key is good!\n")
+            return True
+        elif(req.status_code == 401):
+            print(f"Umbrella Platform Enforcement API is accessible and API key is NOT Working!\n")
+            return False
+        else:
+            print(f"Umbrella Platform Enforcement API is pingable but something went very wrong!\n")
+            return False
+    except:
+        print("Unable to access Umbrella Investigate Cloud")
+        return False
+
+
+if __name__ == "__main__":
+    verify()

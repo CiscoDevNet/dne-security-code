@@ -22,7 +22,6 @@ SOFTWARE.
 """
 from datetime import datetime
 import requests
-import socket
 import configparser
 import json
 import sys
