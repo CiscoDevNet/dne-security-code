@@ -73,7 +73,7 @@ headers = {
 
 # assemble the URI, show labels give readable output
 get_url = investigate_url + domain + "?showLabels"
-
+print(get_url)
 # do GET request for the domain status and category
 req = requests.get(get_url, headers=headers)
 

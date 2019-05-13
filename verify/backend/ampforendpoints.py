@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-"""Verify the Umbrella Plaform Enforcement API is accessible and responding.
+"""Verify the AMP for Endpoints APIs are accessible and responding.
+
+Verify that DNA Center Sanbox Northbound APIs are accessible and
+responding with data.
+
 
 Copyright (c) 2019-2020 Cisco and/or its affiliates.
 
@@ -22,13 +26,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from datetime import datetime
-import requests
-import configparser
-import json
 import sys
 from pathlib import Path
+
+import requests
 from crayons import blue, green, red
+from requests import HTTPError
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
@@ -36,46 +39,52 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # Temporarily add these directories to the system path so that we can import
 # local files.
 here = Path(__file__).parent.absolute()
-repository_root = (here / ".."/"..").resolve()
+repository_root = (here / ".." / "..").resolve()
 
 sys.path.insert(0, str(repository_root))
 
-sys.path.insert(0, str(repository_root))
-
-from env_lab import UMBRELLA  # noqa
-from env_user import UMBRELLA_ENFORCEMENT_KEY
+import env_lab  # noqa
+import env_user 
 
 # Disable insecure request warnings
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-enforcement_api_key = UMBRELLA_ENFORCEMENT_KEY
 
-# URL needed to do POST requests
-domain_url = "https://s-platform.api.opendns.com/1.0/domains"
+def get_amp_events(
+    host=env_lab.AMP.get("host"),
+    client_id=env_user.AMP_CLIENT_ID,
+    api_key=env_user.AMP_API_KEY,
+):
+    """Get a list of recent events from Cisco AMP."""
+    print("\n==> Getting recent events from AMP")
 
-# URL needed for POST request
-url_get = domain_url + '?customerKey=' + enforcement_api_key
+    url = f"https://{client_id}:{api_key}@{host}/v1/events"
 
-# keep doing GET requests, until looped through all domains
+    response = requests.get(url, verify=False)
+    response.raise_for_status()
+
+    events_list = response.json()
+
+    print(green(f"Retrieved events from AMP..."))
+
+    return events_list
+
 
 def verify() -> bool:
-    """Verify access to the NFVIS Device."""
-    print(blue("\n==> Verifying access to the Umbrella Platform Enforecment APIs in Cloud."))
+    """Verify access to the AMP for Endpoints APIs."""
+    print(blue('\n\n==> Verifying access to the AMP for Endpoints APIs'))
+     # Verify the Spark Room exists and is accessible via the access token
     try:
-        req = requests.get(url_get)
-        if(req.status_code == 200):
-            print(green(f"Umbrella Platform Enforcement API is accessible and API key is good!\n"))
-            return True
-        elif(req.status_code == 401):
-            print(red(f"Umbrella Platform Enforcement API is accessible and API key is NOT Working!\n"))
-            return False
+        if(len(get_amp_events())):
+            print(green(f"AMP for endpoints API is accessible!\n"))
         else:
-            print(red(f"Umbrella Platform Enforcement API is pingable but something went very wrong!\n"))
-            return False
+            print(red(f"AMP for endpoints API is accessible, API credentials might be wrong"))
     except:
-        print(red("Unable to access Umbrella Investigate Cloud\n"))
+        print(red("Unable to contact AMP for Endpoints"))
         return False
+   
+    return True
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     verify()

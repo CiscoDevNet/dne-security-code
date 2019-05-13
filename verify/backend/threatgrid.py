@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-"""Verify the Umbrella Plaform Enforcement API is accessible and responding.
+"""Verify the ThreatGrid APIs are accessible and responding.
+
+
 
 Copyright (c) 2019-2020 Cisco and/or its affiliates.
 
@@ -22,13 +24,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from datetime import datetime
-import requests
-import configparser
-import json
 import sys
 from pathlib import Path
+
+import requests
 from crayons import blue, green, red
+from requests import HTTPError
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
@@ -36,46 +37,42 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # Temporarily add these directories to the system path so that we can import
 # local files.
 here = Path(__file__).parent.absolute()
-repository_root = (here / ".."/"..").resolve()
+repository_root = (here / ".." / "..").resolve()
 
 sys.path.insert(0, str(repository_root))
 
-sys.path.insert(0, str(repository_root))
-
-from env_lab import UMBRELLA  # noqa
-from env_user import UMBRELLA_ENFORCEMENT_KEY
+from env_lab import THREATGRID  # noqa
+from env_user import THREATGRID_API_KEY  # noqa
 
 # Disable insecure request warnings
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-enforcement_api_key = UMBRELLA_ENFORCEMENT_KEY
+def ThreatGrid_get():
+    api_key = THREATGRID_API_KEY
+    print("\n==> Getting recent events from ThreatGrid")
+    url = 'https://panacea.threatgrid.com/api/v2/iocs/feeds/domains?after=2018-07-18T21:39:13Z&before=2019-07-18T22:39:13Z&domain=lamp.troublerifle.bid&api_key={}'.format(api_key)
+    r = requests.get(url)
+    r.raise_for_status()
+    print(green(f"Retrieved events from ThreatGrid..."))
 
-# URL needed to do POST requests
-domain_url = "https://s-platform.api.opendns.com/1.0/domains"
+    return (r.json())
 
-# URL needed for POST request
-url_get = domain_url + '?customerKey=' + enforcement_api_key
-
-# keep doing GET requests, until looped through all domains
 
 def verify() -> bool:
-    """Verify access to the NFVIS Device."""
-    print(blue("\n==> Verifying access to the Umbrella Platform Enforecment APIs in Cloud."))
+    """ThreatGrid APIs"""
+    print(blue("\n==> Verifying access to the ThreatGrid APIs"))
+    
     try:
-        req = requests.get(url_get)
-        if(req.status_code == 200):
-            print(green(f"Umbrella Platform Enforcement API is accessible and API key is good!\n"))
-            return True
-        elif(req.status_code == 401):
-            print(red(f"Umbrella Platform Enforcement API is accessible and API key is NOT Working!\n"))
-            return False
+        if(len(ThreatGrid_get())):
+            print(green(f" ThreatGrid API is accessible!\n"))
         else:
-            print(red(f"Umbrella Platform Enforcement API is pingable but something went very wrong!\n"))
-            return False
+            print(red(f" ThreatGrid API is accessible, API credentials might be wrong"))
     except:
-        print(red("Unable to access Umbrella Investigate Cloud\n"))
+        print(red("Unable to contact ThreatGrid Cloud"))
         return False
 
+    return True
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     verify()

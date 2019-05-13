@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Verify the Umbrella Plaform Enforcement API is accessible and responding.
+"""Verify the ISE APIs are accessible and responding.
 
 Copyright (c) 2019-2020 Cisco and/or its affiliates.
 
@@ -22,13 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from datetime import datetime
-import requests
-import configparser
-import json
 import sys
 from pathlib import Path
+
+import requests
 from crayons import blue, green, red
+from requests import HTTPError
+from requests.auth import HTTPBasicAuth
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
@@ -36,45 +36,55 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # Temporarily add these directories to the system path so that we can import
 # local files.
 here = Path(__file__).parent.absolute()
-repository_root = (here / ".."/"..").resolve()
+repository_root = (here / ".." / "..").resolve()
 
 sys.path.insert(0, str(repository_root))
 
-sys.path.insert(0, str(repository_root))
+from env_lab import ISE  # noqa
 
-from env_lab import UMBRELLA  # noqa
-from env_user import UMBRELLA_ENFORCEMENT_KEY
 
 # Disable insecure request warnings
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-enforcement_api_key = UMBRELLA_ENFORCEMENT_KEY
+def get_ise_anc_policies(
+    host=ISE.get("host"),
+    port=ISE.get("port"),
+    username=ISE.get("username"),
+    password=ISE.get("password"),
+):
+    """Get a list of configured ISE Adaptive Network Control (ANC) policies."""
+    print("\n==> Getting ISE ANC policies")
 
-# URL needed to do POST requests
-domain_url = "https://s-platform.api.opendns.com/1.0/domains"
+    headers = {
+        'Content-Type': "application/json",
+        'Accept': "application/json"
+        }
 
-# URL needed for POST request
-url_get = domain_url + '?customerKey=' + enforcement_api_key
+    authentication = HTTPBasicAuth(username, password)
 
-# keep doing GET requests, until looped through all domains
+    response = requests.get(
+        f"https://{host}:{port}/ers/config/ancpolicy",
+        headers=headers,
+        auth=authentication,
+        verify=False,
+    )
+    response.raise_for_status()
+
+    return response.json()["SearchResult"]["resources"]
 
 def verify() -> bool:
-    """Verify access to the NFVIS Device."""
-    print(blue("\n==> Verifying access to the Umbrella Platform Enforecment APIs in Cloud."))
+    """Verify access to the ISE ERS REST APIs."""
+    print(blue("\n==> Verifying access to the ISE ERS REST APIs for Environment."))
     try:
-        req = requests.get(url_get)
-        if(req.status_code == 200):
-            print(green(f"Umbrella Platform Enforcement API is accessible and API key is good!\n"))
-            return True
-        elif(req.status_code == 401):
-            print(red(f"Umbrella Platform Enforcement API is accessible and API key is NOT Working!\n"))
-            return False
+        if(len(get_ise_anc_policies())):
+            print(green(f"ISE ERS REST API is accessible!\n"))
         else:
-            print(red(f"Umbrella Platform Enforcement API is pingable but something went very wrong!\n"))
-            return False
+            print(red(f"ISE ERS REST API is accessible, API credentials might be wrong"))
     except:
-        print(red("Unable to access Umbrella Investigate Cloud\n"))
+        print(red("Unable to contact ISE ERS REST API"))
         return False
+
+    return True
 
 
 if __name__ == "__main__":

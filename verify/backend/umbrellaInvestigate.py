@@ -24,12 +24,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 import requests
-import system
+import configparser
+import json
+import sys
+from pathlib import Path
+
+from crayons import blue, green, red
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # Locate the directory containing this file and the repository root.
 # Temporarily add these directories to the system path so that we can import
 # local files.
 here = Path(__file__).parent.absolute()
-repository_root = (here / ".." ).resolve()
+repository_root = (here / ".." / ".." ).resolve()
 
 sys.path.insert(0, str(repository_root))
 
@@ -44,6 +50,10 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 def doUmbrellaGet() :
     investigate_api_key = UMBRELLA_INVESTIGATE_KEY
     # URL needed for the domain status and category
+    #create header for authentication
+    headers = {
+        'Authorization': 'Bearer ' + investigate_api_key
+    }
     # # investigate_url = "https://investigate.api.umbrella.com/domains/categorization/"
     inv_u = UMBRELLA.get("inv_url")
     investigate_url = f"{inv_u}/domains/categorization/" 
@@ -55,32 +65,40 @@ def doUmbrellaGet() :
         }
     # assemble the URI, show labels give readable output
     get_url = investigate_url + domain + "?showLabels"
+
     #do GET request for the domain status and category
-    req = requests.get(get_url, headers=headers)
-    time for timestamp of verdict domain
-    time = datetime.now().isoformat()
-    if(req.status_code == 200):
-        return "Green"
-    elif(req.status_code == 401):
-        return "Orange"
-    else:
+    try:
+        req = requests.get(get_url, headers=headers)
+        
+        # time for timestamp of verdict domain
+        if(req.status_code == 200):
+            return "Green"
+        elif(req.status_code == 401):
+            return "Yellow"
+        else:
+            return "Orange"
+    except:
         return "Red"
 
 
 def verify() -> bool:
-    print("==> Verifying access to the Umberlla Investigate APIs")
+    print(blue("\n==> Verifying access to the Umberlla Investigate APIs"))
 
     """ Verify the umbrella investigate accessible via the provided token """
-    try:
-        result = doUmbrellaGet()
-        if (result == "Green"):
-            print(f"Umbrella Investigate is accessible and token is good!\n")
-            return True
-        elif (result == "Orange" OR result == "Red"):
-            print(f"Umbrella Investigate is accessible But token is NO good!\n")
-            return
-    except:
-        print("Unable to access Umbrella Investigate Cloud")
+    
+    result = doUmbrellaGet()
+
+    if (result == "Green"):
+        print(green(f"Umbrella Investigate is accessible and token is good!\n"))
+        return True
+    elif (result == "Yellow"):
+        print(red(f"Umbrella Investigate is accessible But token is NO good!\n"))
+        return False
+    elif (result == "Orange"):
+        print(red(f"Umbrella Investigate is accessible But something went very wrong!\n"))
+        return False
+    else:
+        print(red("Unable to access Umbrella Investigate Cloud\n"))
         return False
 
 
