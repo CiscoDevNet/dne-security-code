@@ -43,7 +43,8 @@ sys.path.insert(0, str(repository_root))
 
 
 from env_lab import FDM
-
+from env_user import WEBEX_TEAMS_ACCESS_TOKEN
+from env_user import WEBEX_TEAMS_ROOM_ID
 pathf = Path(__file__).parent.absolute()
 fdmfolder = (pathf / ".." / "fdm").resolve()
 
@@ -155,9 +156,9 @@ if __name__ == '__main__':
         create_access_rule(client, doms)
     #post Message to WebEx Teams!
     print(blue("\n==> Posting message to Webex Teams"))
-    teams = webexteamssdk.WebexTeamsAPI(env_user.WEBEX_TEAMS_ACCESS_TOKEN)
+    teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
     teams.messages.create(
-        roomId=env_user.WEBEX_TEAMS_ROOM_ID,
+        roomId=WEBEX_TEAMS_ROOM_ID,
         markdown=f"**Firepower - FDM Mission completed!!!** \n\n"
                  f"I was able to block domains from the file"
 
