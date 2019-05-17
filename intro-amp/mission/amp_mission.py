@@ -82,7 +82,7 @@ def get_amp_computer_details( url,
     print(blue("\n==> Getting infected computer details from AMP"))
     url = f"https://{client_id}:{api_key}@{url}"
     
-    #TODO: do a GET request to retrieve infected computer details (remmeber to NOT do SSL verification)
+    #TODO: do a GET request to retrieve infected computer details (remmeber to NOT do SSL verification!)
     response = 
     
     response.raise_for_status()

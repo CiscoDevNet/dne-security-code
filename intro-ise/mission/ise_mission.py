@@ -99,7 +99,7 @@ def get_policy_ise():
     return namelist
 
 def post_to_ise(maclist, namelist):
-    #TODO: finish the URL for the PUT request to apply the ANC policy
+    #TODO: finish the URL for the PUT request to apply the ANC policy!
     url = f".../ers/config/ancendpoint/apply"
     for items in maclist:
         payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{\r\n    \"name\": \"macAddress\",\r\n    \"value\": \""+ items + "\"\r\n    },\r\n    {\r\n    \"name\": \"policyName\",\r\n    \"value\": \"" + namelist + '"' + "\r\n    }]\r\n  }\r\n}"

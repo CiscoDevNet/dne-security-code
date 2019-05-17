@@ -152,7 +152,7 @@ if __name__ == "__main__":
     # endpoints.sha256-list.json
     shalist_path = repository_root / "mission-data/sha256-list.json"
     shalist = readIocsFile(shalist_path)
-    #TODO: iterate trhough the shalist and find the obereravales per sha
+    #TODO: iterate trhough the shalist and find the obereravales per sha!
     for ... in ...:
 
         

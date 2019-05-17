@@ -88,7 +88,7 @@ event_url = UMBRELLA.get("en_url")
 url_post = event_url + '?customerKey=' + enforcement_api_key
 
 inv_u = UMBRELLA.get("inv_url") 
-#TODO: finish the URL to get the Status and Category of a domain
+#TODO: finish the URL to get the Status and Category of a domain!
 investigate_url = f"{inv_u}/..." 
 
 #create header for authentication and set limit of sample return to 1
