@@ -60,7 +60,7 @@ domain_list = []
 #containers for the Ips
 ip_list = []
 observables=[]
-def readIocsFile(filename) :
+def readIocsFile(filename):
     with open (filename, 'r') as fp:
         shalist = json.loads(fp.read())
     return shalist
@@ -137,7 +137,7 @@ def find_Obervables(sha_256_1):
                             "ip_address": item,
                         })
 
-def writer_file(filename, glist, ioc) :
+def writer_file(filename, glist, ioc):
     with open(filename, "w") as file:
         if ioc==None:
             json.dump(glist, file, indent=2)
@@ -152,9 +152,10 @@ if __name__ == "__main__":
     # endpoints.sha256-list.json
     shalist_path = repository_root / "mission-data/sha256-list.json"
     shalist = readIocsFile(shalist_path)
-    #TODO: Mission iterate the shalist and find obereravales
-    for items in shalist:
-        find_Obervables(items)
+    #TODO: iterate trhough the shalist and find the obereravales per sha
+    for ... in ...:
+
+        
     domainlist_path = repository_root / "mission-data/domainlist.json"
     iplist_path = repository_root / "mission-data/iplist.json"
     writer_file(domainlist_path, observables, "domains")
