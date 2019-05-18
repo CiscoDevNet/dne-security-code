@@ -79,10 +79,20 @@ password = env_lab.ISE.get("password")
 host = env_lab.ISE.get("host")
 port = env_lab.ISE.get("port")
 
+
+def print_missing_mission_warn() :
+    print(blue(f"\nPlease replace 'MISSION' with correct required mission statements!\n"))
+    print(green(f"At hosted DNE Event; Please ask for help from procter or your neighbour attendee; if you are not making progress...\n"))
+    return exit()
+
+
+#print missing mission warning!
+MISSION = print_missing_mission_warn()
+
 def get_policy_ise():
     
     #TODO: finish the URL for the GET request to get the ANC policy from ISE
-    url = f"https://{username}:{password}@..."
+    url = f"https://{username}:{password}@{MISSION}"
     
     #Create GET Request 
     req = requests.get(url, verify=False, headers=headers)
@@ -100,7 +110,7 @@ def get_policy_ise():
 
 def post_to_ise(maclist, namelist):
     #TODO: finish the URL for the PUT request to apply the ANC policy!
-    url = f".../ers/config/ancendpoint/apply"
+    url = f"{MISSION}.../ers/config/ancendpoint/apply"
     for items in maclist:
         payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{\r\n    \"name\": \"macAddress\",\r\n    \"value\": \""+ items + "\"\r\n    },\r\n    {\r\n    \"name\": \"policyName\",\r\n    \"value\": \"" + namelist + '"' + "\r\n    }]\r\n  }\r\n}"
         print(json.dumps(payload,sort_keys=True,indent=3))
@@ -113,11 +123,13 @@ def post_to_ise(maclist, namelist):
 if __name__ == "__main__":
    maclist_path = repository_root / "mission-data/mac-addresses.json"
    maclist = readmacaddr_file(maclist_path)
+   
    #TODO Call the function for getting ANC policy and store it in the policylist variable
-   policylist = 
+   policylist = MISSION
 
    #TODO call the function for applying policy to the endpoints
-   post_to_ise(maclist, policylist)
+   MISSION
+
 
    # # Finally, post a message to the Webex Teams Room to brag!!!
    print(blue("\n==> Posting message to Webex Teams"))

@@ -146,20 +146,35 @@ def writer_file(filename, glist, ioc):
             json.dump(jsondata, file, indent=2)
     file.close()
 
+
+def print_missing_mission_warn() :
+    print(blue(f"\nPlease replace 'MISSION' with correct required mission statements!\n"))
+    print(green(f"At hosted DNE Event; Please ask for help from procter or your neighbour attendee; if you are not making progress...\n"))
+    return exit()
+
+
+#print missing mission warning!
+MISSION = print_missing_mission_warn()
+
+
 if __name__ == "__main__":
     # Save the MAC addresses of the endpoints where malware executed to a JSON
     # file.  In the ISE Mission we will read this file and quarantine these
     # endpoints.sha256-list.json
     shalist_path = repository_root / "mission-data/sha256-list.json"
     shalist = readIocsFile(shalist_path)
-    #TODO: iterate trhough the shalist and find the obereravales per sha!
-    for ... in ...:
+    #TODO: iterate trhough the shalist and find the obereravales per sha! hint: for ... in ...:
+    MISSION
 
-        
+    #Create data files for the Umbrella Mission.    
     domainlist_path = repository_root / "mission-data/domainlist.json"
     iplist_path = repository_root / "mission-data/iplist.json"
+
     writer_file(domainlist_path, observables, "domains")
-    writer_file(iplist_path, observables, "ip_address")
+    
+    #TODO: Write the ipaddress from observables to a file: Hint look above how we did the domains
+    MISSION
+
     # Finally, post a message to the Webex Teams Room to brag!!!
     print(blue("\n==> Posting message to Webex Teams"))
 

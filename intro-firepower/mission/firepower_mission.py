@@ -185,7 +185,7 @@ def dedupe_list(mylist) :
             deduped_items.append(i)
         else:
             duplicates.append(i)
-    print(f"We found dulicates and pruned the list : {duplicates}\n")
+            print(f"We found dulicates and pruned the list : {duplicates}\n")
     return deduped_items
 
 
@@ -194,6 +194,15 @@ def readdomains_file(filename) :
         maclist = json.loads(fp.read())
     return maclist
 
+
+def print_missing_mission_warn() :
+    print(blue(f"\nPlease replace 'MISSION' with correct required mission statements!\n"))
+    print(green(f"At hosted DNE Event; Please ask for help from procter or your neighbour attendee; if you are not making progress...\n"))
+    return exit()
+
+
+#print missing mission warning!
+MISSION = print_missing_mission_warn()
 
 if __name__ == '__main__':
     #TODO Mission login for API access
@@ -205,13 +214,19 @@ if __name__ == '__main__':
     domainlist_path = repository_root / "mission-data/riskydomains.json"
     domain_list = readdomains_file(domainlist_path)
     #TODO Mission make sure there no duplicate domains
-    clean_domains = dedupe_list(domain_list)
-    #TODO Mission itrate through the domain list and create URL objects and rules
+    clean_domains = MISSION
+    
     url_objects = []
     for doms in clean_domains:
         url_objects.append(create_url_object(client, doms))
-    url_object_group = create_url_object_group(client, 'my_url_object_group', url_objects)
-    create_access_rule(client, url_object_group)
+        
+    #TODO Mission create a url group using the url_objects created in the above steps : 
+    #Pass these 3 values to the proper function client, "your_picked_name_for_URL_Object", url objects create in above for loop
+    url_object_group = MISSION
+    
+    #TODO Mission Create Access Rule to the block the URL object created above ... which will block all the risky domains 
+    MISSION
+
     #post Message to WebEx Teams!
     print(blue("\n==> Posting message to Webex Teams"))
     teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)

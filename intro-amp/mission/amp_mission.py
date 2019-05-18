@@ -83,7 +83,7 @@ def get_amp_computer_details( url,
     url = f"https://{client_id}:{api_key}@{url}"
     
     #TODO: do a GET request to retrieve infected computer details (remmeber to NOT do SSL verification!)
-    response = 
+    response = MISSION
     
     response.raise_for_status()
     events_list = response.json()["data"]
@@ -136,13 +136,22 @@ def extract_observables(amp_events):
     return observables
 
 
+def print_missing_mission_warn() :
+    print(blue(f"\nPlease replace 'MISSION' with correct required mission statements!\n"))
+    print(green(f"At hosted DNE Event; Please ask for help from procter or your neighbour attendee; if you are not making progress...\n"))
+    return exit()
+
+
+#print missing mission warning!
+MISSION = print_missing_mission_warn()
+
 # If this script is the "main" script, run...
 if __name__ == "__main__":
     #TODO: Use the right function to fill the amp_events variable with the AMP events
-    amp_events = 
+    amp_events = MISSION
 
     #TODO: Use the right function to fill the amp_observables variable with extracted observables from the AMP events
-    amp_observables = 
+    amp_observables = MISSION
 
     # Save the MAC addresses of the endpoints where malware executed to a JSON
     # file.  In the ISE Mission we will read this file and quarantine these
@@ -160,7 +169,7 @@ if __name__ == "__main__":
     print(blue(f"\n==> Saving SHA256 hashes to: {sha256_list_path}"))
 
     #TODO: open a file and write to it (just like on line 150-152), but this time with the sha256_list_path, and not with mac addresses but with the sha256 hashes
-    with open(
+    MISSION
 
     # Finally, post a message to the Webex Teams Room to brag!!!
     print(blue("\n==> Posting message to Webex Teams"))
