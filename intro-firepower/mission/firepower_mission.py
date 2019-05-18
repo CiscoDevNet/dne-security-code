@@ -59,6 +59,8 @@ headers = {
     "Authorization": "Bearer "
 }
 
+api_version = 1
+
 #mission TODO: Enter the FTD hostname/ip here... (TIP: dont't forget to use HTTPS + the IP)
 
 def login(host=FDM.get("host"),
@@ -69,9 +71,9 @@ def login(host=FDM.get("host"),
     payload = {
         "grant_type": "password",
         "username": username,
-        "password": password
+        "password": password,
     }
-    url = f"https://{host}:{port}/api/fdm/v1/fdm/token"
+    url = f"https://{host}:{port}/api/fdm/v{api_version}/fdm/token"
     print (url)
     print (payload)
     r = requests.post(url, json=payload, verify=False, headers=headers)
@@ -91,46 +93,100 @@ def get_spec_json(host=FDM.get("host"),
     return client
 
 # ----------------
-def create_url_object(client, domains):
+def create_reference_model(client, model):
+    """
+    Creates a ReferenceModel object referring to the passed in model object.
+    This is used when one object refers to another object.
+
+    client -- Bravado client object
+    model -- destination model object
+    """
+    ReferenceModel = client.get_model('ReferenceModel')
+    reference_model = ReferenceModel(id=model['id'], type=model['type'])
+    if hasattr(model, 'name'):
+        reference_model['name'] = model['name']
+    if hasattr(model, 'version'):
+        reference_model['version'] = model['version']
+    return reference_model     
+
+
+def create_url_object(client, domain):
+    """
+    Creates a single URL object
+
+    client -- Bravado client object
+    domain -- A single domain to create into a URL object
+
+    Return created URL object
+    """
     url_object = client.get_model("URLObject")(type="urlobject")
-    url_object.name = domains
+    url_object.name = domain
     #Mission TODO: Enter the domain you found malicious or questionable in Umbrella Investigate to block on FTD
-    url_object.url = domains
-    client.URLObject.addURLObject(body=url_object).result()
-    print(f"Created URL Object : {domains}\n\n")
+    url_object.url = domain
+    temp = client.URLObject.addURLObject(body=url_object).result()
+    print(f"Created URL Object : {domain}\n\n")
+    return temp
+
+def create_url_object_group(client, name, url_objects):
+    """
+    Creates a single URL object group
+
+    client -- Bravado client object
+    name -- Name of the url object group
+    url_objects -- List of URL objects to add to the group
+
+    Returns single URL object group
+    """
+    url_object_group = client.get_model("URLObjectGroup")(type="urlobjectgroup")
+    url_object_group.name = name
+    url_object_group.objects = [create_reference_model(client, x) for x in url_objects]
+    temp = client.URLObject.addURLObjectGroup(body=url_object_group).result()
+    print(f"Created URL Group Object : {name}\n\n")
+    return temp
 
 
-def create_access_rule(client, domains):
+def create_access_rule(client, url_object_group):
+    """
+    Creates a single access rule denying the url object group
+
+    client -- Bravado client object
+    url_object_group -- A single URL object group 
+
+    Returns created access rule
+    """
     # get access policy first
     access_policy = client.AccessPolicy.getAccessPolicyList().result()['items'][0]
-    # fetch the url object we created
-    url_object = client.URLObject.getURLObjectList(filter=domains).result()['items'][0]
-    # reference model (name, id, type)
-    ReferenceModel = client.get_model("ReferenceModel")
-
+    
     # create embedded app filter
     embedded_url_filter = client.get_model("EmbeddedURLFilter")(type="embeddedurlfilter")
-    embedded_url_filter.urlObjects = [ReferenceModel(id=url_object.id, type=url_object.type)]
+    embedded_url_filter.urlObjects = [create_reference_model(client, url_object_group)]
 
     # Access Rule model
     access_rule = client.get_model("AccessRule")(type="accessrule")
-    access_rule.name = domains
+    access_rule.name = 'block bad domains'
     access_rule.urlFilter = embedded_url_filter
     access_rule.ruleAction = "DENY"
-    client.AccessPolicy.addAccessRule(body=access_rule, parentId=access_policy.id).result()
-    print(f"Created Access Policy to block URL Object : {domains}\n\n")
-
+    temp = client.AccessPolicy.addAccessRule(body=access_rule, parentId=access_policy.id).result()
+    print(f"Created Access Policy to block URL Object : {access_rule.name}\n\n")
+    return temp
         
-def removeDups(list) :
-    domain_list_r = []
-    domin_filter_ip = []
-    domain_final = []
-    for i in list:
-        if i not in domain_list_r:
-            domain_list_r.append(i)
-            domain_filter_ip = domain_list_r
-    print("We found dulicates and pruned the list :\n")
-    return domain_filter_ip
+def dedupe_list(mylist) :
+    """
+    Creates a list without duplicates 
+
+    mylist -- The input list
+
+    Returns List without the duplicates
+    """
+    deduped_items = []
+    duplicates = []
+    for i in mylist:
+        if i not in deduped_items:
+            deduped_items.append(i)
+        else:
+            duplicates.append(i)
+    print(f"We found dulicates and pruned the list : {duplicates}\n")
+    return deduped_items
 
 
 def readdomains_file(filename) :
@@ -149,11 +205,13 @@ if __name__ == '__main__':
     domainlist_path = repository_root / "mission-data/riskydomains.json"
     domain_list = readdomains_file(domainlist_path)
     #TODO Mission make sure there no duplicate domains
-    clean_domains = removeDups(domain_list)
+    clean_domains = dedupe_list(domain_list)
     #TODO Mission itrate through the domain list and create URL objects and rules
+    url_objects = []
     for doms in clean_domains:
-        create_url_object(client, doms)
-        create_access_rule(client, doms)
+        url_objects.append(create_url_object(client, doms))
+    url_object_group = create_url_object_group(client, 'my_url_object_group', url_objects)
+    create_access_rule(client, url_object_group)
     #post Message to WebEx Teams!
     print(blue("\n==> Posting message to Webex Teams"))
     teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
