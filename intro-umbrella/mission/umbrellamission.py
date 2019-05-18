@@ -87,10 +87,9 @@ event_url = UMBRELLA.get("en_url")
 # URL needed for POST request
 url_post = event_url + '?customerKey=' + enforcement_api_key
 
-inv_u = UMBRELLA.get("inv_url")
-# URL needed for the domain status and category
-investigate_url = f"{inv_u}/domains/categorization/" 
-#https://investigate.api.umbrella.com/samples/"
+inv_u = UMBRELLA.get("inv_url") 
+#TODO: finish the URL to get the Status and Category of a domain!
+investigate_url = f"{inv_u}/..." 
 
 #create header for authentication and set limit of sample return to 1
 headers = {
@@ -99,7 +98,7 @@ headers = {
 }
 #print(url_post)
 
-def get_DomainStatus(getUrl, domain) :
+def get_DomainStatus(getUrl, domain):
     #print(getUrl)
     req = requests.get(getUrl, headers=headers)
     if(req.status_code == 200):
@@ -114,7 +113,8 @@ def get_DomainStatus(getUrl, domain) :
             #print("SUCCESS: The domain %(domain)s is found CLEAN at %(time)s" %
             #{'domain': domain, 'time': time})
             return "clean"
-        elif(domainStatus == 0):
+        #TODO: check if else the domain status is risky
+        ...:
             print("SUCCESS: The domain %(domain)s is found UNDEFINED / RISKY at %(time)s" %
             {'domain': domain, 'time': time})
             return "risky"
@@ -123,7 +123,7 @@ def get_DomainStatus(getUrl, domain) :
           {'error': req.status_code})
         return "error"
 
-def readIocsFile(filename) :
+def readIocsFile(filename):
     with open (filename, 'r') as fp:
         shalist = json.loads(fp.read())
     return shalist
@@ -132,7 +132,7 @@ def write_risky_domains_for_firewall(filenamed, domainlist):
     with open(filenamed, "w") as file:
         json.dump(domainlist, file, indent=2)
 
-def removeDups(list) :
+def removeDups(list):
     domain_list_r = []
     domin_filter_ip = []
     domain_final = []
@@ -143,15 +143,17 @@ def removeDups(list) :
     print("We found dulicates and pruned the list :\n")
     return domain_filter_ip
 
-def handleDomains(filename) :
+def handleDomains(filename):
     try:
         domain_list = readIocsFile(filename)
         time = datetime.now().isoformat()
         domain_list_f = []
-        ## TODO call correct
-        domain_list = removeDups(domain_list)
-        #print (domain_list)
-        for domain in domain_list:
+        
+        #TODO: call the correct function to remove duplicate domains from the domain list
+        domain_list = 
+
+        #TODO: loop through every domain in the domain list
+        for ... in ...:
             print(f"Working on {domain} .....")
             get_url = investigate_url + domain +  "?showLabels"
             status = get_DomainStatus(get_url, domain)
@@ -187,7 +189,7 @@ def post_Enforcement(domdata):
         print("\n")
         print(f"SUCCESS: {domdata} BLOCKED!!")
         print("\n")
-                # error handling
+    # error handling
     else:
         print("An error has ocurred with the following code %(error)s, please consult the following link: https://docs.umbrella.com/investigate-api/" %
                           {'error': request_post.status_code})
@@ -198,9 +200,9 @@ if __name__ == "__main__":
     # file.  In the ISE Mission we will read this file and quarantine these
     # endpoints.sha256-list.json
     domainlist_path = repository_root / "mission-data/domainlist.json"
-    #TODO: Mission call the function to handle domains
     handleDomains(domainlist_path)
-    teams = webexteamssdk.WebexTeamsAPI(WEBEX_TEAMS_ACCESS_TOKEN)
+    #TODO: initialize the teams object with the webexteamssdk using your access token
+    teams = 
     teams.messages.create(
         roomId=WEBEX_TEAMS_ROOM_ID,
         markdown=f"**Umberlla Mission completed!!!** \n\n"

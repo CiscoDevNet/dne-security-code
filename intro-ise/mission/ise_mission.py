@@ -81,7 +81,9 @@ port = env_lab.ISE.get("port")
 
 def get_policy_ise():
     
-    url = f"https://{username}:{password}@{host}:{port}/ers/config/ancpolicy"
+    #TODO: finish the URL for the GET request to get the ANC policy from ISE
+    url = f"https://{username}:{password}@..."
+    
     #Create GET Request 
     req = requests.get(url, verify=False, headers=headers)
     #req = requests.request("GET", url, verify=False, headers=headers)
@@ -97,7 +99,8 @@ def get_policy_ise():
     return namelist
 
 def post_to_ise(maclist, namelist):
-    url = f"https://{username}:{password}@{host}:{port}/ers/config/ancendpoint/apply"
+    #TODO: finish the URL for the PUT request to apply the ANC policy!
+    url = f".../ers/config/ancendpoint/apply"
     for items in maclist:
         payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{\r\n    \"name\": \"macAddress\",\r\n    \"value\": \""+ items + "\"\r\n    },\r\n    {\r\n    \"name\": \"policyName\",\r\n    \"value\": \"" + namelist + '"' + "\r\n    }]\r\n  }\r\n}"
         print(json.dumps(payload,sort_keys=True,indent=3))
@@ -110,10 +113,12 @@ def post_to_ise(maclist, namelist):
 if __name__ == "__main__":
    maclist_path = repository_root / "mission-data/mac-addresses.json"
    maclist = readmacaddr_file(maclist_path)
-   #TODO Call the function for getting ANC policy
-   policylist = get_policy_ise()
+   #TODO Call the function for getting ANC policy and store it in the policylist variable
+   policylist = 
+
    #TODO call the function for applying policy to the endpoints
    post_to_ise(maclist, policylist)
+
    # # Finally, post a message to the Webex Teams Room to brag!!!
    print(blue("\n==> Posting message to Webex Teams"))
    teams = webexteamssdk.WebexTeamsAPI(env_user.WEBEX_TEAMS_ACCESS_TOKEN)
