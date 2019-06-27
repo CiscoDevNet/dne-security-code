@@ -52,13 +52,13 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 def createPayload(maclist, policy):
     data_to_send = {
         'OperationAdditionalData': {
-            'additionalData' : [{ 
+            'additionalData' : [{
                 'name': 'macAddress',
-                f'value': maclist 
-                }, 
+                f'value': maclist
+                },
                 {
                     'name': 'policyName',
-                    f'value': policy 
+                    f'value': policy
                     }]
         }
     }
@@ -87,14 +87,14 @@ def print_missing_mission_warn() :
 
 
 #print missing mission warning!
-MISSION = print_missing_mission_warn()
+#MISSION = print_missing_mission_warn()
 
 def get_policy_ise():
-    
+
     #TODO: finish the URL for the GET request to get the ANC policy from ISE
     url = f"https://{username}:{password}@{MISSION}"
-    
-    #Create GET Request 
+
+    #Create GET Request
     req = requests.get(url, verify=False, headers=headers)
     #req = requests.request("GET", url, verify=False, headers=headers)
     namelist = " "
@@ -103,7 +103,7 @@ def get_policy_ise():
         policies = resp_json["SearchResult"]["resources"]
         for policy in policies:
             namelist = policy["name"]
-            print("\nI've Found the Quarantine Policy {0} to Nuke the Rogue computers from the corp network... \n".format(namelist) )    
+            print("\nI've Found the Quarantine Policy {0} to Nuke the Rogue computers from the corp network... \n".format(namelist) )
     else:
         print("An error has ocurred with the following code %(error)s" % {'error': response.status_code})
     return namelist
@@ -123,7 +123,7 @@ def post_to_ise(maclist, namelist):
 if __name__ == "__main__":
    maclist_path = repository_root / "mission-data/mac-addresses.json"
    maclist = readmacaddr_file(maclist_path)
-   
+
    #TODO Call the function for getting ANC policy and store it in the policylist variable
    policylist = MISSION
 

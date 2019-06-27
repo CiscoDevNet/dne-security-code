@@ -154,7 +154,7 @@ def print_missing_mission_warn() :
 
 
 #print missing mission warning!
-MISSION = print_missing_mission_warn()
+#MISSION = print_missing_mission_warn()
 
 
 if __name__ == "__main__":
@@ -166,12 +166,12 @@ if __name__ == "__main__":
     #TODO: iterate trhough the shalist and find the obereravales per sha! hint: for ... in ...:
     MISSION
 
-    #Create data files for the Umbrella Mission.    
+    #Create data files for the Umbrella Mission.
     domainlist_path = repository_root / "mission-data/domainlist.json"
     iplist_path = repository_root / "mission-data/iplist.json"
 
     writer_file(domainlist_path, observables, "domains")
-    
+
     #TODO: Write the ipaddress from observables to a file: Hint look above how we did the domains
     MISSION
 
