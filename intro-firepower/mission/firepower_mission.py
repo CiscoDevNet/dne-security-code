@@ -67,7 +67,7 @@ def login(host=FDM.get("host"),
     port=FDM.get("port"),
     username=FDM.get("username"),
     password=FDM.get("password"),):
-    
+
     payload = {
         "grant_type": "password",
         "username": username,
@@ -107,7 +107,7 @@ def create_reference_model(client, model):
         reference_model['name'] = model['name']
     if hasattr(model, 'version'):
         reference_model['version'] = model['version']
-    return reference_model     
+    return reference_model
 
 
 def create_url_object(client, domain):
@@ -150,13 +150,13 @@ def create_access_rule(client, url_object_group):
     Creates a single access rule denying the url object group
 
     client -- Bravado client object
-    url_object_group -- A single URL object group 
+    url_object_group -- A single URL object group
 
     Returns created access rule
     """
     # get access policy first
     access_policy = client.AccessPolicy.getAccessPolicyList().result()['items'][0]
-    
+
     # create embedded app filter
     embedded_url_filter = client.get_model("EmbeddedURLFilter")(type="embeddedurlfilter")
     embedded_url_filter.urlObjects = [create_reference_model(client, url_object_group)]
@@ -169,10 +169,10 @@ def create_access_rule(client, url_object_group):
     temp = client.AccessPolicy.addAccessRule(body=access_rule, parentId=access_policy.id).result()
     print(f"Created Access Policy to block URL Object : {access_rule.name}\n\n")
     return temp
-        
+
 def dedupe_list(mylist) :
     """
-    Creates a list without duplicates 
+    Creates a list without duplicates
 
     mylist -- The input list
 
@@ -202,7 +202,7 @@ def print_missing_mission_warn() :
 
 
 #print missing mission warning!
-MISSION = print_missing_mission_warn()
+#MISSION = print_missing_mission_warn()
 
 if __name__ == '__main__':
     #TODO Mission login for API access
@@ -215,16 +215,16 @@ if __name__ == '__main__':
     domain_list = readdomains_file(domainlist_path)
     #TODO Mission make sure there no duplicate domains
     clean_domains = MISSION
-    
+
     url_objects = []
     for doms in clean_domains:
         url_objects.append(create_url_object(client, doms))
-        
-    #TODO Mission create a url group using the url_objects created in the above steps : 
+
+    #TODO Mission create a url group using the url_objects created in the above steps :
     #Pass these 3 values to the proper function client, "your_picked_name_for_URL_Object", url objects create in above for loop
     url_object_group = MISSION
-    
-    #TODO Mission Create Access Rule to the block the URL object created above ... which will block all the risky domains 
+
+    #TODO Mission Create Access Rule to the block the URL object created above ... which will block all the risky domains
     MISSION
 
     #post Message to WebEx Teams!

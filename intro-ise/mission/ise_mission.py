@@ -87,12 +87,13 @@ def print_missing_mission_warn() :
 
 
 #print missing mission warning!
-MISSION = print_missing_mission_warn()
+#MISSION = print_missing_mission_warn()
 
 def get_policy_ise():
 
     #TODO: finish the URL for the GET request to get the ANC policy from ISE
-    url = f"https://{username}:{password}@mission"
+
+    url = f"https://{username}:{password}@{MISSION}"
 
     #Create GET Request
     req = requests.get(url, verify=False, headers=headers)

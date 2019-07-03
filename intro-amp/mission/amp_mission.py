@@ -81,10 +81,10 @@ def get_amp_computer_details( url,
     """Get details of infected computer from Cisco AMP."""
     print(blue("\n==> Getting infected computer details from AMP"))
     url = f"https://{client_id}:{api_key}@{url}"
-    
+
     #TODO: do a GET request to retrieve infected computer details (remmeber to NOT do SSL verification!)
     response = MISSION
-    
+
     response.raise_for_status()
     events_list = response.json()["data"]
     return events_list
@@ -110,7 +110,7 @@ def extract_observables(amp_events):
                 """ get the links URL to get details of infected computer"""
                 url = event["computer"]["links"]["computer"]
                 malU=url.partition("https://")[2]
-               
+
                 """ get the links URL to get details of infected computer"""
                 events_list = get_amp_computer_details(malU)
                 ip = events_list["network_addresses"][0]["ip"]
@@ -143,7 +143,7 @@ def print_missing_mission_warn() :
 
 
 #print missing mission warning!
-MISSION = print_missing_mission_warn()
+#MISSION = print_missing_mission_warn()
 
 # If this script is the "main" script, run...
 if __name__ == "__main__":
