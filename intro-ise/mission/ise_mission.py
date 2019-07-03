@@ -92,6 +92,7 @@ def print_missing_mission_warn() :
 def get_policy_ise():
 
     #TODO: finish the URL for the GET request to get the ANC policy from ISE
+
     url = f"https://{username}:{password}@{MISSION}"
 
     #Create GET Request
@@ -110,7 +111,7 @@ def get_policy_ise():
 
 def post_to_ise(maclist, namelist):
     #TODO: finish the URL for the PUT request to apply the ANC policy!
-    url = f"{MISSION}.../ers/config/ancendpoint/apply"
+    url = f"MISSION.../ers/config/ancendpoint/apply"
     for items in maclist:
         payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{\r\n    \"name\": \"macAddress\",\r\n    \"value\": \""+ items + "\"\r\n    },\r\n    {\r\n    \"name\": \"policyName\",\r\n    \"value\": \"" + namelist + '"' + "\r\n    }]\r\n  }\r\n}"
         print(json.dumps(payload,sort_keys=True,indent=3))
