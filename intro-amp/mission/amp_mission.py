@@ -168,7 +168,7 @@ if __name__ == "__main__":
     sha256_list_path = repository_root / "mission-data/sha256-list.json"
     print(blue(f"\n==> Saving SHA256 hashes to: {sha256_list_path}"))
 
-    #TODO: open a file and write to it (just like on line 150-152), but this time with the sha256_list_path, and not with mac addresses but with the sha256 hashes
+    #TODO: open a file and write to it, similar to the code in lines 160-162. However, this time use the sha256_list_path, and instead of mac addresses. use the sha256 hashes. (Tip: try to print amp_observables, so that you know what to search for.)
     MISSION
 
     # Finally, post a message to the Webex Teams Room to brag!!!
