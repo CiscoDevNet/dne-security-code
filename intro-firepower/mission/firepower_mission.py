@@ -59,14 +59,15 @@ headers = {
     "Authorization": "Bearer "
 }
 
-api_version = 1
+api_version = FDM.get("api_version")
+
 
 #mission TODO: Enter the FTD hostname/ip here... (TIP: dont't forget to use HTTPS + the IP)
 
 def login(host=FDM.get("host"),
     port=FDM.get("port"),
     username=FDM.get("username"),
-    password=FDM.get("password"),):
+    password=FDM.get("password"), ):
 
     payload = {
         "grant_type": "password",
