@@ -79,8 +79,9 @@ def get_amp_computer_details( url,
     ):
 
     """Get details of infected computer from Cisco AMP."""
+    url_end = raise NotImplementedError("Mission: Remove this raise not implemented statement with actual api endpoint")
     print(blue("\n==> Getting infected computer details from AMP"))
-    url = f"https://{client_id}:{api_key}@{url}"
+    url = f"https://{client_id}:{api_key}@{url_end}"
 
     #TODO: do a GET request to retrieve infected computer details (remmeber to NOT do SSL verification!)
     response = MISSION

@@ -52,6 +52,7 @@ def fdm_login(
     port=FDM.get("port"),
     username=FDM.get("username"),
     password=FDM.get("password"),
+    api_version=FDM.get("api_version"),
 ):
     """Login to FDM and return an access token that may be used for API calls.
 
@@ -74,7 +75,7 @@ def fdm_login(
     }
 
     response = requests.post(
-        f"https://{host}:{port}/api/fdm/v1/fdm/token",
+        f"https://{host}:{port}/api/fdm/v{api_version}/fdm/token",
         headers=headers,
         json=payload,
         verify=False,

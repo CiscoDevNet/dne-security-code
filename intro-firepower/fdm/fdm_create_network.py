@@ -64,6 +64,7 @@ def fdm_create_network(
     access_token,
     host=FDM.get("host"),
     port=FDM.get("port"),
+    api_version=FDM.get("api_version"),
 ):
     """Create a new network in FDM."""
     print(blue("\n==> Creating a new network in FDM"))
@@ -77,7 +78,7 @@ def fdm_create_network(
     payload = network_object
 
     response = requests.post(
-        f"https://{host}:{port}/api/fdm/v1/object/networks",
+        f"https://{host}:{port}/api/fdm/v{api_version}/object/networks",
         headers=headers,
         json=payload,
         verify=False,

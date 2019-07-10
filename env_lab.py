@@ -62,6 +62,7 @@ elif ENVIRONMENT_IN_USE == "express":
         "port": 443,
         "username": "admin",
         "password": "C1sco12345",
+        "api_version" : 3,
     }
 
     # ISE in the DevNet Express Security dCloud Pod
