@@ -73,10 +73,12 @@ def get_amp_events(
 
 # If this script is the "main" script, run...
 if __name__ == "__main__":
-    #TODO: Create the query for AMP here
-    qparams = "event_type[]=1090519054&limit=10"
+    #TODO: Create the query for AMP here 
+    #Hint: create a variable qparams  and assign "event_type[]=1090519054&limit=10" to it
+   
     #TODO: Call the function to get events
-    amp_events = get_amp_events(qparams)
-    #TODO: Print the events 
+    #Hint : Call the correct function and assign return value to a variable "amp_events"
+    
+    #TODO: Print the events (Think if you can make a colored print like previous examples)
     print(json.dumps(amp_events, indent=2))
 

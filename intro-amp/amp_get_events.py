@@ -74,12 +74,14 @@ def write_events_to_file(filepath, ampevents):
 # If this script is the "main" script, run...
 if __name__ == "__main__":
     # TODO: Get the list of events from AMP
-    amp_events = get_amp_events()
+    # Hint: Call the function to get AMP events and assign it to variable amp_events
     # TODO: Print the total number of events observed. 
     print(yellow(f"Received total {len(amp_events)} malware events"))
     repository_root = (here).resolve()
     events_path = repository_root / "events.json"
-    # TODO: Store the events observed in a file
+    # TODO: Store the events observed in a file. 
+    # Hint: 1 set up path (uncomment next line)
+    # events_path = repository_root / "events.json"
     print(green(f"\n==> Saving events to: {events_path}"))
-    write_events_to_file(events_path, amp_events)
+    #TODO: Hint: 2 you can all the write_events_to_file function
 
