@@ -26,6 +26,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from crayons import blue, green, red
+from inspect import currentframe
 
 # User Input
 
@@ -99,3 +101,17 @@ elif ENVIRONMENT_IN_USE == "custom":
 
     # Your ThreatGrid
     THREATGRID = {"host": ""}
+
+        
+"""Helper functions for the missions"""
+
+
+def print_missing_mission_warn(lineerror) :
+    print(blue(f"\nPlease replace this fucntion (print_missing_mission_warn(...)) with correct required mission statements!\n"))
+    print(green(f"At hosted DNE Event; Please ask for help from procter or your neighbour attendee; if you are not making progress...\n"))
+    print(red(f"Check and complete the #TODO at Line number --->  {lineerror}"))
+    return exit()
+
+def get_line():
+    currentfram=currentframe()
+    return currentfram.f_back.f_lineno

@@ -34,7 +34,7 @@ import requests
 import webexteamssdk
 from crayons import blue, green, red
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
+from inspect import currentframe
 
 # Locate the directory containing this file and the repository root.
 # Temporarily add these directories to the system path so that we can import
@@ -79,13 +79,12 @@ def get_amp_computer_details( url,
     ):
 
     """Get details of infected computer from Cisco AMP."""
-    url_end = raise NotImplementedError("Mission: Remove this raise not implemented statement with actual api endpoint")
-    print(blue("\n==> Getting infected computer details from AMP"))
-    url = f"https://{client_id}:{api_key}@{url_end}"
+    url = f"https://{client_id}:{api_key}@{url}"
 
-    #TODO: do a GET request to retrieve infected computer details (remmeber to NOT do SSL verification!)
-    response = MISSION
-
+    #TODO: do a GET request to retrieve infected computer details (remmeber to NOT do SSL verification!) 
+    # Hint: Remember to assign it varibale "response"
+    env_lab.print_missing_mission_warn(env_lab.get_line())
+    
     response.raise_for_status()
     events_list = response.json()["data"]
     return events_list
@@ -137,22 +136,14 @@ def extract_observables(amp_events):
     return observables
 
 
-def print_missing_mission_warn() :
-    print(blue(f"\nPlease replace 'MISSION' with correct required mission statements!\n"))
-    print(green(f"At hosted DNE Event; Please ask for help from procter or your neighbour attendee; if you are not making progress...\n"))
-    return exit()
-
-
-#print missing mission warning!
-#MISSION = print_missing_mission_warn()
 
 # If this script is the "main" script, run...
 if __name__ == "__main__":
     #TODO: Use the right function to fill the amp_events variable with the AMP events
-    amp_events = MISSION
+    env_lab.print_missing_mission_warn(env_lab.get_line())
 
     #TODO: Use the right function to fill the amp_observables variable with extracted observables from the AMP events
-    amp_observables = MISSION
+    env_lab.print_missing_mission_warn(env_lab.get_line())
 
     # Save the MAC addresses of the endpoints where malware executed to a JSON
     # file.  In the ISE Mission we will read this file and quarantine these
@@ -170,7 +161,7 @@ if __name__ == "__main__":
     print(blue(f"\n==> Saving SHA256 hashes to: {sha256_list_path}"))
 
     #TODO: open a file and write to it, similar to the code in lines 160-162. However, this time use the sha256_list_path, and instead of mac addresses. use the sha256 hashes. (Tip: try to print amp_observables, so that you know what to search for.)
-    MISSION
+    env_lab.print_missing_mission_warn(env_lab.get_line())
 
     # Finally, post a message to the Webex Teams Room to brag!!!
     print(blue("\n==> Posting message to Webex Teams"))
