@@ -62,7 +62,7 @@ headers = {
 api_version = FDM.get("api_version")
 
 
-#mission TODO: Enter the FTD hostname/ip here... (TIP: dont't forget to use HTTPS + the IP)
+
 
 def login(host=FDM.get("host"),
     port=FDM.get("port"),
@@ -74,11 +74,10 @@ def login(host=FDM.get("host"),
         "username": username,
         "password": password,
     }
-    url = f"https://{host}:{port}/api/fdm/v{api_version}/fdm/token"
-    print (url)
-    print (payload)
+    #mission TODO: Complete the URL to get FDM oAuth token Here is starting string "https://{host}:{port}/api/fdm/v{api_version}"
+    env_lab.print_missing_mission_warn(env_lab.get_line())
+
     r = requests.post(url, json=payload, verify=False, headers=headers)
-    print(r)
     access_token = "Bearer %s" % r.json()['access_token']
     headers['Authorization'] = access_token
 
@@ -122,7 +121,6 @@ def create_url_object(client, domain):
     """
     url_object = client.get_model("URLObject")(type="urlobject")
     url_object.name = domain
-    #Mission TODO: Enter the domain you found malicious or questionable in Umbrella Investigate to block on FTD
     url_object.url = domain
     temp = client.URLObject.addURLObject(body=url_object).result()
     print(f"Created URL Object : {domain}\n\n")
@@ -196,14 +194,6 @@ def readdomains_file(filename) :
     return maclist
 
 
-def print_missing_mission_warn() :
-    print(blue(f"\nPlease replace 'MISSION' with correct required mission statements!\n"))
-    print(green(f"At hosted DNE Event; Please ask for help from procter or your neighbour attendee; if you are not making progress...\n"))
-    return exit()
-
-
-#print missing mission warning!
-#MISSION = print_missing_mission_warn()
 
 if __name__ == '__main__':
     #TODO Mission login for API access
@@ -215,7 +205,7 @@ if __name__ == '__main__':
     domainlist_path = repository_root / "mission-data/riskydomains.json"
     domain_list = readdomains_file(domainlist_path)
     #TODO Mission make sure there no duplicate domains
-    clean_domains = MISSION
+   env_lab.print_missing_mission_warn(env_lab.get_line()) 
 
     url_objects = []
     for doms in clean_domains:
@@ -223,10 +213,10 @@ if __name__ == '__main__':
 
     #TODO Mission create a url group using the url_objects created in the above steps :
     #Pass these 3 values to the proper function client, "your_picked_name_for_URL_Object", url objects create in above for loop
-    url_object_group = MISSION
+    env_lab.print_missing_mission_warn(env_lab.get_line())
 
     #TODO Mission Create Access Rule to the block the URL object created above ... which will block all the risky domains
-    MISSION
+    env_lab.print_missing_mission_warn(env_lab.get_line())
 
     #post Message to WebEx Teams!
     print(blue("\n==> Posting message to Webex Teams"))

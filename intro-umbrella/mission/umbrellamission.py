@@ -81,14 +81,7 @@ time = datetime.now().isoformat()
 investigate_api_key = UMBRELLA_INVESTIGATE_KEY
 
 
-def print_missing_mission_warn() :
-    print(blue(f"\nPlease replace 'MISSION' with correct required mission statements!\n"))
-    print(green(f"At hosted DNE Event; Please ask for help from procter or your neighbour attendee; if you are not making progress...\n"))
-    return exit()
 
-
-#print missing mission warning!
-# MISSION = print_missing_mission_warn()
 
 # URL needed to do POST requests
 event_url = UMBRELLA.get("en_url")
@@ -98,7 +91,7 @@ url_post = event_url + '?customerKey=' + enforcement_api_key
 
 inv_u = UMBRELLA.get("inv_url")
 #TODO: finish the URL to get the Status and Category of a domain!
-investigate_url = f"{inv_u}/{MISSION}"
+env_lab.print_missing_mission_warn(env_lab.get_line())
 
 #create header for authentication and set limit of sample return to 1
 headers = {
@@ -123,7 +116,7 @@ def get_DomainStatus(getUrl, domain):
             #{'domain': domain, 'time': time})
             return "clean"
         #TODO: check if else the domain status is risky
-        elif(MISSION):
+        elif(domainStatus == 0):
             print("SUCCESS: The domain %(domain)s is found UNDEFINED / RISKY at %(time)s" %
             {'domain': domain, 'time': time})
             return "risky"
@@ -159,10 +152,10 @@ def handleDomains(filename):
         domain_list_f = []
 
         #TODO: call the correct function to remove duplicate domains from the domain list
-        domain_list = MISSION
-
+        #domain_list = MISSION
+        env_lab.print_missing_mission_warn(env_lab.get_line())
         #TODO: loop through every domain in the domain list HINT: for ... in ...:
-        for MISSION in MISSION:
+        for a in domain_list:
             print(f"Working on {domain} .....")
             get_url = investigate_url + domain +  "?showLabels"
             status = get_DomainStatus(get_url, domain)
@@ -211,7 +204,7 @@ if __name__ == "__main__":
     domainlist_path = repository_root / "mission-data/domainlist.json"
     handleDomains(domainlist_path)
     #TODO: initialize the teams object with the webexteamssdk using your access token
-    teams = MISSION
+    
     teams.messages.create(
         roomId=WEBEX_TEAMS_ROOM_ID,
         markdown=f"**Umberlla Mission completed!!!** \n\n"

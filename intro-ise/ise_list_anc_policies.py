@@ -109,15 +109,16 @@ def get_ise_anc_policy_details(
 
 # If this script is the "main" script, run...
 if __name__ == "__main__":
-    #TODO : Call the fucntion to get ISE ANC policies
-    policies = get_ise_anc_policies()
+    #TODO : Call the fucntion to get ISE ANC policies assign the value returned by function to "policies" variable
+   
     print(
         white("\nAdaptive Network Control (ANC) Policies:", bold=True),
         pformat(policies),
         sep="\n"
     )
     #TODO: Use the policy/polices you have received from ISE to get the details on the policy.
-    devnet_anc_policy = get_ise_anc_policy_details("ANC_Devnet")
+    
+    
     #TODO: Print the policy details you have received from ISE 
     print(
         white("\nANC_Devnet Adaptive Network Control Policy:", bold=True),

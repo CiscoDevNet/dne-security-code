@@ -80,20 +80,11 @@ host = env_lab.ISE.get("host")
 port = env_lab.ISE.get("port")
 
 
-def print_missing_mission_warn() :
-    print(blue(f"\nPlease replace 'MISSION' with correct required mission statements!\n"))
-    print(green(f"At hosted DNE Event; Please ask for help from procter or your neighbour attendee; if you are not making progress...\n"))
-    return exit()
-
-
-#print missing mission warning!
-#MISSION = print_missing_mission_warn()
-
 def get_policy_ise():
 
-    #TODO: finish the URL for the GET request to get the ANC policy from ISE
+    #TODO: Create the URL for the GET request to get the ANC policy from ISE assign it to variable "url"
 
-    url = f"https://{username}:{password}@{MISSION}"
+    env_lab.print_missing_mission_warn(env_lab.get_line())
 
     #Create GET Request
     req = requests.get(url, verify=False, headers=headers)
@@ -110,8 +101,9 @@ def get_policy_ise():
     return namelist
 
 def post_to_ise(maclist, namelist):
-    #TODO: finish the URL for the PUT request to apply the ANC policy!
-    url = f"MISSION.../ers/config/ancendpoint/apply"
+    #TODO: Create the URL for the PUT request to apply the ANC policy! assign it variable "url"
+    env_lab.print_missing_mission_warn(env_lab.get_line())
+    
     for items in maclist:
         payload = "{\r\n    \"OperationAdditionalData\": {\r\n    \"additionalData\": [{\r\n    \"name\": \"macAddress\",\r\n    \"value\": \""+ items + "\"\r\n    },\r\n    {\r\n    \"name\": \"policyName\",\r\n    \"value\": \"" + namelist + '"' + "\r\n    }]\r\n  }\r\n}"
         print(json.dumps(payload,sort_keys=True,indent=3))
@@ -126,10 +118,10 @@ if __name__ == "__main__":
    maclist = readmacaddr_file(maclist_path)
 
    #TODO Call the function for getting ANC policy and store it in the policylist variable
-   policylist = MISSION
+   env_lab.print_missing_mission_warn(env_lab.get_line())
 
    #TODO call the function for applying policy to the endpoints
-   MISSION
+   env_lab.print_missing_mission_warn(env_lab.get_line())
 
 
    # # Finally, post a message to the Webex Teams Room to brag!!!

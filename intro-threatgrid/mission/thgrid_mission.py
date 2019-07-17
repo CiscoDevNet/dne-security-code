@@ -35,7 +35,7 @@ import webexteamssdk
 from crayons import blue, green, red
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
-
+import env_lab
 # Locate the directory containing this file and the repository root.
 # Temporarily add these directories to the system path so that we can import
 # local files.
@@ -147,15 +147,6 @@ def writer_file(filename, glist, ioc):
     file.close()
 
 
-def print_missing_mission_warn() :
-    print(blue(f"\nPlease replace 'MISSION' with correct required mission statements!\n"))
-    print(green(f"At hosted DNE Event; Please ask for help from procter or your neighbour attendee; if you are not making progress...\n"))
-    return exit()
-
-
-#print missing mission warning!
-#MISSION = print_missing_mission_warn()
-
 
 if __name__ == "__main__":
     # Save the MAC addresses of the endpoints where malware executed to a JSON
@@ -164,7 +155,7 @@ if __name__ == "__main__":
     shalist_path = repository_root / "mission-data/sha256-list.json"
     shalist = readIocsFile(shalist_path)
     #TODO: iterate trhough the shalist and find the obereravales per sha! hint: for ... in ...:
-    MISSION
+    env_lab.print_missing_mission_warn(env_lab.get_line())
 
     #Create data files for the Umbrella Mission.
     domainlist_path = repository_root / "mission-data/domainlist.json"
@@ -173,7 +164,7 @@ if __name__ == "__main__":
     writer_file(domainlist_path, observables, "domains")
 
     #TODO: Write the ipaddress from observables to a file: Hint look above how we did the domains
-    MISSION
+    env_lab.print_missing_mission_warn(env_lab.get_line())
 
     # Finally, post a message to the Webex Teams Room to brag!!!
     print(blue("\n==> Posting message to Webex Teams"))
