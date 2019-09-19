@@ -97,7 +97,7 @@ def get_policy_ise():
             namelist = policy["name"]
             print("\nI've Found the Quarantine Policy {0} to Nuke the Rogue computers from the corp network... \n".format(namelist) )
     else:
-        print("An error has ocurred with the following code %(error)s" % {'error': response.status_code})
+        print("An error has ocurred with the following code %(error)s" % {'error': req.status_code})
     return namelist
 
 def post_to_ise(maclist, namelist):
