@@ -45,8 +45,7 @@ repository_root = (here / ".." / "..").resolve()
 
 sys.path.insert(0, str(repository_root))
 
-sys.path.insert(0, str(repository_root))
-
+import env_lab
 from env_lab import UMBRELLA  # noqa
 from env_user import UMBRELLA_ENFORCEMENT_KEY
 from env_user import UMBRELLA_INVESTIGATE_KEY  # noqa
@@ -155,7 +154,7 @@ def handleDomains(filename):
         #domain_list = MISSION
         env_lab.print_missing_mission_warn(env_lab.get_line())
         #TODO: loop through every domain in the domain list HINT: for ... in ...:
-        for a in domain_list:
+        for domain in domain_list:
             print(f"Working on {domain} .....")
             get_url = investigate_url + domain +  "?showLabels"
             status = get_DomainStatus(get_url, domain)
