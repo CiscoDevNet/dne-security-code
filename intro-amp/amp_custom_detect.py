@@ -95,9 +95,9 @@ def post_to_amp(
 if __name__ == "__main__":
 
     #TODO: Call the function to get detections
-    dects = get_amp_detections()
+    dects = 
     #TODO: Call the function to parse the custome detections list
-    list_id = parseResponse(dects)
+    list_id = 
     post_this =  {'description':'created by DNE user using API'}
     #TODO: Call post function to add a problem sha to your custom detection list 
     response = post_to_amp(list_id, post_this)
