@@ -150,8 +150,9 @@ if __name__ == "__main__":
     # endpoints.sha256-list.json
     shalist_path = repository_root / "mission-data/sha256-list.json"
     shalist = readIocsFile(shalist_path)
-    #TODO: iterate trhough the shalist and find the obereravales per sha! hint: for ... in ...:
+    #TODO: iterate trhough the shalist and find the observables per sha! hint: for ... in ...:
     env_lab.print_missing_mission_warn(env_lab.get_line())
+
 
     #Create data files for the Umbrella Mission.
     domainlist_path = repository_root / "mission-data/domainlist.json"
@@ -161,6 +162,7 @@ if __name__ == "__main__":
 
     #TODO: Write the ipaddress from observables to a file: Hint look above how we did the domains
     env_lab.print_missing_mission_warn(env_lab.get_line())
+    writer_file(TODO)
 
     # Finally, post a message to the Webex Teams Room to brag!!!
     print(blue("\n==> Posting message to Webex Teams"))
