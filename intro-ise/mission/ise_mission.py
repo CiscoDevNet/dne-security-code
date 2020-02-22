@@ -82,9 +82,9 @@ port = env_lab.ISE.get("port")
 
 def get_policy_ise():
 
-    #TODO: Create the URL for the GET request to get the ANC policy from ISE assign it to variable "url"
-
+    #TODO: Create the URL for the GET request to get the ANC policy from ISE. Hint: Make sure you pass the Auth paramenters for the API call
     env_lab.print_missing_mission_warn(env_lab.get_line())
+    url = MISSION
 
     #Create GET Request
     req = requests.get(url, verify=False, headers=headers)
@@ -101,7 +101,8 @@ def get_policy_ise():
     return namelist
 
 def post_to_ise(maclist, namelist):
-    #TODO: Create the URL for the PUT request to apply the ANC policy! assign it variable "url"
+    #TODO: Create the URL for the PUT request to apply the ANC policy! Hint: Make sure you pass the Auth paramenters for the API call
+    url = MISSION
     env_lab.print_missing_mission_warn(env_lab.get_line())
     
     for items in maclist:
@@ -119,10 +120,10 @@ if __name__ == "__main__":
 
    #TODO Call the function for getting ANC policy and store it in the policylist variable
    env_lab.print_missing_mission_warn(env_lab.get_line())
+   policylist = MISSION
 
    #TODO call the function for applying policy to the endpoints
    env_lab.print_missing_mission_warn(env_lab.get_line())
-
 
    # # Finally, post a message to the Webex Teams Room to brag!!!
    print(blue("\n==> Posting message to Webex Teams"))
