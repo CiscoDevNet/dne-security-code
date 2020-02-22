@@ -76,6 +76,7 @@ def login(host=FDM.get("host"),
     }
     #mission TODO: Complete the URL to get FDM oAuth token Here is starting string "https://{host}:{port}/api/fdm/v{api_version}"
     env_lab.print_missing_mission_warn(env_lab.get_line())
+    url = MISSION
 
     r = requests.post(url, json=payload, verify=False, headers=headers)
     access_token = "Bearer %s" % r.json()['access_token']
@@ -197,7 +198,7 @@ def readdomains_file(filename) :
 
 if __name__ == '__main__':
     #TODO Mission login for API access
-    login()
+    MISSON()
     client = get_spec_json()
     domain_list = []
     clean_domains = []
@@ -205,17 +206,19 @@ if __name__ == '__main__':
     domainlist_path = repository_root / "mission-data/riskydomains.json"
     domain_list = readdomains_file(domainlist_path)
     #TODO Mission make sure there no duplicate domains
-   env_lab.print_missing_mission_warn(env_lab.get_line()) 
+    clean_domains = MISSION
+    env_lab.print_missing_mission_warn(env_lab.get_line())
 
     url_objects = []
     for doms in clean_domains:
         url_objects.append(create_url_object(client, doms))
 
-    #TODO Mission create a url group using the url_objects created in the above steps :
+    #TODO Mission Create a url group using the url_objects created in the above steps:
     #Pass these 3 values to the proper function client, "your_picked_name_for_URL_Object", url objects create in above for loop
     env_lab.print_missing_mission_warn(env_lab.get_line())
+    url_object_group = MISSION
 
-    #TODO Mission Create Access Rule to the block the URL object created above ... which will block all the risky domains
+    #TODO Mission Create Access Rule (Hint: Look for the relevant fuction above) to block the URL object created above ... which will block all the risky domains
     env_lab.print_missing_mission_warn(env_lab.get_line())
 
     #post Message to WebEx Teams!
