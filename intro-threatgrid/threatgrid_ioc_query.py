@@ -45,7 +45,7 @@ from env_user import THREATGRID_API_KEY  # noqa
 
 
 # Constants
-TIME_PERIOD = 360  # Search the IoC feed for the past TIME_PERIOD days
+TIME_PERIOD = 500  # Search the IoC feed for the past TIME_PERIOD days
 
 
 def query_threatgrid_ioc_feed(
