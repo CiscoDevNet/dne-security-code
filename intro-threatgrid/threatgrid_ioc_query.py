@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Query the ThreatGrid Indication of Compromise (IoC) feed.
 
-Copyright (c) 2018-2019 Cisco and/or its affiliates.
+Copyright (c) 2018-2020 Cisco and/or its affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ from env_user import THREATGRID_API_KEY  # noqa
 
 
 # Constants
-TIME_PERIOD = 180  # Search the IoC feed for the past TIME_PERIOD days
+TIME_PERIOD = 500  # Search the IoC feed for the past TIME_PERIOD days
 
 
 def query_threatgrid_ioc_feed(
@@ -98,9 +98,14 @@ if __name__ == "__main__":
     query_start = datetime.utcnow() - timedelta(days=TIME_PERIOD)
     query_end = datetime.utcnow()
     #TODO Call the function for query feed.
-    malware_samples = 
+    malware_samples = TODO(
+        query_domain,
+        after=f"{query_start.isoformat()}Z",
+        before=f"{query_end.isoformat()}Z",
+    )
+
     malware_samples_path = here / f"{query_domain}-malware-samples-data.json"
     print(blue(f"\n==> Saving samples data to: {malware_samples_path}"))
     #TODO: Pass the proper path to the open function
-    with open(malware_samples_path, "w") as file:
+    with open(TODO, "w") as file:
         json.dump(malware_samples, file, indent=2)

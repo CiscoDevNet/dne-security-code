@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Intro to Cisco AMP Step 3 
-Copyright (c) 2018-2019 Cisco and/or its affiliates.
+Copyright (c) 2018-2020 Cisco and/or its affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -95,12 +95,12 @@ def post_to_amp(
 if __name__ == "__main__":
 
     #TODO: Call the function to get detections
-    dects = 
-    #TODO: Call the function to parse the custome detections list
-    list_id = 
+    dects =
+    #TODO: Call the function to parse the custom detections list
+    list_id =
     post_this =  {'description':'created by DNE user using API'}
     #TODO: Call post function to add a problem sha to your custom detection list 
-    response = post_to_amp(list_id, post_this)
+    response = post_to_amp(TODO, TODO)
     
     print(f"\n==> Successfully added {SAMPLE_SHA256} to AMP custom detections list")
 
