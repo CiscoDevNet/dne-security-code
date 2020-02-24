@@ -55,14 +55,14 @@ def get_amp_events(
 ):
     """Get a list of recent events from Cisco AMP."""
     print("\n==> Getting recent events from AMP")
-    # TODO: Construct the URL
+    #Construct the URL
     url = f"https://{client_id}:{api_key}@{host}/v1/events"
 
     response = requests.get(url, verify=False)
     response.raise_for_status()
 
     events_list = response.json()["data"]
-    # TODO: Return the event list
+    
     return events_list
 
 
@@ -75,13 +75,17 @@ def write_events_to_file(filepath, ampevents):
 if __name__ == "__main__":
     # TODO: Get the list of events from AMP
     # Hint: Call the function to get AMP events and assign it to variable amp_events
+    
     # TODO: Print the total number of events observed. 
     print(yellow(f"Received total {len(amp_events)} malware events"))
+    # Get the current file directory root
     repository_root = (here).resolve()
+    # create a newfile "events.json" 
     events_path = repository_root / "events.json"
     # TODO: Store the events observed in a file. 
     # Hint: 1 set up path (uncomment next line)
     # events_path = repository_root / "events.json"
+
     print(green(f"\n==> Saving events to: {events_path}"))
     #TODO: Hint: 2 you can all the write_events_to_file function
 

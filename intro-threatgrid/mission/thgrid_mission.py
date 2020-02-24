@@ -34,6 +34,7 @@ import requests
 import webexteamssdk
 from crayons import blue, green, red
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 # Locate the directory containing this file and the repository root.
 # Temporarily add these directories to the system path so that we can import
 # local files.

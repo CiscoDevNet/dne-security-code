@@ -87,10 +87,10 @@ if __name__ == "__main__":
         print(f"{white('Usage:', bold=True)} {Path(__file__).name} SHA256")
         sys.exit(1)
     """ #TODO Call the proper function """
-    submission_info = search_threatgrid_submissions(sha256)
+    submission_info = 
 
     submission_info_path = here / f"{sha256}-submission-info.json"
     print(blue(f"\n==> Saving submission info to: {submission_info_path}"))
     """ #TODO Pass the file path to open function to write the file """
-    with open(submission_info_path, "w") as file:
+    with open(#TODO:) as file:
         json.dump(submission_info, file, indent=2)
