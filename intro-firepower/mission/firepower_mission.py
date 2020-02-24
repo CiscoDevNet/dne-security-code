@@ -2,7 +2,7 @@
 """
 FDM Mission --- Now you will apply the URL filtering on the NGFW.
 
-Copyright (c) 2018-2019 Cisco and/or its affiliates.
+Copyright (c) 2018-2020 Cisco and/or its affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -218,7 +218,7 @@ if __name__ == '__main__':
     env_lab.print_missing_mission_warn(env_lab.get_line())
     url_object_group = MISSION
 
-    #TODO Mission Create Access Rule (Hint: Look for the relevant fuction above) to block the URL object created above ... which will block all the risky domains
+    #TODO Mission Create Access Rule (Hint: Look for the relevant function above) to block the URL object created above ... which will block all the risky domains
     env_lab.print_missing_mission_warn(env_lab.get_line())
 
     #post Message to WebEx Teams!
