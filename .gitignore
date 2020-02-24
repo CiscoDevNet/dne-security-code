@@ -6,7 +6,7 @@ intro-threatgrid/*.json
 
 # Mission Data
 mission-data/
-mission-data/README.md
+!mission-data/README.md
 
 # Virtual Environments
 .venv
