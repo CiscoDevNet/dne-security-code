@@ -5,8 +5,8 @@ env_user.py
 intro-threatgrid/*.json
 
 # Mission Data
-# mission-data/
-#!mission-data/README.md
+mission-data/
+mission-data/README.md
 
 # Virtual Environments
 .venv
