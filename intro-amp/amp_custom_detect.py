@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
     #TODO: Call the function to get detections
     dects =
-    #TODO: Call the function to parse the custome detections list
+    #TODO: Call the function to parse the custom detections list
     list_id =
     post_this =  {'description':'created by DNE user using API'}
     #TODO: Call post function to add a problem sha to your custom detection list 
