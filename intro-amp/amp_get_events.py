@@ -2,7 +2,7 @@
 """
 Cisco Intro to AMP Hands on Exercisce Step2
 
-Copyright (c) 2018-2019 Cisco and/or its affiliates.
+Copyright (c) 2018-2020 Cisco and/or its affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -55,7 +55,7 @@ def get_amp_events(
 ):
     """Get a list of recent events from Cisco AMP."""
     print("\n==> Getting recent events from AMP")
-    #Construct the URL
+    # TODO: Construct the URL
     url = f"https://{client_id}:{api_key}@{host}/v1/events"
 
     response = requests.get(url, verify=False)

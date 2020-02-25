@@ -84,7 +84,8 @@ def get_amp_computer_details( url,
     #TODO: do a GET request to retrieve infected computer details (remmeber to NOT do SSL verification!) 
     # Hint: Remember to assign it varibale "response"
     env_lab.print_missing_mission_warn(env_lab.get_line())
-    
+
+    response = MISSION
     response.raise_for_status()
     events_list = response.json()["data"]
     return events_list
@@ -141,9 +142,11 @@ def extract_observables(amp_events):
 if __name__ == "__main__":
     #TODO: Use the right function to fill the amp_events variable with the AMP events
     env_lab.print_missing_mission_warn(env_lab.get_line())
+    amp_events = MISSION
 
     #TODO: Use the right function to fill the amp_observables variable with extracted observables from the AMP events
     env_lab.print_missing_mission_warn(env_lab.get_line())
+    amp_observables = MISSION
 
     # Save the MAC addresses of the endpoints where malware executed to a JSON
     # file.  In the ISE Mission we will read this file and quarantine these
@@ -160,8 +163,11 @@ if __name__ == "__main__":
     sha256_list_path = repository_root / "mission-data/sha256-list.json"
     print(blue(f"\n==> Saving SHA256 hashes to: {sha256_list_path}"))
 
-    #TODO: open a file and write to it, similar to the code in lines 160-162. However, this time use the sha256_list_path, and instead of mac addresses. use the sha256 hashes. (Tip: try to print amp_observables, so that you know what to search for.)
+    #TODO: open a file and write to it, similar to the code in lines 154-156. However, this time use the sha256_list_path, and instead of mac addresses. use the sha256 hashes. (Tip: try to print amp_observables, so that you know what to search for.)
     env_lab.print_missing_mission_warn(env_lab.get_line())
+    with open(MISSION, "w") as file:
+        MISSION = [o["MISSION"] for o in amp_observables]
+        json.dump(MISSION, file, indent=2)
 
     # Finally, post a message to the Webex Teams Room to brag!!!
     print(blue("\n==> Posting message to Webex Teams"))

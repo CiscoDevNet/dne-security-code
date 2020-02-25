@@ -52,8 +52,8 @@ def fdm_login(
     host=FDM.get("host"),
     port=FDM.get("port"),
     username=FDM.get("username"),
-    password=FDM.get("password"), 
-    api_version=FDM.get("api_version"),
+    password=FDM.get("password"),
+    api_version=FDM.get("api_version")
 ):
     """Login to FDM and return an access token that may be used for API calls.
     """
