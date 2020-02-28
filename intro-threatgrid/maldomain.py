@@ -27,6 +27,7 @@ import json
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
+from pprint import pprint
 
 import requests
 from crayons import blue, green, white
@@ -46,4 +47,4 @@ api_key = THREATGRID_API_KEY
 
 url = 'https://panacea.threatgrid.com/api/v2/iocs/feeds/domains?after=2018-07-18T21:39:13Z&before=2019-07-18T22:39:13Z&domain=lamp.troublerifle.bid&api_key={}'.format(api_key)
 r = requests.get(url)
-print (r.json())
+pprint (r.json())
