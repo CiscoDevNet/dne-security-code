@@ -82,7 +82,7 @@ def doUmbrellaGet() :
 
 
 def verify() -> bool:
-    print(blue("\n==> Verifying access to the Umberlla Investigate APIs"))
+    print(blue("\n==> Verifying access to the Umbrella Investigate APIs"))
 
     """ Verify the umbrella investigate accessible via the provided token """
     
