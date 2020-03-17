@@ -87,7 +87,7 @@ def get_FromThreatGrid(path,
 
 def find_Obervables(sha_256_1):
     print(f"Picking up the next sha from the list: {sha_256_1} ")
-    samples = get_FromThreatGrid("/search/submissions?q={}".format(sha_256_1))
+    samples = get_FromThreatGrid("/search/submissions?after=2010-07-18T21:39:13Z&q={}".format(sha_256_1))
     #print (samples)
     if(samples == None):
         return
@@ -125,7 +125,7 @@ def find_Obervables(sha_256_1):
     #print (sample_string)
     if len(sample_string) != 0:
         domains = get_FromThreatGrid(
-            "/samples/feeds/domains?sample={}&after=2018-2-2".format(sample_string))
+            "/samples/feeds/domains?sample={}&2010-07-18T21:39:13Z".format(sample_string))
         if (domains == "Response [408]"):
             return
         else:
