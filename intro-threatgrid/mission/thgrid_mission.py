@@ -151,7 +151,7 @@ if __name__ == "__main__":
     # endpoints.sha256-list.json
     shalist_path = repository_root / "mission-data/sha256-list.json"
     shalist = readIocsFile(shalist_path)
-    #TODO: iterate trhough the shalist and find the observables per sha! hint: for ... in ...:
+    #TODO: iterate through the shalist and find the observables per sha! hint: for ... in ...:
     env_lab.print_missing_mission_warn(env_lab.get_line())
 
 
