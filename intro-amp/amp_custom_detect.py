@@ -85,7 +85,7 @@ def post_to_amp(
 
     url = f"https://{client_id}:{api_key}@{host}/v1/file_lists/{list_id}/files/{SAMPLE_SHA256}"
 
-    response = requests.post(url, post_this, verify=False)
+    response = requests.post(url, payload, verify=False)
     response.raise_for_status()
 
     rdata = response.json()["data"]
