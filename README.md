@@ -28,7 +28,7 @@ You use Postman to test REST API calls in a graphical environment. To install Po
 You should run the following commands on Linux to create a virtual environment with Conda:
 ```
 $conda create --name cisco python=3.6
-$source activate cisco
+$conda activate cisco
 ```
 and you're done!
 
