@@ -15,7 +15,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 
 # Read in the JSON text
-with open(os.path.join(here, "interface-config.json")) as file:
+with open(os.path.join(here, "computers.json")) as file:
     json_text = file.read()
 
 
