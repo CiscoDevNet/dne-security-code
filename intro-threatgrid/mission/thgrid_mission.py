@@ -122,7 +122,7 @@ def find_Obervables(sha_256_1):
     #print (sample_string)
     if len(sample_string) != 0:
         domains = get_FromThreatGrid(
-            "/samples/feeds/domains?sample={}&after=2018-2-2".format(sample_string))
+            "/samples/feeds/domains?sample={}&after=2018-2-2".format(sample_string)) # if no samples returned, increase range, e.g. check out after 2010-07-18T21:39:13Z
         if (domains == "Response [408]"):
             return
         else:
