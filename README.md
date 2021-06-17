@@ -57,6 +57,8 @@ Within this repository are several files and folders covering different topics a
 
 > Note: These code samples are also leveraged during DevNet Express events.  If you are one of these events, your event proctors and hosts will walk you through event setup and verification steps as part of agenda.  
 
+> Note: the [`mission-data`](https://github.com/CiscoDevNet/dne-security-code/tree/master/mission-data) directory contains the answsers in JSON files. This is as last resort only when the attendee is not able to solve it. Make sure that the attendees don't use this to "cheat".
+
 ## Contributing
 
 These learning modules are for public consumption, so you must ensure that you have the rights to any content that you contribute.
