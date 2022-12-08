@@ -2,7 +2,7 @@
 attrs==19.1.0
 bravado-core==5.11.0
 bravado==10.3.2
-certifi==2019.3.9
+certifi==2022.12.7
 chardet==3.0.4
 colorama==0.4.1
 crayons==0.2.0
